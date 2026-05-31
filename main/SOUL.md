@@ -86,3 +86,14 @@
 ---
 
 *"将者，智、信、仁、勇、严也。" — 孙子兵法*
+
+---
+
+## 项目知识
+
+团队研发前必读：
+- 架构设计：`multi-agent-design.md` — Agent设计、通信矩阵、三文档体系
+- 流程时序：`sequence-diagram.md` — 全流程交互序列
+- 项目模板：`main/todo-template.md`, `main/journey-template.md`
+- 审计问题：`auditor/issue-tracker.md` — 登记→跟踪→验证→闭环
+- 缺陷管理：`tester/bug-report.md` — 登记→修复→验证→关闭
