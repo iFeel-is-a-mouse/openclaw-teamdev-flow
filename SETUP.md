@@ -165,7 +165,7 @@ main 读取以下文件，全面理解 MA 框架：
 - `projects/ma/README.md` — 团队概览，快速开始
 - `projects/ma/multi-agent-design.md` — 架构设计：Agent设计、通信矩阵、三文档体系、配置参考
 - `projects/ma/sequence-diagram.md` — 时序图：全流程交互序列，todo.md和journey.md贯穿全程
-- `skills/team-dev/SKILL.md` — 团队研发执行流程
+- `skills/SKILL.md` — 团队研发执行流程
 
 **第 2 步：main 融合 AGENTS.md**
 
@@ -220,7 +220,7 @@ agent 各回复确认后，初始化完成。
 main 会读取以下文件来理解自己的角色和流程：
 - `projects/ma/main/SOUL.md` — 主控人格
 - `projects/ma/main/AGENTS.md` — 主控行为准则
-- `skills/team-dev/SKILL.md` — 执行流程
+- `skills/SKILL.md` — 执行流程
 
 ### 项目启动
 
@@ -262,7 +262,7 @@ main 会读取以下文件来理解自己的角色和流程：
 | 任务看板模板 | `projects/ma/main/todo-template.md` | WBS+断点再续 |
 | 过程日志模板 | `projects/ma/main/journey-template.md` | todo镜像+闭环子模式 |
 | 宪章模板 | `projects/ma/main/constitution-template.md` | 项目宪章 |
-| 团队研发 Skill | `skills/team-dev/SKILL.md` | 执行流程 |
+| 团队研发 Skill | `skills/SKILL.md` | 执行流程 |
 | coder 准则 | `projects/ma/coder/AGENTS.md` | 行为规范 |
 | tester 准则 | `projects/ma/tester/AGENTS.md` | 行为规范 + 缺陷模板 |
 | auditor 准则 | `projects/ma/auditor/AGENTS.md` | 行为规范 + 问题管理模板 |
@@ -276,7 +276,7 @@ main 会读取以下文件来理解自己的角色和流程：
 
 只需确保：
 - main agent 已配置且能正常运行
-- `skills/team-dev/SKILL.md` 存在
+- `skills/SKILL.md` 存在
 - `projects/ma/main/AGENTS.md` 和 `SOUL.md` 存在
 
 main 会检测其他 agent 是否可用，不可用时自动回退。

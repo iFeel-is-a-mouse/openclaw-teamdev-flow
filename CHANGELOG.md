@@ -1,6 +1,61 @@
 # MA 团队研发框架 — 变更日志
 
-## [3.1.0] — 2026-05-30
+## [3.4.0] — 2026-05-31
+
+### 复盘修复（4 agent 联合审查）
+
+- **阶段计数统一** — 全文统一为 "12 阶段（0-11，含按需复盘）"，修复多处 "11 阶段" 不一致
+- **README 工作流图补全** — 增加阶段10(publicist定稿)和阶段11(复盘)，增加核心链路摘要
+- **版本号同步** — SKILL.md 版本从 3.1.0 同步到 3.4.0
+- **路径修复** — `skills/team-dev/SKILL.md` → `skills/SKILL.md`，消除引用不一致
+- **新增模板** — `auditor/audit-report-template.md`、`tester/test-report-template.md`
+- **文档导航补全** — README 导航树增加 CHANGELOG.md、RETROSPECTIVE.md、VERSION、skills/SKILL.md
+
+### 影响文件
+
+- README.md, SETUP.md, CHANGELOG.md, VERSION
+- multi-agent-design.md, sequence-diagram.md
+- skills/SKILL.md
+- main/AGENTS.md
+- auditor/AGENTS.md, auditor/audit-report-template.md
+- tester/AGENTS.md, tester/test-report-template.md
+
+## [3.3.0] — 2026-05-31
+
+### 开源准备
+
+- **脱敏** — 移除个人信息和历史项目代号，GitHub 仓库公开
+- **快速开始** — 新增 4 步快速开始指南（下载→创建Agent→融合初始化→团队研发）
+- **仓库信息固化** — SETUP.md 固化 GitHub 仓库地址
+- **融合机制** — SETUP.md 新增"初始化：融合行为准则到各 Agent Workspace"章节，强调 MA:CORE 标记机制、融合非覆盖
+
+### 模板体系建立
+
+- **新增 4 个模板** — `main/todo-template.md`（WBS+断点再续）、`main/journey-template.md`（todo镜像+闭环子模式）、`auditor/issue-tracker.md`（登记→跟踪→验证→闭环）、`tester/bug-report.md`（登记→修复→验证→关闭）
+- **批判继承** — 从 sequence-diagram.md 提取 WBS 逐步求精、建任务权限矩阵、断点再续，融合到 todo-template
+- **SKILL.md 引用** — 各模板在 SKILL.md 中建立引用关系
+
+### 架构文档精简
+
+- **multi-agent-design.md 重写** — 914行→286行（-69%），去重角色定义和工作流描述，提炼为纯架构文档
+- **sequence-diagram.md 精简** — 移除重复的模板内容，保留时序图+引用
+- **全 agent 知识对齐** — 5 个 AGENTS.md + 5 个 SOUL.md 均补充模板引用和架构文档知识
+
+### README/SETUP 增强
+
+- README 和 SETUP 的文件索引、学习路径中补充 multi-agent-design.md 和 sequence-diagram.md 的定位描述
+
+### 影响文件
+
+- README.md, SETUP.md, multi-agent-design.md, sequence-diagram.md
+- skills/SKILL.md
+- main/AGENTS.md, main/SOUL.md, main/todo-template.md, main/journey-template.md
+- coder/AGENTS.md, coder/SOUL.md
+- tester/AGENTS.md, tester/SOUL.md, tester/bug-report.md
+- auditor/AGENTS.md, auditor/SOUL.md, auditor/issue-tracker.md
+- publicist/AGENTS.md, publicist/SOUL.md
+
+---
 
 ## [3.2.0] — 2026-05-30
 
@@ -32,7 +87,7 @@
 
 ### 影响文件
 
-- `skills/team-dev/SKILL.md` — §4.0.5、§5 阶段4/6/7/9、§13 红线、D8 决策节点
+- `skills/SKILL.md` — §4.0.5、§5 阶段4/6/7/9、§13 红线、D8 决策节点
 - `AGENTS.md`（workspace）— M级流程说明、§6-9 实现到交付、§7 异常处理
 - `projects/ma/main/AGENTS.md` — 同步
 - `projects/ma/main/SOUL.md` — D6/D6.5/D8 决策节点

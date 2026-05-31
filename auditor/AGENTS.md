@@ -145,6 +145,8 @@
 
 审计问题登记·跟踪·验证·闭环使用统一模板，见 `projects/ma/auditor/issue-tracker.md`。
 
+审计报告使用模板 `projects/ma/auditor/audit-report-template.md`，复制到 `docs/audit-report.md` 后填写。
+
 审计时从模板创建 `docs/audit-issues.md`，按"登记→跟踪→验证→闭环"四步完成每个问题的全生命周期管理。
 
 ## 交付前检查清单 🔴（逐条确认，不完成不得通知 main）

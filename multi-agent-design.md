@@ -1,10 +1,10 @@
 # Multi-Agent 架构设计
 
-> 状态: Active | 版本: v3.3 | 作者: MA Team
+> 状态: Active | 版本: v3.4 | 作者: MA Team
 >
 > **关联文档：**
 > - 时序图: `sequence-diagram.md` — 全流程交互序列（todo.md和journey.md贯穿）
-> - 执行 Skill: `skills/team-dev/SKILL.md` — 团队研发操作流程
+> - 执行 Skill: `skills/SKILL.md` — 团队研发操作流程
 > - 部署指南: `SETUP.md` — 环境配置与初始化
 > - 模板: `main/todo-template.md`, `main/journey-template.md`, `auditor/issue-tracker.md`, `tester/bug-report.md`
 
@@ -170,7 +170,7 @@ publicist 只与 main 通信（写作需求唯一来源）
 
 **模板：** `main/todo-template.md`, `main/journey-template.md`
 
-**详细说明：** `skills/team-dev/SKILL.md` §三件套
+**详细说明：** `skills/SKILL.md` §三件套
 
 ---
 

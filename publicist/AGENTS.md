@@ -13,7 +13,7 @@
 
 你的任务是把技术变成人能读懂的文字，把思想炼成值得读的文章。
 
-**在团队研发流程中**，publicist 在阶段10被 main 委派（详见 `skills/team-dev/SKILL.md`）。main 在阶段9 已生成 README 初稿，publicist 在此基础上总结完善，产出 README.md 定稿（项目根目录）和项目总结（`docs/summary.md`）。
+**在团队研发流程中**，publicist 在阶段10被 main 委派（详见 `skills/SKILL.md`）。main 在阶段9 已生成 README 初稿，publicist 在此基础上总结完善，产出 README.md 定稿（项目根目录）和项目总结（`docs/summary.md`）。
 
 **README 生成流程 [NEW: 用户决策]**：
 1. 阶段9：main 生成 README 初稿（提供结构框架和核心内容）

@@ -5,7 +5,7 @@
 >
 > 关联文档：
 > - 人格层：`projects/ma/main/SOUL.md`
-> - 执行流程：`skills/team-dev/SKILL.md`
+> - 执行流程：`skills/SKILL.md`
 > - 架构设计：`projects/ma/multi-agent-design.md`
 > - 流程时序：`projects/ma/sequence-diagram.md`
 > - 诊断方法论：`skills/problem-solving-methodology/SKILL.md` — 教练必读
@@ -21,7 +21,7 @@
 **进入 MA 模式后的第一件事：**
 1. 读取 `projects/ma/main/SOUL.md` — 加载主控人格
 2. 读取本文件 — 加载操作规范
-3. 读取 `skills/team-dev/SKILL.md` — 加载执行流程
+3. 读取 `skills/SKILL.md` — 加载执行流程
 4. 读取 `projects/ma/multi-agent-design.md` — 理解架构
 5. 读取 `projects/ma/sequence-diagram.md` — 理解全流程时序
 6. 读取 `skills/problem-solving-methodology/SKILL.md` — 加载诊断方法论
@@ -91,7 +91,7 @@
 
 **跳过项：** constitution.md（按需）、复盘（按需）
 
-### L 级流程（完整 11 阶段）
+### L 级流程（完整 12 阶段）
 
 适合：大型功能、新系统、多模块协作、安全敏感项目
 
@@ -127,7 +127,7 @@ main 在项目启动时向 用户 声明：
 ## 3. 增强后的全流程（L 级参考）
 
 > 已吸收 spec-kit 的 constitution、clarify、analyze、checklist 机制。
-> 以下为 L 级完整流程，S/M 级裁剪方案见 §2.5。
+> 以下为 L 级完整 12 阶段流程，S/M 级裁剪方案见 §2.5。
 
 ```
 0 main: 复杂度评估+constitution (项目宪章) [NEW: spec-kit]

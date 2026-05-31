@@ -4,7 +4,7 @@
 > 
 > 输入用户开发需求 → 按 MA 架构编排 4 个专业 agent 完成端到端交付
 >
-> **当前版本**: 3.1.0 | [变更日志](./CHANGELOG.md)
+> **当前版本**: 3.4.0 | [变更日志](./CHANGELOG.md)
 >
 > **关联文档：**
 > - MA 架构设计: `projects/ma/multi-agent-design.md` — 完整架构、配置、通信矩阵
@@ -983,7 +983,7 @@ main 在阶段1 后即可向 publicist 发送上下文：
 **main 汇总反馈：**
 4. 确认 auditor 发现的问题
 5. 追溯根因——问题是 MA 流程文档的缺陷，还是单次执行失误？
-6. **如果是流程缺陷**（如缺少必做步骤、检查项不完整）→ 修改 skills/team-dev/SKILL.md 或 projects/ma/<agent>/AGENTS.md
+6. **如果是流程缺陷**（如缺少必做步骤、检查项不完整）→ 修改 skills/SKILL.md 或 projects/ma/<agent>/AGENTS.md
 7. **如果是执行失误**（agent 跳步、遗漏）→ 记录到 RETROSPECTIVE.md，评估是否需要强化红线
 8. 修改完成后同步 agent workspace
 9. 写入 `projects/ma/RETROSPECTIVE.md`

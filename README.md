@@ -20,10 +20,10 @@
 用户提需求
     │
     ▼
-0 main 制定宪章 → docs/constitution.md
+0 main 复杂度评估+流程声明
     │
     ▼
-1 main 提炼需求 → auditor 前置审计+clarify ──→ main 把关
+1 main 需求分析 → auditor 前置审计+clarify ──→ main 把关
                                                     │
                                                     ▼
                                               4 coder 架构设计
@@ -47,9 +47,16 @@
                                           迭代修复    → merge
                                                         │
                                                         ▼
-                                              9 publicist 文档
-                                                   README + 总结
+                                              9 main README初稿
+                                                        │
+                                                        ▼
+                                              10 publicist 文档定稿
+                                                        │
+                                                        ▼
+                                              11 复盘（按需）
 ```
+
+> 核心链路：`需求 → 前置审计 → 设计 → 编码 → 测试 → 终审 → merge → 文档`
 
 ## 快速开始
 
@@ -110,8 +117,13 @@ main 会自动评估复杂度、分配合适的流程（S/M/L 三级），调度
 team-dev/
 ├── README.md                  ← 你在这里
 ├── SETUP.md                   ← 理解、部署与配置指南
+├── CHANGELOG.md               ← 版本变更记录
+├── VERSION                    ← 当前版本号
 ├── multi-agent-design.md      ← 架构设计：Agent设计、通信矩阵、三文档体系、配置参考
 ├── sequence-diagram.md        ← 时序图：全流程交互序列，todo.md和journey.md贯穿全程
+├── RETROSPECTIVE.md           ← 复盘报告
+├── skills/
+│   └── SKILL.md               ← 团队研发执行流程（核心 Skill）
 ├── main/                      ← main agent 配置
 │   ├── AGENTS.md              ← 团队研发行为准则
 │   ├── SOUL.md                ← 五重身份人格
@@ -124,11 +136,13 @@ team-dev/
 ├── tester/
 │   ├── AGENTS.md              ← 测试方法论
 │   ├── SOUL.md                ← 职业怀疑者
-│   └── bug-report.md          ← 缺陷报告与验证闭环模板
+│   ├── bug-report.md          ← 缺陷报告与验证闭环模板
+│   └── test-report-template.md ← 测试报告模板
 ├── auditor/
 │   ├── AGENTS.md              ← 三重审计+checklist
 │   ├── SOUL.md                ← 公正法官
-│   └── issue-tracker.md       ← 审计问题登记·跟踪·验证·闭环模板
+│   ├── issue-tracker.md       ← 审计问题登记·跟踪·验证·闭环模板
+│   └── audit-report-template.md ← 审计报告模板
 └── publicist/
     ├── AGENTS.md              ← 写作规矩
     └── SOUL.md                ← 书卷气、文采

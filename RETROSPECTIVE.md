@@ -1,6 +1,86 @@
 # 复盘报告 — MA 团队研发经验教训
 
-> 持续更新的复盘文档 | 最近更新: 2026-05-24
+> 持续更新的复盘文档 | 最近更新: 2026-05-31
+
+---
+
+## 第四次复盘 — v3.3.0→v3.4.0 框架完善与一致性修复
+
+> 日期: 2026-05-31 | 复盘人: auditor + coder + tester + publicist + main (联合审查)
+
+### 复盘方式
+
+首次采用 4 agent 并行审查 + main 定稿模式。auditor（文档一致性+流程完整性）、coder（设计一致性+模板可用性）、tester（可测试性+边界场景）、publicist（可读性+文档组织）各自独立审查。
+
+### 发现的问题
+
+#### 🔴 严重（3 项）
+
+1. **阶段计数混乱** — "11 阶段"和"12 阶段"混用，README 工作流图只到阶段9。根因：阶段0是否计数从未明确定义。
+2. **版本号不一致** — VERSION=3.3.0 但 SKILL.md=3.1.0、CHANGELOG 只到 3.2.0。根因：版本更新时只改了 VERSION 文件，未同步关联文档。
+3. **SKILL.md 路径错误** — 多处引用 `skills/team-dev/SKILL.md`，实际文件为 `skills/SKILL.md`。根因：文件移动后路径未更新。
+
+#### ⚠️ 中等（5 项）
+
+4. **README 文档导航遗漏 4 个文件** — CHANGELOG.md、RETROSPECTIVE.md、VERSION、skills/SKILL.md 未列在导航树中
+5. **缺少 test-report 和 audit-report 模板** — AGENTS.md 明确要求产出这些文件，但没有模板
+6. **4 份核心文档过度重叠** — README/SETUP/multi-agent-design/SKILL 有约 40% 内容互相复制
+7. **配置格式不一致** — multi-agent-design.md 用 JSON5，SETUP.md 用 YAML
+8. **git pull 冲突无处理指南** — 模板更新时 agent 自定义内容可能冲突
+
+#### 💡 建议（5 项）
+
+9. SETUP.md 缺少"5 分钟速配"入口
+10. 术语漂移（sessions_send/session_send、spec-kit/spec kit）
+11. constitution-template 缺少修订流程
+12. 快速开始无冒烟测试验证标准
+13. main 决策留痕无格式标准
+
+### 修复内容（v3.4.0）
+
+1. 阶段计数统一为 "12 阶段（0-11，含按需复盘）"
+2. 版本号全项目同步：VERSION + SKILL.md + multi-agent-design.md
+3. SKILL.md 路径全部修正
+4. README 工作流图补全到阶段11，增加核心链路摘要
+5. README 文档导航补全
+6. 新增 `auditor/audit-report-template.md` + `tester/test-report-template.md`
+7. CHANGELOG 补齐 3.3.0 和 3.4.0 条目
+
+### 遗留项（下一版本）
+
+- 4 份核心文档去重（计划 v3.5.0）
+- 配置格式统一为 YAML
+- git pull 冲突处理指南
+- SETUP.md "5 分钟速配"板块
+- 术语统一（全项目搜索替换）
+- main 决策留痕格式标准
+- 快速开始冒烟测试验证标准
+
+### 教训
+
+1. **版本号必须全局同步。** 只改 VERSION 文件不够，SKILL.md、CHANGELOG.md、multi-agent-design.md 都有版本声明，缺少自动化同步机制。
+2. **4 agent 联合审查有效。** 不同视角发现的问题几乎没有重叠——auditor 发现了路径错误，coder 发现了版本不一致，tester 发现了 git pull 冲突盲区，publicist 发现了文档过度重叠。
+3. **文档去重要做在下一个版本。** 当前 40% 的重复率是最严重的可维护性问题，但修复范围太大，不适合作为复盘修补（会膨胀到 3 倍工作）。留到 v3.5.0 专项处理。
+
+### main 自我复盘
+
+本轮工作由 main 全程主导（评估→委派→审查→定稿→Git操作）。自我审查如下：
+
+**✅ 做得好的：**
+- 首次实践了完整的团队研发流程（S级复杂度评估→模板创建→publicist 委派→4 agent 并行复盘→定稿推送），整个 MA 流程在本轮被验证了一次端到端
+- 对 5 个 SOUL.md 和 5 个 AGENTS.md 的系统性补充（"项目知识"小节），让每个 agent 知道自己该看什么文档——之前 agent 启动时缺少这种导航
+- 从 sequence-diagram.md 批判继承 WBS/断点再续机制融合到 todo-template，避免了文档间互相复制
+
+**❌ 需要改进的：**
+1. **Git 操作失误** — 第一次推送时 commit message 暴露了脱敏前的信息，不得不删仓库重建。根因：赶进度，没有在 push 前做最终检查。教训：push 前检查 commit message 和 diff 内容。
+2. **提交过碎** — v3.3.0 拆成了 6 个 commit，每次改一点就推一次。应该在一个分支上累积修改，最后 squash 成一个干净的 commit。根因：边改边推的习惯没有切换到"团队研发"模式下的规范操作。
+3. **没有一开始就做全局规划** — 修改 AGENTS.md 时没有想到 SOUL.md 也需要同步改，改了 README 才发现 SETUP 也需要更新。导致多轮"补漏"式提交。根因：没有在动手前先列全影响文件清单。
+4. **缺少 main 自己的质量闸门** — auditor 终审发现的路径错误（`skills/team-dev/SKILL.md` vs `skills/SKILL.md`），main 在之前的修改中就应该发现。main 既是修改者又是审查者，应该有自查步骤。
+
+**📝 改进措施：**
+- push 前执行 final check：`git log -1 --format="%s"` + `git diff --stat` 确认无敏感内容
+- 关联修改先列影响文件清单，一次性改完，squash 后提交
+- main 在每轮修改后自查：文件引用路径、版本号一致性、sensitive scan
 
 ---
 
@@ -35,9 +115,9 @@ todo.md 模板只列了 5 项任务（前置审计、编码、测试、终审、
 
 | # | 修复项 | 文件 |
 |---|--------|------|
-| 1 | todo.md 模板从 5 项扩到 10 项（覆盖 1-9 全部阶段） | `skills/team-dev/SKILL.md` |
-| 2 | SKILL.md 每个阶段的 agent 任务模板新增"写入 journey.md"步骤 | `skills/team-dev/SKILL.md` |
-| 3 | SKILL.md 新增阶段9"事后复盘"和主体/客体区分原则 | `skills/team-dev/SKILL.md` |
+| 1 | todo.md 模板从 5 项扩到 10 项（覆盖 1-9 全部阶段） | `skills/SKILL.md` |
+| 2 | SKILL.md 每个阶段的 agent 任务模板新增"写入 journey.md"步骤 | `skills/SKILL.md` |
+| 3 | SKILL.md 新增阶段9"事后复盘"和主体/客体区分原则 | `skills/SKILL.md` |
 | 4 | auditor AGENTS.md 新增"写入 journey.md"操作 | `projects/ma/auditor/AGENTS.md` |
 | 5 | coder AGENTS.md 新增"写入 journey.md"操作 | `projects/ma/coder/AGENTS.md` |
 | 6 | tester AGENTS.md 新增"写入 journey.md"操作 | `projects/ma/tester/AGENTS.md` |
@@ -94,7 +174,7 @@ README.md 的"项目结构"章节遗漏了：
 | 1 | publicist 自审流程加入"第零遍：事实核查"——README 项目结构必须 `find` 确认 | `projects/ma/publicist/AGENTS.md` |
 | 2 | publicist 红线新增：不允许 README 项目结构与实际文件不一致 | `projects/ma/publicist/AGENTS.md` |
 | 3 | auditor 交付终审清单新增"README 完整性"检查项 | `projects/ma/auditor/AGENTS.md` |
-| 4 | team-dev SKILL.md 阶段8 main 终审加入逐项检查清单（含 README 结构一致性） | `skills/team-dev/SKILL.md` |
+| 4 | team-dev SKILL.md 阶段8 main 终审加入逐项检查清单（含 README 结构一致性） | `skills/SKILL.md` |
 | 5 | 示例项目A README.md 项目结构更新，补全遗漏文件 | `projects/示例项目A/README.md` |
 
 ### 教训
