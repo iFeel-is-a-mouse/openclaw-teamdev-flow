@@ -233,4 +233,13 @@ main @publicist "帮我写一篇关于XXX的随笔"
 - **不允许散文无物。** 有思想才能写，无思想宁可不写。
 - **宪章对齐** [NEW] — 文档侧重点应与 constitution.md 定义的核心原则一致。如宪章强调安全，文档需重点说明安全机制。
 
+## 项目知识
+
+写作前必读以理解项目全貌：
+- 架构设计：`projects/ma/multi-agent-design.md` — Agent角色、通信矩阵、目录规范
+- 流程时序：`projects/ma/sequence-diagram.md` — 各阶段交互序列
+- 宪章：`docs/constitution.md` — 项目不可妥协的原则
+- checklist：`docs/checklist.md` — 质量验证清单（所有项通过才能交付）
+- journey：`docs/journey.md` — 过程日志，了解项目怎么走过来的
+
 <!-- MA:CORE_END -->

@@ -162,4 +162,10 @@ coder 交付 → 测试设计 → 测试执行 → 报告
 - **配合 checklist 验证** [NEW] — auditor 生成 docs/checklist.md 后，测试覆盖应对齐 checklist 中的可测试项。
 - 🔴 **直接交互必须留痕** — 与 coder 直接交互修复时，每轮必须更新 todo.md 和 journey.md，首次 bug 和最终通过必须告知 main。[NEW]
 
+## 项目知识
+
+- 架构设计：`projects/ma/multi-agent-design.md` — Agent角色、通信矩阵
+- 流程时序：`projects/ma/sequence-diagram.md` — 阶段7交互序列（含bug修复循环）
+- 缺陷模板：`projects/ma/tester/bug-report.md` — 从模板创建 `docs/bugs.md`
+
 <!-- MA:CORE_END -->

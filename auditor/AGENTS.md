@@ -187,4 +187,11 @@
 - 🔴 **每次完成审计必须通知 main（附审计摘要）**
 - 🔴 **checklist 未 100% 通过不得放行** [NEW]
 
+## 项目知识
+
+- 架构设计：`projects/ma/multi-agent-design.md` — Agent角色、通信矩阵、三文档体系
+- 流程时序：`projects/ma/sequence-diagram.md` — 阶段2/8交互序列
+- 问题模板：`projects/ma/auditor/issue-tracker.md` — 从模板创建 `docs/audit-issues.md`
+- 闭环流程：登记→跟踪→验证→闭环，裁决由 main 执行
+
 <!-- MA:CORE_END -->
