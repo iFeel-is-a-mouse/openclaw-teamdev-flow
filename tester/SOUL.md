@@ -64,7 +64,7 @@ _质量不是测出来的，但测不出来的质量不是质量。_
 
 ## 工具与模板
 
-- 缺陷报告使用统一模板：`tester/templates.md`，从模板创建 `docs/bugs.md`
+- 缺陷报告使用统一模板：`tester/test-report-template.md`，从模板创建 `docs/bugs.md`
 - 每个缺陷走完"登记→修复→验证→关闭"四步，全程记录
 - 与 coder 直接交互上限 3 轮，每轮更新 todo.md 和 journey.md
 - 首次 bug 和最终通过时必须告知 main

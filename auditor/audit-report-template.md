@@ -1,4 +1,4 @@
-# auditor/templates.md — 审计模板集
+# auditor/audit-report-template.md — 审计模板集
 
 > auditor 使用此模板进行问题管理和审计报告。使用时复制对应部分到 `docs/audit-issues.md` 和 `docs/audit-report.md`。
 

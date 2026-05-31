@@ -331,8 +331,8 @@ MA 框架提供以下模板，项目启动时从对应位置复制：
 | todo.md | `main/todo-template.md` | 项目任务看板 | 阶段0 |
 | journey.md | `main/journey-template.md` | 项目过程日志 | 阶段0 |
 | constitution.md | `main/constitution-template.md` | 项目宪章 | 阶段0 (L级) |
-| 审计模板 | `auditor/templates.md` | 问题管理 + 审计报告 | 阶段2/8 |
-| 测试模板 | `tester/templates.md` | 缺陷管理 + 测试报告 | 阶段7 |
+| 审计模板 | `auditor/audit-report-template.md` | 问题管理 + 审计报告 | 阶段2/8 |
+| 测试模板 | `tester/test-report-template.md` | 缺陷管理 + 测试报告 | 阶段7 |
 
 <!-- MA:CORE_END -->
 

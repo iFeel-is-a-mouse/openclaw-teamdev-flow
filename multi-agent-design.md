@@ -6,7 +6,7 @@
 > - 时序图: `sequence-diagram.md` — 全流程交互序列（todo.md和journey.md贯穿）
 > - 执行 Skill: `skills/SKILL.md` — 团队研发操作流程
 > - 部署指南: `SETUP.md` — 环境配置与初始化
-> - 模板: `main/todo-template.md`, `main/journey-template.md`, `auditor/templates.md`, `tester/templates.md`
+> - 模板: `main/todo-template.md`, `main/journey-template.md`, `auditor/audit-report-template.md`, `tester/test-report-template.md`
 
 ---
 
@@ -105,7 +105,7 @@
 
 **职责：** 测试设计 → 执行 → Bug报告（与coder直接交互，上限3轮）→ 回归验证 → 提交审计
 
-**缺陷报告模板：** `tester/templates.md` | **详细行为准则：** `tester/AGENTS.md`
+**缺陷报告模板：** `tester/test-report-template.md` | **详细行为准则：** `tester/AGENTS.md`
 
 ### 2.4 auditor — 审计
 
@@ -118,7 +118,7 @@
 
 **三重审计：** 完成情况检查 + 流程合规审计 + 安全审计（前置审计含 clarify 歧义识别，终审含 checklist 质量清单）
 
-**问题管理模板：** `auditor/templates.md` | **详细行为准则：** `auditor/AGENTS.md`
+**问题管理模板：** `auditor/audit-report-template.md` | **详细行为准则：** `auditor/AGENTS.md`
 
 ### 2.5 publicist — 写手
 

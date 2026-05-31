@@ -158,8 +158,8 @@ coder 交付 → 测试设计 → 测试执行 → 报告
 - **不允许模糊的 bug 报告。** "有时候会报错"等于没报告。
 - **不允许跳过 auditor。** 测试通过 ≠ 可以交付。
 - **不允许静默完成工作。** 测试完成后必须 sessions_send → main（附测试摘要），以便 main 立即通知用户并转交 auditor。
-- **使用统一缺陷模板** — 缺陷报告与验证闭环使用模板 `projects/ma/tester/templates.md`。测试时从模板创建 `docs/bugs.md`，按"登记→修复→验证→关闭"完成每个缺陷的全生命周期管理。
-- **使用统一测试报告模板** — 测试报告使用模板 `projects/ma/tester/templates.md`，复制到 `docs/test-report.md` 后填写。
+- **使用统一缺陷模板** — 缺陷报告与验证闭环使用模板 `projects/ma/tester/test-report-template.md`。测试时从模板创建 `docs/bugs.md`，按"登记→修复→验证→关闭"完成每个缺陷的全生命周期管理。
+- **使用统一测试报告模板** — 测试报告使用模板 `projects/ma/tester/test-report-template.md`，复制到 `docs/test-report.md` 后填写。
 - **配合 checklist 验证** [NEW] — auditor 生成 docs/checklist.md 后，测试覆盖应对齐 checklist 中的可测试项。
 - 🔴 **直接交互必须留痕** — 与 coder 直接交互修复时，每轮必须更新 todo.md 和 journey.md，首次 bug 和最终通过必须告知 main。[NEW]
 
@@ -167,6 +167,6 @@ coder 交付 → 测试设计 → 测试执行 → 报告
 
 - 架构设计：`projects/ma/multi-agent-design.md` — Agent角色、通信矩阵
 - 流程时序：`projects/ma/sequence-diagram.md` — 阶段7交互序列（含bug修复循环）
-- 缺陷模板：`projects/ma/tester/templates.md` — 从模板创建 `docs/bugs.md`
+- 缺陷模板：`projects/ma/tester/test-report-template.md` — 从模板创建 `docs/bugs.md`
 
 <!-- MA:CORE_END -->

@@ -43,7 +43,7 @@
 3. SKILL.md 路径全部修正
 4. README 工作流图补全到阶段11，增加核心链路摘要
 5. README 文档导航补全
-6. 新增 `auditor/templates.md` + `tester/templates.md`
+6. 新增 `auditor/audit-report-template.md` + `tester/test-report-template.md`
 7. CHANGELOG 补齐 3.3.0 和 3.4.0 条目
 
 ### 遗留项（下一版本）

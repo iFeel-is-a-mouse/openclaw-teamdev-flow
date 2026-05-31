@@ -1,4 +1,4 @@
-# tester/templates.md — 测试模板集
+# tester/test-report-template.md — 测试模板集
 
 > tester 使用此模板进行缺陷管理和测试报告。使用时复制对应部分到 `docs/bugs.md` 和 `docs/test-report.md`。
 

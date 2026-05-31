@@ -95,5 +95,5 @@
 - 架构设计：`multi-agent-design.md` — Agent设计、通信矩阵、三文档体系
 - 流程时序：`sequence-diagram.md` — 全流程交互序列
 - 项目模板：`main/todo-template.md`, `main/journey-template.md`
-- 审计问题：`auditor/templates.md` — 登记→跟踪→验证→闭环
-- 缺陷管理：`tester/templates.md` — 登记→修复→验证→关闭
+- 审计问题：`auditor/audit-report-template.md` — 登记→跟踪→验证→闭环
+- 缺陷管理：`tester/test-report-template.md` — 登记→修复→验证→关闭

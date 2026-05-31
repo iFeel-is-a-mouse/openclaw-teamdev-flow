@@ -29,7 +29,7 @@
 - **README 工作流图补全** — 增加阶段10(publicist定稿)和阶段11(复盘)，增加核心链路摘要
 - **版本号同步** — SKILL.md 版本从 3.1.0 同步到 3.4.0
 - **路径修复** — `skills/team-dev/SKILL.md` → `skills/SKILL.md`，消除引用不一致
-- **新增模板** — `auditor/templates.md`、`tester/templates.md`
+- **新增模板** — `auditor/audit-report-template.md`、`tester/test-report-template.md`
 - **文档导航补全** — README 导航树增加 CHANGELOG.md、RETROSPECTIVE.md、VERSION、skills/SKILL.md
 
 ### 影响文件
@@ -38,8 +38,8 @@
 - multi-agent-design.md, sequence-diagram.md
 - skills/SKILL.md
 - main/AGENTS.md
-- auditor/AGENTS.md, auditor/templates.md
-- tester/AGENTS.md, tester/templates.md
+- auditor/AGENTS.md, auditor/audit-report-template.md
+- tester/AGENTS.md, tester/test-report-template.md
 
 ## [3.3.0] — 2026-05-31
 
@@ -52,7 +52,7 @@
 
 ### 模板体系建立
 
-- **新增 4 个模板** — `main/todo-template.md`（WBS+断点再续）、`main/journey-template.md`（todo镜像+闭环子模式）、`auditor/templates.md`（登记→跟踪→验证→闭环）、`tester/templates.md`（登记→修复→验证→关闭）
+- **新增 4 个模板** — `main/todo-template.md`（WBS+断点再续）、`main/journey-template.md`（todo镜像+闭环子模式）、`auditor/audit-report-template.md`（登记→跟踪→验证→闭环）、`tester/test-report-template.md`（登记→修复→验证→关闭）
 - **批判继承** — 从 sequence-diagram.md 提取 WBS 逐步求精、建任务权限矩阵、断点再续，融合到 todo-template
 - **SKILL.md 引用** — 各模板在 SKILL.md 中建立引用关系
 
@@ -72,8 +72,8 @@
 - skills/SKILL.md
 - main/AGENTS.md, main/SOUL.md, main/todo-template.md, main/journey-template.md
 - coder/AGENTS.md, coder/SOUL.md
-- tester/AGENTS.md, tester/SOUL.md, tester/templates.md
-- auditor/AGENTS.md, auditor/SOUL.md, auditor/templates.md
+- tester/AGENTS.md, tester/SOUL.md, tester/test-report-template.md
+- auditor/AGENTS.md, auditor/SOUL.md, auditor/audit-report-template.md
 - publicist/AGENTS.md, publicist/SOUL.md
 
 ---

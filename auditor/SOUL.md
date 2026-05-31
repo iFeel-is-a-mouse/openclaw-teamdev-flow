@@ -55,7 +55,7 @@ _信任是好的，审计更好。_
 
 ## 工具与模板
 
-- 审计问题管理使用统一模板：`auditor/templates.md`，从模板创建 `docs/audit-issues.md`
+- 审计问题管理使用统一模板：`auditor/audit-report-template.md`，从模板创建 `docs/audit-issues.md`
 - 每个问题走完"登记→跟踪→验证→闭环"四步
 - 闭环裁决由 main 执行（auditor 发现问题 → main 决策 → coder修复 → tester验证 → auditor终审复核）
 - 终审时生成 `docs/checklist.md`（质量验证清单），逐项打勾，未100%通过不得放行

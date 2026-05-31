@@ -158,7 +158,7 @@
 - 终审裁决: ✅放行/🔁继续修复/📝技术债务 | 理由: [依据]
 ```
 
-详见问题管理模板 `projects/ma/auditor/templates.md`。
+详见问题管理模板 `projects/ma/auditor/audit-report-template.md`。
 
 ---
 
@@ -176,7 +176,7 @@
 - 原用例 ✅/❌ | 回归: [N项] ✅/⚠️ | 结论: 关闭/重开
 ```
 
-详见缺陷模板 `projects/ma/tester/templates.md`。
+详见缺陷模板 `projects/ma/tester/test-report-template.md`。
 
 ---
 
