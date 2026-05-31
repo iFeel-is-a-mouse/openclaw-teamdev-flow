@@ -1,6 +1,6 @@
 # Multi-Agent 架构设计
 
-> 状态: Active | 版本: v3.4 | 作者: MA Team
+> 状态: Active | 版本: v3.5 | 作者: MA Team
 >
 > **关联文档：**
 > - 时序图: `sequence-diagram.md` — 全流程交互序列（todo.md和journey.md贯穿）
@@ -205,56 +205,48 @@ project/
 
 ## 6. 配置设计
 
-### 6.1 Agent 配置参考
+### 6.1 Agent 配置参考（YAML）
 
-```json5
-{
-  agents: {
-    defaults: {
-      subagents: {
-        maxSpawnDepth: 2,
-        maxChildrenPerAgent: 5,
-        runTimeoutSeconds: 1800,
-      },
-    },
-    list: [
-      {
-        id: "main", default: true,
-        workspace: "~/.openclaw/workspace",
-        model: "deepseek/deepseek-v4-pro",
-      },
-      {
-        id: "coder",
-        workspace: "~/.openclaw/workspace-coder",
-        model: "deepseek/deepseek-v4-pro",
-      },
-      {
-        id: "tester",
-        workspace: "~/.openclaw/workspace-tester",
-        model: "deepseek/deepseek-v4-flash",
-      },
-      {
-        id: "auditor",
-        workspace: "~/.openclaw/workspace-auditor",
-        model: "deepseek/deepseek-v4-flash",
-      },
-      {
-        id: "publicist",
-        workspace: "~/.openclaw/workspace-publicist",
-        model: "deepseek/deepseek-v4-pro",
-      },
-    ],
-  },
-  tools: {
-    agentToAgent: {
-      enabled: true,
-      allow: ["main", "coder", "tester", "auditor", "publicist"],
-    },
-  },
-  bindings: [
-    { agentId: "main", match: { channel: "*", accountId: "*" } },
-  ],
-}
+```yaml
+agents:
+  defaults:
+    subagents:
+      maxSpawnDepth: 2
+      maxChildrenPerAgent: 5
+      runTimeoutSeconds: 1800
+
+  list:
+    - id: "main"
+      default: true
+      workspace: "~/.openclaw/workspace"
+      model: "deepseek/deepseek-v4-pro"
+
+    - id: "coder"
+      workspace: "~/.openclaw/workspace-coder"
+      model: "deepseek/deepseek-v4-pro"
+
+    - id: "tester"
+      workspace: "~/.openclaw/workspace-tester"
+      model: "deepseek/deepseek-v4-flash"
+
+    - id: "auditor"
+      workspace: "~/.openclaw/workspace-auditor"
+      model: "deepseek/deepseek-v4-flash"
+
+    - id: "publicist"
+      workspace: "~/.openclaw/workspace-publicist"
+      model: "deepseek/deepseek-v4-pro"
+
+tools:
+  agentToAgent:
+    enabled: true
+    allow: ["main", "coder", "tester", "auditor", "publicist"]
+
+bindings:
+  - agentId: "main"
+    match:
+      channel: "*"
+      accountId: "*"
 ```
 
 ### 6.2 Projects 软链接

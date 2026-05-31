@@ -31,7 +31,7 @@
 #### 💡 建议（5 项）
 
 9. SETUP.md 缺少"5 分钟速配"入口
-10. 术语漂移（sessions_send/session_send、spec-kit/spec kit）
+10. 术语漂移（sessions_send/sessions_send、spec-kit/spec-kit）
 11. constitution-template 缺少修订流程
 12. 快速开始无冒烟测试验证标准
 13. main 决策留痕无格式标准

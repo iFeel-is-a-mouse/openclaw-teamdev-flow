@@ -27,6 +27,33 @@ https://github.com/iFeel-is-a-mouse/team-dev
 
 ---
 
+## ⚡ 5 分钟速配
+
+**只想快速搭起来？复制粘贴这 4 条命令，再说一句话。**
+
+```bash
+# 1. 创建 agent
+openclaw agents create coder    --workspace ~/.openclaw/workspace-coder
+openclaw agents create tester   --workspace ~/.openclaw/workspace-tester
+openclaw agents create auditor  --workspace ~/.openclaw/workspace-auditor
+openclaw agents create publicist --workspace ~/.openclaw/workspace-publicist
+
+# 2. 建立 projects 共享
+for agent in coder tester auditor publicist; do
+  ln -s ~/.openclaw/workspace/projects ~/.openclaw/workspace-$agent/projects
+done
+```
+
+**3. 告诉 main：**
+> 学习 `SETUP.md`，为 coder、tester、auditor、publicist 融合同步各自的 AGENTS.md 和 SOUL.md。
+
+**4. 验证（告诉 main）：**
+> 团队研发：验证配置，检查各 agent 是否就绪。
+
+搞定了。想理解为什么这样设计，往下读。
+
+---
+
 ## 理念：为什么这样设计
 
 ### 人类团队有什么，MA 就有什么
@@ -206,6 +233,14 @@ agent 各回复确认后，初始化完成。
 1. `git pull` 获取最新的角色模板
 2. main 重新执行第 2-4 步
 3. 因为只更新 MA:CORE 标记内的内容，agent 的自定义积累不受影响
+
+**git pull 冲突处理：** 如果 agent 的自定义内容与模板更新产生了 git 冲突：
+
+1. **备份自定义区** — 冲突前先备份各 agent 的 AGENTS.md/SOUL.md 标记外内容
+2. **接受模板更新** — git pull 时接受 MA:CORE 区域的更新（`git checkout --theirs` 标记内区域）
+3. **手动融合自定义区** — 将备份的自定义内容写回标记外区域
+4. **原则：自定义内容优先。** 如果融合困难，保留 agent 的自定义版本，模板更新暂不应用，标记为待处理
+5. main 在 journey.md 记录冲突和融合结果
 
 这种设计确保了：框架规则统一演进，agent 个性化持续保留，两者并行不悖。
 

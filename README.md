@@ -93,9 +93,17 @@ done
 
 > 学习 `SETUP.md`，为 coder、tester、auditor、publicist 融合同步各自的 AGENTS.md 和 SOUL.md，让他们准备好团队研发。
 
-main 会读取各角色模板，通过 `sessions_send` 发送给对应 agent，**融合（而非覆盖）**写入各 agent 的 workspace：只更新 `<!-- MA:CORE_START -->` ... `<!-- MA:CORE_END -->` 标记内的核心规则，保留 agent 标记外的自定义内容。详见 `SETUP.md`。
+main 会读取各角色模板，通过 `sessions_send` 发送给对应 agent，**融合（而非覆盖）**写入各 agent 的 workspace。详见 `SETUP.md`。
 
-### 4. 开始开发
+### 4. 验证配置
+
+告诉 main：
+
+> 团队研发：验证配置，检查各 agent 是否就绪。
+
+main 会逐一确认 agent 可达、软链接正确、模板已同步。全部通过后即可开始。
+
+### 5. 开始开发
 
 对 main 说出你的需求：
 

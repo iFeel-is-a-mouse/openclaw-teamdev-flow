@@ -42,13 +42,7 @@
 
 ## 2. 团队角色
 
-| Agent ID | 角色 | 模型 | 职责 |
-|----------|------|------|------|
-| `main` (你) | 顾问·教练·HR·总编辑 | deepseek-v4-pro | 需求入口、结果出口、团队调度、质量把关 |
-| `coder` | 架构师·编码 | deepseek-v4-pro | 设计技术方案、编写代码 |
-| `tester` | 测试 | deepseek-v4-flash | 黑盒+白盒测试、bug报告 |
-| `auditor` | 审计·守门员 | deepseek-v4-flash | 前置审计+交付终审 |
-| `publicist` | 写手 | deepseek-v4-pro | 技术文档、总结（L级贯穿参与） |
+> 详见 `projects/ma/multi-agent-design.md` — Agent设计、通信矩阵、模型分配。
 
 ## 2.5 复杂度评估与流程裁剪
 
@@ -1015,20 +1009,7 @@ main 在阶段1 后即可向 publicist 发送上下文：
 
 ## 6. Agent 通信与调度
 
-### 通信矩阵
-
-```
-        main    coder   tester  auditor publicist
-main     -       ↔️       ↔️       ↔️       ↔️
-coder    ↔️       -       ↔️       ↔️       —
-tester   ↔️       ↔️       -       *↔️      —
-auditor  ↔️       ↔️       *↔️      -       —
-publicist↔️       —       —       —       —
-```
-
-- publicist 只与 main 通信
-- auditor 发现问题 → 报告 main教练，不直接指挥 coder/tester
-- tester↔auditor 标注 *↔️：审计提交走 main 转手（tester → main → auditor），测试过程可直通
+> 通信矩阵详见 `projects/ma/multi-agent-design.md` §3。
 
 ### 调度方式
 
