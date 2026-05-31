@@ -1,10 +1,6 @@
 # MA — Multi-Agent 开发团队
 
 > 一支由 AI Agent 组成的软件开发团队。各司其职，相互协作，质量把关，交付可靠。
->
-> **版本：v3.0** | 发布日期：2026-05-25 | 文档：《团队研发管理办法及实施指引》
->
-> **v3.0 里程碑：todo.md 和 journey.md 确立为项目宪法核心，贯穿全部12阶段，5 agent 透明可编辑。**
 
 ---
 
@@ -24,110 +20,114 @@
 用户提需求
     │
     ▼
-0 main 制定宪章 → docs/constitution.md [NEW]
+0 main 制定宪章 → docs/constitution.md
     │
     ▼
-1 main教练 提炼 → auditor 前置审计+clarify ──→ main教练 把关
-                                                          │
-                                                          ▼
-                                                    4 coder 架构设计
-                                                          │
-                                                          ▼
-                                                    5 analyze 一致性检查 [NEW]
-                                                          │
-                                                          ▼
-                                                    6 coder 编码实现
-                                                          │
-                                                          ▼
-                                                    7 tester 测试
-                                                          │
-                                                          ▼
-                                                    8 auditor 终审+checklist [NEW]
-                                                     │         │
-                                                 有问题     ✅ 通过
-                                                     │         │
-                                                     ▼         ▼
-                                                main教练    main ✅
-                                                决策迭代    → merge
-                                                              │
-                                                              ▼
-                                                    9 publicist 写作
-                                                         README + 总结
-                                                              │
-                                                              ▼
-                                                    10 main 审阅
-                                                         → 用户
-                                                              │
-                                                              ▼
-                                                    11 auditor + main
-                                                        事后复盘
-                                                    修改 MA 流程文档
-
-README流程：main(9)初稿 → publicist(10)总结完善 → main(10)定稿
-写作任务：main @publicist → publicist 基于初稿写作 → main 审阅定稿 → 发布
-```
-
-## 关键设计决策
-
-1. **Auditor 覆盖完整生命周期** — 前置审计（含 clarify 歧义识别）确保需求质量，终审（含 checklist 质量清单）确保交付质量
-2. **Auditor 通过 main教练 行使影响** — 发现问题报告 main教练，不直接指挥 coder/tester
-3. **宪法先行** [NEW] — 项目启动先定 constitution.md，所有后续决策以此为最高依据
-4. **Analyze 把关** [NEW] — 设计完成、编码开始前，执行跨文档一致性分析
-5. **Checklist 收尾** [NEW] — auditor 生成项目特定的质量检查清单，逐项验证后放行
-6. **所有产出物在 `projects/`** — Git 管理，新增 add，修改 checkout，完成 commit
-7. **深度任务用 Pro，常规任务用 Flash** — main/coder/publicist 用 deepseek-v4-pro，tester/auditor 用 deepseek-v4-flash
-8. **同一台机器共享文件系统** — 不需要各自 clone，零配置
-
-## 设计依据
-
-| Agent | 核心参考 |
-|-------|---------|
-| coder | 设计模式(GoF)、代码大全(McConnell)、DDD(Evans)、重构(Fowler)、NASA JPL 编码标准、SRE(Google)、人件 |
-| tester | 软件工程、黑盒测试7法、白盒测试6标准、NASA 验收标准 |
-| auditor | PMP(PMBOK)、ISA 审计原理、OWASP Top 10、NASA-STD-8739.8、IEEE 1012 |
-| publicist | 梁启超作文规矩、Technical Writing、Strunk & White |
-
-## 文档导航
-
-```
-projects/ma/
-├── README.md                  ← 你在这里
-├── SETUP.md                   ← 理解与配置指南
-├── RETROSPECTIVE.md            ← 复盘报告
-├── multi-agent-design.md      ← 完整架构设计
-├── main/                      ← main agent 团队研发配置 [NEW]
-│   ├── AGENTS.md              ← main 团队研发行为准则
-│   ├── SOUL.md                ← main 团队研发人格（五重身份）
-│   └── constitution-template.md ← 项目宪章模板
-├── coder/
-│   ├── AGENTS.md              ← 编码规范、设计层次
-│   └── SOUL.md                ← 工匠精神、系统思维
-├── tester/
-│   ├── AGENTS.md              ← 测试方法论、Bug 报告模板
-│   └── SOUL.md                ← 职业怀疑者、解谜者
-├── auditor/
-│   ├── AGENTS.md              ← 三重审计+clarify+checklist
-│   └── SOUL.md                ← 公正法官、证据主义者
-└── publicist/
-    ├── AGENTS.md              ← 写作规矩、文体规范
-    └── SOUL.md                ← 书卷气、文采、长期主义
+1 main 提炼需求 → auditor 前置审计+clarify ──→ main 把关
+                                                    │
+                                                    ▼
+                                              4 coder 架构设计
+                                                    │
+                                                    ▼
+                                              5 analyze 一致性检查
+                                                    │
+                                                    ▼
+                                              6 coder 编码实现
+                                                    │
+                                                    ▼
+                                              7 tester 测试
+                                                    │
+                                                    ▼
+                                              8 auditor 终审+checklist
+                                               │         │
+                                           有问题     ✅ 通过
+                                               │         │
+                                               ▼         ▼
+                                          main 决策    main ✅
+                                          迭代修复    → merge
+                                                        │
+                                                        ▼
+                                              9 publicist 文档
+                                                   README + 总结
 ```
 
 ## 快速开始
 
-```bash
-# 已创建的 agent
-openclaw agents list
+### 1. 下载
 
-# 查看某个 agent 的配置
-openclaw agents list --json | python3 -c "import json,sys; [print(a['id'], a['workspace']) for a in json.load(sys.stdin)]"
+```bash
+git clone https://github.com/iFeel-is-a-mouse/team-dev.git
 ```
 
-**新机器部署：** 见 [SETUP.md](SETUP.md)（理解后自行配置）。
+### 2. 创建 Agent
 
-**团队研发 Skill：** `skills/team-dev/SKILL.md` — main agent 执行团队研发时的操作流程。
+在 OpenClaw 中创建 5 个 agent：
 
-**⚠️ 关键配置：** 每个 agent workspace 必须有 `projects` 软链接指向 main workspace 的 projects 目录。
+```bash
+openclaw agents create coder    --workspace ~/.openclaw/workspace-coder
+openclaw agents create tester   --workspace ~/.openclaw/workspace-tester
+openclaw agents create auditor  --workspace ~/.openclaw/workspace-auditor
+openclaw agents create publicist --workspace ~/.openclaw/workspace-publicist
+```
+
+main agent 即你的默认 agent，无需额外创建。
+
+创建 projects 软链接（所有 agent 共享同一目录）：
+
+```bash
+for agent in coder tester auditor publicist; do
+  ln -s ~/.openclaw/workspace/projects ~/.openclaw/workspace-$agent/projects
+done
+```
+
+### 3. 初始化
+
+告诉 main：
+
+> 学习 `SETUP.md`，为 coder、tester、auditor、publicist 初始化各自的 AGENTS.md 和 SOUL.md，让他们准备好团队研发。
+
+main 会读取项目文档，理解每个 agent 的职责，将行为准则和人格配置写入各 agent 的 workspace。
+
+### 4. 开始开发
+
+对 main 说出你的需求：
+
+> 团队研发：帮我开发一个 XXX 功能
+
+main 会自动评估复杂度、分配合适的流程（S/M/L 三级），调度整个团队协作完成。
+
+## 关键设计决策
+
+1. **Auditor 覆盖完整生命周期** — 前置审计确保需求质量，终审确保交付质量
+2. **文件系统是通信总线** — 所有 agent 共享 `projects/` 目录，零配置，零延迟
+3. **宪法先行** — 项目启动先定 constitution.md，所有后续决策以此为最高依据
+4. **深度任务用 Pro，常规任务用 Flash** — main/coder/publicist 用深度模型，tester/auditor 用快速模型
+5. **信任但验证** — main 相信 agent 的能力，但每次关键产出都要审查
+
+## 文档导航
+
+```
+team-dev/
+├── README.md                  ← 你在这里
+├── SETUP.md                   ← 理解与配置指南
+├── multi-agent-design.md      ← 完整架构设计
+├── main/                      ← main agent 配置
+│   ├── AGENTS.md              ← 团队研发行为准则
+│   ├── SOUL.md                ← 五重身份人格
+│   └── constitution-template.md ← 项目宪章模板
+├── coder/
+│   ├── AGENTS.md              ← 编码规范、设计层次
+│   └── SOUL.md                ← 工匠精神
+├── tester/
+│   ├── AGENTS.md              ← 测试方法论
+│   └── SOUL.md                ← 职业怀疑者
+├── auditor/
+│   ├── AGENTS.md              ← 三重审计+checklist
+│   └── SOUL.md                ← 公正法官
+└── publicist/
+    ├── AGENTS.md              ← 写作规矩
+    └── SOUL.md                ← 书卷气、文采
+```
 
 ---
 
