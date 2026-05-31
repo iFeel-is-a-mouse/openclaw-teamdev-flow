@@ -14,8 +14,8 @@
 > - 宪章模板: `projects/ma/main/constitution-template.md` — 项目宪章模板
 > - 任务看板模板: `projects/ma/main/todo-template.md` — 项目任务看板
 > - 过程日志模板: `projects/ma/main/journey-template.md` — 项目过程日志
-> - 审计问题模板: `projects/ma/auditor/issue-tracker.md` — 问题登记·跟踪·验证·闭环
-> - 缺陷报告模板: `projects/ma/tester/bug-report.md` — 缺陷报告与验证闭环
+> - 审计问题模板: `projects/ma/auditor/templates.md` — 问题登记·跟踪·验证·闭环
+> - 缺陷报告模板: `projects/ma/tester/templates.md` — 缺陷报告与验证闭环
 > - 日常规则: `AGENTS.md` — 含团队研发规则章节（由 main/AGENTS.md 同步）
 > - **诊断方法论: `skills/problem-solving-methodology/`** — 结构化问题诊断（main/coder/tester 必读）
 > 
@@ -833,7 +833,7 @@ Git 规范：从 main 切 feature 分支，完成后 commit
 10. **更新 `docs/todo.md`**：标记测试为已完成
 11. **写入 `docs/journey.md`**：记录阶段7启动/完成时间、测试结果摘要（用例数/通过率/bug数）
 
-**缺陷报告闭环模板：** 测试发现的缺陷使用 `projects/ma/tester/bug-report.md`，从模板创建 `docs/bugs.md`，每个缺陷走完"登记→修复→验证→关闭"四步。迭代上限 3 轮。
+**缺陷报告闭环模板：** 测试发现的缺陷使用 `projects/ma/tester/templates.md`，从模板创建 `docs/bugs.md`，每个缺陷走完"登记→修复→验证→关闭"四步。迭代上限 3 轮。
 
 ### 阶段8 — auditor 交付终审 + checklist 质量清单 [ENHANCED: spec-kit + P2]
 
@@ -868,7 +868,7 @@ Git 规范：从 main 切 feature 分支，完成后 commit
 - 每一条保留的检查项需要有明确的判定依据
 - 不适用项标注 `[N/A]` 并附理由，供复盘时参考
 
-**审计问题闭环模板：** 审计发现的问题使用 `projects/ma/auditor/issue-tracker.md`，从模板创建 `docs/audit-issues.md`，每个问题走完"登记→跟踪→验证→闭环"四步。闭环裁决由 main 执行。
+**审计问题闭环模板：** 审计发现的问题使用 `projects/ma/auditor/templates.md`，从模板创建 `docs/audit-issues.md`，每个问题走完"登记→跟踪→验证→闭环"四步。闭环裁决由 main 执行。
 
 ### 阶段9 — main 最终确认 + README初稿 [UPDATED: complexity-aware]
 

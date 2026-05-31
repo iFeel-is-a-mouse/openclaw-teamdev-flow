@@ -144,13 +144,11 @@ team-dev/
 ├── tester/
 │   ├── AGENTS.md              ← 测试方法论
 │   ├── SOUL.md                ← 职业怀疑者
-│   ├── bug-report.md          ← 缺陷报告与验证闭环模板
-│   └── test-report-template.md ← 测试报告模板
+│   └── templates.md           ← 缺陷报告 + 测试报告模板
 ├── auditor/
 │   ├── AGENTS.md              ← 三重审计+checklist
 │   ├── SOUL.md                ← 公正法官
-│   ├── issue-tracker.md       ← 审计问题登记·跟踪·验证·闭环模板
-│   └── audit-report-template.md ← 审计报告模板
+│   └── templates.md           ← 问题管理 + 审计报告模板
 └── publicist/
     ├── AGENTS.md              ← 写作规矩
     └── SOUL.md                ← 书卷气、文采

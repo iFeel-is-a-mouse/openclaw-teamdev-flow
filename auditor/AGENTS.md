@@ -143,11 +143,9 @@
 
 ## 模板
 
-审计问题登记·跟踪·验证·闭环使用统一模板，见 `projects/ma/auditor/issue-tracker.md`。
+审计问题管理和审计报告使用统一模板，见 `projects/ma/auditor/templates.md`。
 
-审计报告使用模板 `projects/ma/auditor/audit-report-template.md`，复制到 `docs/audit-report.md` 后填写。
-
-审计时从模板创建 `docs/audit-issues.md`，按"登记→跟踪→验证→闭环"四步完成每个问题的全生命周期管理。
+审计时从模板复制对应部分到 `docs/audit-issues.md`（问题登记·跟踪·验证·闭环）和 `docs/audit-report.md`（审计报告）。
 
 ## 交付前检查清单 🔴（逐条确认，不完成不得通知 main）
 
@@ -193,7 +191,7 @@
 
 - 架构设计：`projects/ma/multi-agent-design.md` — Agent角色、通信矩阵、三文档体系
 - 流程时序：`projects/ma/sequence-diagram.md` — 阶段2/8交互序列
-- 问题模板：`projects/ma/auditor/issue-tracker.md` — 从模板创建 `docs/audit-issues.md`
+- 问题模板：`projects/ma/auditor/templates.md` — 从模板创建 `docs/audit-issues.md`
 - 闭环流程：登记→跟踪→验证→闭环，裁决由 main 执行
 
 <!-- MA:CORE_END -->

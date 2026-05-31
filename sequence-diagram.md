@@ -216,5 +216,5 @@ deactivate Main
 |------|------|------|
 | 任务看板 | `main/todo-template.md` | WBS + 建任务权限 + 断点再续 |
 | 过程日志 | `main/journey-template.md` | todo镜像格式 + 审计/测试闭环子模式 |
-| 审计问题管理 | `auditor/issue-tracker.md` | 登记→跟踪→验证→闭环 |
-| 缺陷管理 | `tester/bug-report.md` | 登记→修复→验证→关闭 |
+| 审计问题管理 | `auditor/templates.md` | 登记→跟踪→验证→闭环 |
+| 缺陷管理 | `tester/templates.md` | 登记→修复→验证→关闭 |
