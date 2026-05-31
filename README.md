@@ -84,9 +84,9 @@ done
 
 告诉 main：
 
-> 学习 `SETUP.md`，为 coder、tester、auditor、publicist 初始化各自的 AGENTS.md 和 SOUL.md，让他们准备好团队研发。
+> 学习 `SETUP.md`，为 coder、tester、auditor、publicist 融合同步各自的 AGENTS.md 和 SOUL.md，让他们准备好团队研发。
 
-main 会读取项目文档，理解每个 agent 的职责，将行为准则和人格配置写入各 agent 的 workspace。
+main 会读取各角色模板，通过 `sessions_send` 发送给对应 agent，**融合（而非覆盖）**写入各 agent 的 workspace：只更新 `<!-- MA:CORE_START -->` ... `<!-- MA:CORE_END -->` 标记内的核心规则，保留 agent 标记外的自定义内容。详见 `SETUP.md`。
 
 ### 4. 开始开发
 

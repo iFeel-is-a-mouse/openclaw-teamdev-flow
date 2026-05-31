@@ -6,6 +6,25 @@
 
 ---
 
+## 仓库信息
+
+MA 框架的官方 GitHub 仓库：
+
+```
+https://github.com/iFeel-is-a-mouse/team-dev
+```
+
+这是 MA 框架的唯一官方分发地址。仓库中包含：
+
+- 各角色的 AGENTS.md 和 SOUL.md 模板
+- 团队研发工作流 Skill
+- 宪章模板
+- 本文档及架构设计文档
+
+后续 MA 框架更新时，可从此仓库拉取最新版本，通过 `git pull` 同步角色模板、工作流规则和最佳实践。
+
+---
+
 ## 理念：为什么这样设计
 
 ### 人类团队有什么，MA 就有什么
@@ -121,17 +140,71 @@ agents:
 - auditor ↔ main（审计结果汇报，不直接指挥 coder/tester）
 - publicist ↔ main（写作任务接收和交付）
 
-### 5. Agent 行为准则部署
+### 5. 初始化：融合行为准则到各 Agent Workspace
 
-每个 agent 的 AGENTS.md 和 SOUL.md 定义其行为规范。模板见 `projects/ma/<agent>/`。
+这是配置中最关键的一步。main 学习完 SETUP.md 后，不仅要理解项目，还要**将各角色的 AGENTS.md 和 SOUL.md 模板融合同步到各 agent 的 workspace**。
 
-**部署方式：理解后自行配置，不是 cp。**
+#### 核心原则：融合，不是覆盖
 
-- **AGENTS.md** — 包含 `<!-- MA:CORE_START -->` ... `<!-- MA:CORE_END -->` 标记。标记内是 MA 统一管理的核心规则，标记外是 agent 的自定义内容（笔记、偏好、学到的经验）。
-- **SOUL.md** — agent 的核心人格定义。建议保持一致，但如果你想让 agent 有不同的人格倾向，可以修改。
+每个 agent 的 AGENTS.md 和 SOUL.md 分为两个区域：
 
-**首次配置：** 阅读 `projects/ma/<agent>/` 下的模板，理解每个 agent 的职责和规则，然后写入对应 agent 的 workspace。
-**后续更新：** 修改模板后，用标记定位 MA:CORE 区块，只更新核心规则，保留 agent 的自定义内容。
+- **MA 核心区** — 由 `<!-- MA:CORE_START -->` 和 `<!-- MA:CORE_END -->` 标记包裹。这是 MA 框架统一管理的规则，确保团队协作一致性。
+- **自定义区** — 标记之外的自由区域。agent 在此记录笔记、偏好、学到的经验、个人习惯。**这些内容属于 agent 自己，初始化时不应触碰。**
+
+首次初始化时，agent 的 workspace 中可能没有这些文件，直接写入即可。但**后续更新时**，务必只替换 MA:CORE 标记内的内容，保留标记外 agent 积累的一切。
+
+#### 操作流程
+
+**第 1 步：main 学习项目**
+
+main 读取以下文件，全面理解 MA 框架：
+
+- `projects/ma/SETUP.md` — 本文档，理解架构和配置
+- `projects/ma/README.md` — 团队概览
+- `projects/ma/multi-agent-design.md` — 完整设计文档
+- `skills/team-dev/SKILL.md` — 团队研发执行流程
+
+**第 2 步：main 融合 AGENTS.md**
+
+对每个 agent（coder、tester、auditor、publicist），main 执行：
+
+1. 读取 `projects/ma/<agent>/AGENTS.md` — 这是角色模板
+2. 通过 `sessions_send` 发送给对应 agent，消息类似：
+
+   > 请将以下 AGENTS.md 模板融合到你的 workspace。
+   > - 如果你的 workspace 已有 AGENTS.md：只更新 `<!-- MA:CORE_START -->` 到 `<!-- MA:CORE_END -->` 之间的内容，标记外的自定义内容原样保留
+   > - 如果尚无 AGENTS.md：直接写入
+   > - 完成后回复确认
+
+3. agent 收到后，在自己的 workspace（如 `~/.openclaw/workspace-coder/AGENTS.md`）中执行融合操作
+4. agent 回复 main 确认完成
+
+**第 3 步：main 融合 SOUL.md**
+
+流程与 AGENTS.md 相同，但更需谨慎：
+
+- SOUL.md 记录的是 agent 的人格，agent 在长期工作中会积累独特的个性和经验
+- 首次初始化：直接写入模板内容
+- 后续更新：只同步模板中新增的人格特质，**绝不覆盖 agent 已积累的个性化内容**
+- 如果 agent 已对人格有自己的理解和表达，main 应尊重并保留
+
+**第 4 步：验证**
+
+main 逐一向各 agent 确认：
+
+> 请读取你的 AGENTS.md 和 SOUL.md，确认 MA:CORE 区域已正确同步，自定义内容完好无损。
+
+agent 各回复确认后，初始化完成。
+
+#### 后续更新
+
+当 MA 框架仓库有更新时：
+
+1. `git pull` 获取最新的角色模板
+2. main 重新执行第 2-4 步
+3. 因为只更新 MA:CORE 标记内的内容，agent 的自定义积累不受影响
+
+这种设计确保了：框架规则统一演进，agent 个性化持续保留，两者并行不悖。
 
 ---
 
