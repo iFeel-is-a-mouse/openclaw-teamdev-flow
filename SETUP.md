@@ -18,8 +18,10 @@ https://github.com/iFeel-is-a-mouse/team-dev
 
 - 各角色的 AGENTS.md 和 SOUL.md 模板
 - 团队研发工作流 Skill
-- 宪章模板
-- 本文档及架构设计文档
+- 项目模板（todo、journey、审计问题、缺陷报告）
+- 架构设计文档（`multi-agent-design.md`）
+- 全流程时序图（`sequence-diagram.md`）
+- 本文档
 
 后续 MA 框架更新时，可从此仓库拉取最新版本，通过 `git pull` 同步角色模板、工作流规则和最佳实践。
 
@@ -160,8 +162,9 @@ agents:
 main 读取以下文件，全面理解 MA 框架：
 
 - `projects/ma/SETUP.md` — 本文档，理解架构和配置
-- `projects/ma/README.md` — 团队概览
-- `projects/ma/multi-agent-design.md` — 完整设计文档
+- `projects/ma/README.md` — 团队概览，快速开始
+- `projects/ma/multi-agent-design.md` — 架构设计：Agent设计、通信矩阵、三文档体系、配置参考
+- `projects/ma/sequence-diagram.md` — 时序图：全流程交互序列，todo.md和journey.md贯穿全程
 - `skills/team-dev/SKILL.md` — 团队研发执行流程
 
 **第 2 步：main 融合 AGENTS.md**
@@ -250,17 +253,20 @@ main 会读取以下文件来理解自己的角色和流程：
 
 | 文件 | 位置 | 用途 |
 |------|------|------|
-| MA 架构设计 | `projects/ma/multi-agent-design.md` | 完整设计文档 |
-| 团队概览 | `projects/ma/README.md` | 快速了解 |
-| 本文档 | `projects/ma/SETUP.md` | 理解与配置指南 |
-| main 行为准则 | `projects/ma/main/AGENTS.md` | main 团队研发规范 |
-| main 人格 | `projects/ma/main/SOUL.md` | main 五重身份定义 |
-| 宪章模板 | `projects/ma/main/constitution-template.md` | 项目宪章模板 |
+| 架构设计 | `projects/ma/multi-agent-design.md` | Agent设计、通信矩阵、三文档体系、配置参考 |
+| 全流程时序图 | `projects/ma/sequence-diagram.md` | 交互序列，todo.md和journey.md贯穿全程 |
+| 团队概览 | `projects/ma/README.md` | 快速开始 |
+| 本文档 | `projects/ma/SETUP.md` | 理解、部署与配置指南 |
+| main 行为准则 | `projects/ma/main/AGENTS.md` | 团队研发规范 |
+| main 人格 | `projects/ma/main/SOUL.md` | 五重身份定义 |
+| 任务看板模板 | `projects/ma/main/todo-template.md` | WBS+断点再续 |
+| 过程日志模板 | `projects/ma/main/journey-template.md` | todo镜像+闭环子模式 |
+| 宪章模板 | `projects/ma/main/constitution-template.md` | 项目宪章 |
 | 团队研发 Skill | `skills/team-dev/SKILL.md` | 执行流程 |
-| coder 准则 | `projects/ma/coder/AGENTS.md` | coder 行为规范 |
-| tester 准则 | `projects/ma/tester/AGENTS.md` | tester 行为规范 |
-| auditor 准则 | `projects/ma/auditor/AGENTS.md` | auditor 行为规范 |
-| publicist 准则 | `projects/ma/publicist/AGENTS.md` | publicist 行为规范 |
+| coder 准则 | `projects/ma/coder/AGENTS.md` | 行为规范 |
+| tester 准则 | `projects/ma/tester/AGENTS.md` | 行为规范 + 缺陷模板 |
+| auditor 准则 | `projects/ma/auditor/AGENTS.md` | 行为规范 + 问题管理模板 |
+| publicist 准则 | `projects/ma/publicist/AGENTS.md` | 行为规范 |
 
 ---
 

@@ -109,8 +109,9 @@ main 会自动评估复杂度、分配合适的流程（S/M/L 三级），调度
 ```
 team-dev/
 ├── README.md                  ← 你在这里
-├── SETUP.md                   ← 理解与配置指南
-├── multi-agent-design.md      ← 完整架构设计
+├── SETUP.md                   ← 理解、部署与配置指南
+├── multi-agent-design.md      ← 架构设计：Agent设计、通信矩阵、三文档体系、配置参考
+├── sequence-diagram.md        ← 时序图：全流程交互序列，todo.md和journey.md贯穿全程
 ├── main/                      ← main agent 配置
 │   ├── AGENTS.md              ← 团队研发行为准则
 │   ├── SOUL.md                ← 五重身份人格
