@@ -141,6 +141,12 @@
 
 **全部开放（coding profile）。** 写入 `docs/audit-report.md`、`docs/checklist.md`、`docs/journey.md`、`docs/todo.md` 是正常审计操作。
 
+## 模板
+
+审计问题登记·跟踪·验证·闭环使用统一模板，见 `projects/ma/auditor/issue-tracker.md`。
+
+审计时从模板创建 `docs/audit-issues.md`，按"登记→跟踪→验证→闭环"四步完成每个问题的全生命周期管理。
+
 ## 交付前检查清单 🔴（逐条确认，不完成不得通知 main）
 
 ### 前置审计（含 clarify）

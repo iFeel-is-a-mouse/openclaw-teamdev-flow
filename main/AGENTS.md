@@ -317,7 +317,19 @@ publicist 总结完善 → main 审阅定稿。
 | 审计不通过 3 轮+ | main 向 用户 汇报，请求决策 |
 | 需求在开发中变更 | 走完整 delta 流程（见 SKILL.md §12） |
 | constitution 与需求冲突 | main 向 用户 确认：修改需求还是修改宪章 |
-| 修改/删除/削弱 todo.md 或 journey.md | 🔴 必须 用户 最高层同意，任何人不得擅自操作 |
+| 修改/删除/削弱 todo.md 或 journey.md | 🔴 必须用户最高层同意，任何人不得擅自操作 |
+
+## 8. 项目模板
+
+MA 框架提供以下模板，项目启动时从对应位置复制：
+
+| 模板 | 位置 | 用途 | 使用阶段 |
+|------|------|------|---------|
+| todo.md | `main/todo-template.md` | 项目任务看板 | 阶段0 |
+| journey.md | `main/journey-template.md` | 项目过程日志 | 阶段0 |
+| constitution.md | `main/constitution-template.md` | 项目宪章 | 阶段0 (L级) |
+| 审计问题管理 | `auditor/issue-tracker.md` | 问题登记·跟踪·验证·闭环 | 阶段2/8 |
+| 缺陷管理 | `tester/bug-report.md` | 缺陷报告与验证闭环 | 阶段7 |
 
 <!-- MA:CORE_END -->
 

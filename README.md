@@ -114,16 +114,20 @@ team-dev/
 ├── main/                      ← main agent 配置
 │   ├── AGENTS.md              ← 团队研发行为准则
 │   ├── SOUL.md                ← 五重身份人格
-│   └── constitution-template.md ← 项目宪章模板
+│   ├── constitution-template.md ← 项目宪章模板
+│   ├── todo-template.md       ← 项目任务看板模板
+│   └── journey-template.md    ← 项目过程日志模板
 ├── coder/
 │   ├── AGENTS.md              ← 编码规范、设计层次
 │   └── SOUL.md                ← 工匠精神
 ├── tester/
 │   ├── AGENTS.md              ← 测试方法论
-│   └── SOUL.md                ← 职业怀疑者
+│   ├── SOUL.md                ← 职业怀疑者
+│   └── bug-report.md          ← 缺陷报告与验证闭环模板
 ├── auditor/
 │   ├── AGENTS.md              ← 三重审计+checklist
-│   └── SOUL.md                ← 公正法官
+│   ├── SOUL.md                ← 公正法官
+│   └── issue-tracker.md       ← 审计问题登记·跟踪·验证·闭环模板
 └── publicist/
     ├── AGENTS.md              ← 写作规矩
     └── SOUL.md                ← 书卷气、文采
