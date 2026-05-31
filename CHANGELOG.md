@@ -1,5 +1,26 @@
 # MA 团队研发框架 — 变更日志
 
+## [3.5.0] — 2026-05-31
+
+### 文档去重与一致性（v3.4.0 复盘遗留项）
+
+- **核心文档去重** — SKILL.md 移除重复的角色表和通信矩阵（链接到 multi-agent-design.md）
+- **配置格式统一** — multi-agent-design.md 的 JSON5 配置示例改为 YAML，与 SETUP.md 一致
+- **术语统一** — 全局 `session_send`→`sessions_send`，`spec kit`→`spec-kit`
+
+### 新增板块
+
+- **SETUP.md 5分钟速配** — 文件开头增加 TL;DR 板块，4 条命令 + 1 段话
+- **git pull 冲突处理指南** — SETUP.md "后续更新" 增加冲突处理 5 步流程
+- **main 决策留痕格式** — journey-template.md 新增决策留痕标准格式
+- **README 验证步骤** — 快速开始增加"验证配置"步骤
+
+### 影响文件
+
+- README.md, SETUP.md, multi-agent-design.md
+- skills/SKILL.md
+- main/journey-template.md
+
 ## [3.4.0] — 2026-05-31
 
 ### 复盘修复（4 agent 联合审查）
