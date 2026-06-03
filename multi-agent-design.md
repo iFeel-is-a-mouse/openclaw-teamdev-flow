@@ -32,25 +32,20 @@
 │  └───────┬──────────┘   │               │                  │
 │          │ 通过          │               │                  │
 │          ▼              │               │                  │
-│  ┌───────────┐          │               │                  │
-│  │  coder    │          │               │                  │
-│  │ 设计+编码  │          │               │                  │
-│  │ 模型: moonshot/kimi-k2.6  │          │               │                  │
-│  └─────┬─────┘          │               │                  │
-│        │ 自测通过        │               │                  │
-│        ▼                │               │                  │
-│  ┌──────────────┐       │               │                  │
-│  │ codereviewer │       │               │                  │
-│  │ 代码审查 🔍   │       │               │                  │
-│  │ 模型: moonshot/kimi-k2.6     │       │               │                  │
-│  └─────┬────────┘       │               │                  │
-│        │ 审查通过        │               │                  │
-│        ▼                │               │                  │
-│  ┌──────────┐           │               │                  │
-│  │  tester  │           │               │                  │
-│  │ 测试     │           │               │                  │
-│  │ 模型: moonshot/kimi-k2.6│           │               │                  │
-│  └─────┬────┘           │               │                  │
+│  ┌──────────────────────────────┐       │                  │
+│  │     结对编程 (Pair Prog)     │       │                  │
+│  │  ┌──────────┐   ⟷   ┌──────┐│       │                  │
+│  │  │  coder   │ 配对   │ code ││       │                  │
+│  │  │  🖥️ 驾驶员  │══════╡ review││       │                  │
+│  │  │ moonshot  │ 轮换   │ 🔍  ││       │                  │
+│  │  └─────┬────┘   └──┬───┘│       │                  │
+│  └────────┼────────────┼────┘       │                  │
+│           │ 自测通过   │ 审查通过    │                  │
+│           ▼            ▼            │                  │
+│  ┌──────────┐                      │                  │
+│  │  tester  │                      │                  │
+│  │ 测试     │                      │                  │
+│  │ 模型: moonshot/kimi-k2.6       │                  │
 │        │ 测试通过        │               │                  │
 │        ▼                │               │                  │
 │  ┌──────────────┐       │               │                  │
@@ -93,7 +88,7 @@
 
 **详细行为准则：** `main/AGENTS.md` | **人格定义：** `main/SOUL.md`
 
-### 2.2 coder — 技术实现
+### 2.2 coder — 架构师 & 驾驶员
 
 | 属性 | 值 |
 |------|-----|
@@ -102,7 +97,12 @@
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-coder` |
 
-**双重身份：** 架构师（设计先行）→ 编码人员（实现交付）
+**多重身份：**
+- 🖥️ **驾驶员 (Driver)** — 编写代码实现，是结对编程中的"驾驶员"
+- 🏗️ **架构师** — 设计先行，负责技术方案和系统架构
+- 🧭 **导航员** — 与 codereviewer 轮换角色，在审查对方代码时充当导航员
+
+**结对编程：** 与 codereviewer 直接交互，轮换驾驶员/导航员角色。不同模型互补：coder (moonshot/kimi-k2.6) 擅长编码实现，codereviewer (zai/glm-5.1) 擅长逻辑审查。上限 3 轮，超出升级 main。
 
 **子 Agent 模式（maxSpawnDepth: 2）：** 复杂需求时 spawn 子 agent 做设计，再 spawn 子 agent 做实现。
 
@@ -147,16 +147,24 @@
 
 **详细行为准则：** `publicist/AGENTS.md` | **人格定义：** `publicist/SOUL.md`
 
-### 2.6 codereviewer — 代码审查员
+### 2.6 codereviewer — 代码审查员 & 导航员
 
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `codereviewer` |
-| **模型** | `moonshot/kimi-k2.6` |
+| **模型** | `zai/glm-5.1` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-codereviewer` |
 
-**职责：** 代码审查——在 coder 自测完成后、tester 测试之前审查代码质量。覆盖四个维度：功能正确性、可读性、安全性、性能与健壮性。与 coder 直接交互修复（上限 2 轮），超出升级 main。
+**双重身份：**
+- 🔍 **代码审查员** — 在 coder 自测完成后审查代码质量（功能、可读性、安全、性能）
+- 🧭 **导航员** — 与 coder 结对编程，轮换驾驶员/导航员角色，边写边审
+
+**协作模式：**
+- coder ⟷ codereviewer 直接交互（结对编程，上限 3 轮）→超出升级 main
+- 使用不同模型（coder=moonshot/kimi-k2.6, codereviewer=zai/glm-5.1），互补优势
+- coder 遇到不确定的设计选择时，可实时咨询 codereviewer
+- codereviewer 审查时发现问题 → 直接与 coder 讨论修复方案
 
 **详细行为准则：** `codereviewer/AGENTS.md` | **人格定义：** `codereviewer/SOUL.md`
 
