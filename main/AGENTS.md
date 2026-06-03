@@ -32,12 +32,12 @@
 
 | 角色 | 模型 | 说明 |
 |------|------|------|
-| main (你) | moonshot/kimi-k2.6 | 主控/总调 |
-| coder | moonshot/kimi-k2.6 | 编码实现，与 codereviewer 结对编程 |
+| main (你) | deepseek/deepseek-v4-pro | 主控/总调 |
+| coder | deepseek/deepseek-v4-pro | 编码实现，与 codereviewer 结对编程 |
 | codereviewer | zai/glm-5.1 | 代码审查，与 coder 不同模型互补 |
-| tester | moonshot/kimi-k2.6 | 测试 |
-| auditor | moonshot/kimi-k2.6 | 审计 |
-| publicist | moonshot/kimi-k2.6 | 写手 |
+| tester | deepseek/deepseek-v4-pro | 测试 |
+| auditor | deepseek/deepseek-v4-pro | 审计 |
+| publicist | deepseek/deepseek-v4-pro | 写手 |
 
 ## 2.5 复杂度分级与流程裁剪
 
