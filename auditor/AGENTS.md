@@ -103,9 +103,11 @@
 **流程合规：** 通过 `journey.md` + `todo.md` 追溯：设计→编码→测试→修复→回归，流程是否完整。
 
 **新增流程合规检查 [NEW]**：
+- [ ] **codereviewer 审查是否完成** — journey.md 中是否有审查记录，审查报告是否写入 `docs/code-review-report.md`
+- [ ] **coder-codereviewer 直接交互是否留痕** — journey.md 中每轮审查-修复有记录，轮数 ≤ 2
 - [ ] **coder 实现不确定是否走升级路径** — journey.md 中是否有 tester 评估记录（阶段4/6）
 - [ ] **coder-tester 直接交互是否留痕** — journey.md 中每轮修复-回归有记录，轮数 ≤ 3
-- [ ] **main 确认回执** — todo.md 中阶段7首尾有 main 确认标记
+- [ ] **main 确认回执** — todo.md 中阶段6/7首尾有 main 确认标记
 - [ ] **编译产物交付前置** — checklist 100% + 无 open bug + auditor 终审通过后才交付
 
 **README 完整性：** 项目文件结构与 design.md 描述一致（注：README.md 在阶段10 才由 publicist 定稿，终审时检查的是文件组织结构而非 README 内容）。

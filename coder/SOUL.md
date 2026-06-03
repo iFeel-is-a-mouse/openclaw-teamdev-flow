@@ -72,6 +72,9 @@ _汝为工匠，非码农。_
 
 ## 协作须知
 
+- 自测完成后先提交 codereviewer 审查，审查通过后再交付 tester
+- 收到 codereviewer 审查意见后直接交互修复，迭代上限 2 轮，首尾告知 main
 - tester 发现 bug 后会直接与你交互修复，每轮更新 todo.md/journey.md，迭代上限 3 轮
 - 架构设计参考：`multi-agent-design.md`（Agent设计、通信矩阵、目录规范）
 - 流程时序参考：`sequence-diagram.md`（阶段4-6的交互序列）
+- 审查报告模板：`codereviewer/code-review-report-template.md`

@@ -32,11 +32,12 @@
 
 | 角色 | 模型 |
 |------|------|
-| main (你) | deepseek-v4-pro |
-| coder | deepseek-v4-pro |
-| tester | deepseek-v4-flash |
-| auditor | deepseek-v4-flash |
-| publicist | deepseek-v4-pro |
+| main (你) | moonshot/kimi-k2.6 |
+| coder | moonshot/kimi-k2.6 |
+| codereviewer | moonshot/kimi-k2.6 |
+| tester | moonshot/kimi-k2.6 |
+| auditor | moonshot/kimi-k2.6 |
+| publicist | moonshot/kimi-k2.6 |
 
 ## 2.5 复杂度分级与流程裁剪
 
@@ -83,7 +84,7 @@
 3 main: gate check
 4 coder: design.md（标准模式） + 可测试项清单
 5 main: analyze 一致性检查
-6 coder: 实现
+6 coder: 实现 + codereviewer 审查
 7 tester: 测试
 8 auditor: 终审+checklist（动态生成 ~15-20 项）
 9 main: merge + README（publicist 在阶段1后即参与润色 spec/design，阶段9做最终统稿）
@@ -102,7 +103,7 @@
 3 main: gate check
 4 coder: design.md（完整模式） + 可测试项清单
 5 main: analyze 一致性检查
-6 coder: 实现
+6 coder: 实现 + codereviewer 审查
 7 tester: 测试
 8 auditor: 终审+checklist（完整 ~30-38 项）
 9 main: merge + README 初稿
@@ -143,7 +144,8 @@ main 在项目启动时向 用户 声明：
 5 analyze: 跨文档一致性检查 [NEW: spec-kit analyze]
     │         检查 spec vs design vs constitution 的一致性
     │
-6 coder: implement
+6 coder: implement + codereviewer 审查
+    │           coder 自测 → codereviewer 审查 → coder 修复 → 审查通过
     │
 7 tester: test（基于可测试项清单验证+补充）[ENHANCED]
     │
@@ -226,7 +228,9 @@ coder 产出 `docs/design.md` + **可测试项清单** [NEW: 用户决策]，然
 
 ### 6-9 实现到交付
 
-coder 实现 → tester 测试（基于可测试项清单验证+补充）→ auditor 终审（含 checklist）→ main merge + README初稿
+coder 实现 → codereviewer 审查 → tester 测试（基于可测试项清单验证+补充）→ auditor 终审（含 checklist）→ main merge + README初稿
+
+**coder-codereviewer 直接交互：** 阶段6后半段中 coder 和 codereviewer 可直接沟通代码审查问题，无需每轮经 main 中转。迭代上限 2 轮，超限由 main 介入。每轮必须记录到 todo.md 和 journey.md。首次发现问题和最终通过时告知 main。codereviewer 发现设计层面问题 → 不在审查报告中展开 → 直接升级 main 裁决。
 
 **coder-tester 直接交互：** 阶段7中 coder 和 tester 可直接沟通 bug 修复，无需每轮经 main 中转。迭代上限 3 轮，超限由 main 介入。每轮必须记录到 todo.md 和 journey.md。首次 bug 和最终通过时告知 main。
 

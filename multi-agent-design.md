@@ -1,6 +1,6 @@
 # Multi-Agent 架构设计
 
-> 状态: Active | 版本: v3.5 | 作者: MA Team
+> 状态: Active | 版本: v3.6 | 作者: MA Team
 >
 > **关联文档：**
 > - 时序图: `sequence-diagram.md` — 全流程交互序列（todo.md和journey.md贯穿）
@@ -13,52 +13,66 @@
 ## 1. 总体架构
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                      用户                            │
-│                       │                              │
-│                       ▼                              │
-│  ┌──────────────────────────────────────────────┐   │
-│  │              main (主控/总调)                  │   │
-│  │  🎓 顾问 · 🏅 教练 · 📋 PM · 👥 HR · ✍️ 总编辑  │   │
-│  │  模型: deepseek-v4-pro                        │   │
-│  └───┬───────┬──────────┬────────────────────┘   │
-│      │       │          │                         │
-│      │  前置审计       │                         │
-│      │       ▼          │                         │
-│  ┌───┴──────────────┐   │                         │
-│  │   auditor 🔒     │   │                         │
-│  │  前置审计+终审    │   │                         │
-│  │  模型: flash      │   │                         │
-│  └───────┬──────────┘   │                         │
-│          │ 通过          │                         │
-│          ▼              │                         │
-│  ┌───────────┐          │                         │
-│  │  coder    │          │                         │
-│  │ 设计+编码  │          │                         │
-│  │ 模型: pro  │          │                         │
-│  └─────┬─────┘          │                         │
-│        │                │                         │
-│        ▼                │                         │
-│  ┌──────────┐           │                         │
-│  │  tester  │           │                         │
-│  │ 测试     │           │                         │
-│  │ 模型:flash│           │                         │
-│  └─────┬────┘           │                         │
-│        │ 测试通过        │                         │
-│        ▼                │                         │
-│  ┌──────────────┐       │                         │
-│  │ auditor 🔒   │       │                         │
-│  │ 交付终审      │       │                         │
-│  │              │       │                         │
-│  │ 有问题? ─────┼───────┼──→ main 决策            │
-│  │ 通过? ───────┼───────┼──→ main ✅ → 用户       │
-│  └──────────────┘       │                         │
-└─────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────┐
+│                           用户                                 │
+│                            │                                   │
+│                            ▼                                   │
+│  ┌───────────────────────────────────────────────────────┐    │
+│  │                  main (主控/总调)                       │    │
+│  │   🎓 顾问 · 🏅 教练 · 📋 PM · 👥 HR · ✍️ 总编辑        │    │
+│  │   模型: moonshot/kimi-k2.6                               │    │
+│  └───┬───────┬──────────┬───────────────┬────────────┘    │
+│      │       │          │               │                  │
+│      │  前置审计       │               │                  │
+│      │       ▼          │               │                  │
+│  ┌───┴──────────────┐   │               │                  │
+│  │   auditor 🔒     │   │               │                  │
+│  │  前置审计+终审    │   │               │                  │
+│  │  模型: flash      │   │               │                  │
+│  └───────┬──────────┘   │               │                  │
+│          │ 通过          │               │                  │
+│          ▼              │               │                  │
+│  ┌───────────┐          │               │                  │
+│  │  coder    │          │               │                  │
+│  │ 设计+编码  │          │               │                  │
+│  │ 模型: pro  │          │               │                  │
+│  └─────┬─────┘          │               │                  │
+│        │ 自测通过        │               │                  │
+│        ▼                │               │                  │
+│  ┌──────────────┐       │               │                  │
+│  │ codereviewer │       │               │                  │
+│  │ 代码审查 🔍   │       │               │                  │
+│  │ 模型: pro     │       │               │                  │
+│  └─────┬────────┘       │               │                  │
+│        │ 审查通过        │               │                  │
+│        ▼                │               │                  │
+│  ┌──────────┐           │               │                  │
+│  │  tester  │           │               │                  │
+│  │ 测试     │           │               │                  │
+│  │ 模型:flash│           │               │                  │
+│  └─────┬────┘           │               │                  │
+│        │ 测试通过        │               │                  │
+│        ▼                │               │                  │
+│  ┌──────────────┐       │               │                  │
+│  │ auditor 🔒   │       │               │                  │
+│  │ 交付终审      │       │               │                  │
+│  │              │       │               │                  │
+│  │ 有问题? ─────┼───────┼───────────────┼──→ main 决策     │
+│  │ 通过? ───────┼───────┼───────────────┼──→ main ✅ → 用户│
+│  └──────────────┘       │               │                  │
+│                          │               │                  │
+│                ┌─────────┴──┐            │                  │
+│                │ publicist  │            │                  │
+│                │ 写手 ✍️     │            │                  │
+│                │ 模型: pro   │            │                  │
+│                └────────────┘            │                  │
+└───────────────────────────────────────────────────────────────┘
 
 ⚠️ auditor 发现问题 → main 决策（不直接指挥 coder/tester）
+⚠️ codereviewer 发现问题 → 直接与 coder 交互修复（上限 2 轮）→超出升级 main
 ```
 
-**核心流程：** `需求 → auditor前置审计 → coder → tester → auditor终审 → main ✅ → 用户`
+**核心流程：** `需求 → auditor前置审计 → coder → codereviewer → tester → auditor终审 → main ✅ → 用户`
 
 **全流程时序详见：** `sequence-diagram.md`
 
@@ -71,7 +85,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `main`（默认 agent） |
-| **模型** | `deepseek/deepseek-v4-pro` |
+| **模型** | `moonshot/kimi-k2.6` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace` |
 
@@ -84,7 +98,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `coder` |
-| **模型** | `deepseek/deepseek-v4-pro` |
+| **模型** | `moonshot/kimi-k2.6` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-coder` |
 
@@ -99,7 +113,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `tester` |
-| **模型** | `deepseek/deepseek-v4-flash` |
+| **模型** | `moonshot/kimi-k2.6` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-tester` |
 
@@ -112,7 +126,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `auditor` |
-| **模型** | `deepseek/deepseek-v4-flash` |
+| **模型** | `moonshot/kimi-k2.6` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-auditor` |
 
@@ -125,7 +139,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `publicist` |
-| **模型** | `deepseek/deepseek-v4-pro` |
+| **模型** | `moonshot/kimi-k2.6` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-publicist` |
 
@@ -133,30 +147,47 @@
 
 **详细行为准则：** `publicist/AGENTS.md` | **人格定义：** `publicist/SOUL.md`
 
+### 2.6 codereviewer — 代码审查员
+
+| 属性 | 值 |
+|------|-----|
+| **agentId** | `codereviewer` |
+| **模型** | `moonshot/kimi-k2.6` |
+| **Tool Profile** | `coding` |
+| **Workspace** | `~/.openclaw/workspace-codereviewer` |
+
+**职责：** 代码审查——在 coder 自测完成后、tester 测试之前审查代码质量。覆盖四个维度：功能正确性、可读性、安全性、性能与健壮性。与 coder 直接交互修复（上限 2 轮），超出升级 main。
+
+**详细行为准则：** `codereviewer/AGENTS.md` | **人格定义：** `codereviewer/SOUL.md`
+
 ---
 
 ## 3. 通信矩阵
 
 ```
-        ┌────────┬────────┬────────┬─────────┬───────────┐
-        │  main  │ coder  │ tester │ auditor │ publicist │
-────────┼────────┼────────┼────────┼─────────┼───────────┤
- main   │   -    │  ↔️     │  ↔️     │  ↔️      │    ↔️      │
- coder  │  ↔️     │   -    │  ↔️     │  ↔️      │    —      │
- tester │  ↔️     │  ↔️     │   -    │  ↔️      │    —      │
-auditor │  ↔️     │  ↔️     │  ↔️     │   -     │    —      │
-publicist│ ↔️    │   —    │   —    │   —     │    -      │
-────────┴────────┴────────┴────────┴─────────┴───────────┘
+        ┌────────┬────────┬────────┬─────────┬───────────┬──────────────┐
+        │  main  │ coder  │ tester │ auditor │ publicist │ codereviewer │
+────────┼────────┼────────┼────────┼─────────┼───────────┼──────────────┤
+ main   │   -    │  ↔️     │  ↔️     │  ↔️      │    ↔️      │     ↔️        │
+ coder  │  ↔️     │   -    │  ↔️     │  ↔️      │    —      │     ↔️        │
+ tester │  ↔️     │  ↔️     │   -    │  ↔️      │    —      │     —        │
+auditor │  ↔️     │  ↔️     │  ↔️     │   -     │    —      │     —        │
+publicist│ ↔️    │   —    │   —    │   —     │    -      │     —        │
+codereviewer│ ↔️ │  ↔️    │   —    │   —     │    —      │     -        │
+────────┴────────┴────────┴────────┴─────────┴───────────┴──────────────┘
 
 publicist 只与 main 通信（写作需求唯一来源）
+codereviewer 与 main、coder 通信（审查闭环），不与 tester/auditor 直接交互
 其余 agent 全部互通
 ```
 
 **关键交互规则：**
 - main ↔ 所有 agent（调度中心）
+- coder ↔ codereviewer（代码审查闭环，上限 2 轮）
 - coder ↔ tester（bug 修复闭环，上限 3 轮）
 - auditor 发现问题 → main 决策（不直接指挥 coder/tester）
 - tester → main → auditor（审计通过 main 转手）
+- codereviewer 发现设计问题 → 升级 main 裁决（不在审查报告中展开）
 
 ---
 
@@ -196,6 +227,7 @@ project/
 ├── README.md               ← publicist 产出
 ├── CHANGELOG.md            ← 版本变更记录
 ├── CONTRIBUTING.md         ← 贡献指南
+├── code-review-report.md   ← codereviewer 产出，代码审查报告（可选）
 └── .gitignore
 ```
 
@@ -219,28 +251,32 @@ agents:
     - id: "main"
       default: true
       workspace: "~/.openclaw/workspace"
-      model: "deepseek/deepseek-v4-pro"
+      model: "moonshot/kimi-k2.6"
 
     - id: "coder"
       workspace: "~/.openclaw/workspace-coder"
-      model: "deepseek/deepseek-v4-pro"
+      model: "moonshot/kimi-k2.6"
 
     - id: "tester"
       workspace: "~/.openclaw/workspace-tester"
-      model: "deepseek/deepseek-v4-flash"
+      model: "moonshot/kimi-k2.6"
 
     - id: "auditor"
       workspace: "~/.openclaw/workspace-auditor"
-      model: "deepseek/deepseek-v4-flash"
+      model: "moonshot/kimi-k2.6"
 
     - id: "publicist"
       workspace: "~/.openclaw/workspace-publicist"
-      model: "deepseek/deepseek-v4-pro"
+      model: "moonshot/kimi-k2.6"
+
+    - id: "codereviewer"
+      workspace: "~/.openclaw/workspace-codereviewer"
+      model: "moonshot/kimi-k2.6"
 
 tools:
   agentToAgent:
     enabled: true
-    allow: ["main", "coder", "tester", "auditor", "publicist"]
+    allow: ["main", "coder", "tester", "auditor", "publicist", "codereviewer"]
 
 bindings:
   - agentId: "main"
@@ -254,7 +290,7 @@ bindings:
 每个 agent workspace 必须有 `projects` 软链接指向 main workspace：
 
 ```bash
-for agent in coder tester auditor publicist; do
+for agent in coder tester auditor publicist codereviewer; do
   ln -s ~/.openclaw/workspace/projects ~/.openclaw/workspace-$agent/projects
 done
 ```

@@ -241,5 +241,6 @@ main @publicist "帮我写一篇关于XXX的随笔"
 - 宪章：`docs/constitution.md` — 项目不可妥协的原则
 - checklist：`docs/checklist.md` — 质量验证清单（所有项通过才能交付）
 - journey：`docs/journey.md` — 过程日志，了解项目怎么走过来的
+- 代码审查：`docs/code-review-report.md` — codereviewer 审查报告（了解代码质量）
 
 <!-- MA:CORE_END -->

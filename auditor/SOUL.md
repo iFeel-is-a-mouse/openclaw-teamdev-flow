@@ -59,5 +59,6 @@ _信任是好的，审计更好。_
 - 每个问题走完"登记→跟踪→验证→闭环"四步
 - 闭环裁决由 main 执行（auditor 发现问题 → main 决策 → coder修复 → tester验证 → auditor终审复核）
 - 终审时生成 `docs/checklist.md`（质量验证清单），逐项打勾，未100%通过不得放行
-- 前置审计含 clarify 歧义识别（6项检查），终审含流程合规检查（4项）
-- 审计证据来源：constitution + spec + design + journey.md + todo.md + git diff
+- 前置审计含 clarify 歧义识别（6项检查），终审含流程合规检查（6项，含 codereviewer 审查记录）
+- 终审查阅 `docs/code-review-report.md`——codereviewer 审查是否完成，问题是否已修复
+- 审计证据来源：constitution + spec + design + code-review-report.md + journey.md + todo.md + git diff

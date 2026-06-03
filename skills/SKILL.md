@@ -4,7 +4,7 @@
 > 
 > 输入用户开发需求 → 按 MA 架构编排 4 个专业 agent 完成端到端交付
 >
-> **当前版本**: 3.4.0 | [变更日志](./CHANGELOG.md)
+> **当前版本**: 3.5.0 | [变更日志](./CHANGELOG.md)
 >
 > **关联文档：**
 > - MA 架构设计: `projects/ma/multi-agent-design.md` — 完整架构、配置、通信矩阵
@@ -31,6 +31,7 @@
 |-------|------|---------|
 | `problem-solving-methodology` | 结构化问题诊断：消解层→定义→诊断→方案→验证→复盘 | main, coder, tester |
 | `team-dev` (本 skill) | 多 agent 协作编排 | 全部 |
+| `code-review-expert` | 多维度代码审查方法论 | codereviewer |
 
 **对外反馈规则**：agent 在任务中使用 skill 后，在 `journey.md` 或交付摘要中注明使用了哪个 skill 的哪部分方法论。如 "根因确认通过 problem-solving 三问法"。
 
@@ -224,7 +225,7 @@ main 复杂度评估 → 流程声明 → 用户 确认 ✅
     │     main 检查 spec ↔ design ↔ constitution 一致性
     │  (S 级跳过)
     ▼
-6 coder 编码实现 → 自测
+6 coder 编码实现 → 自测 → codereviewer 审查 → coder 修复 → 审查通过
     │
     ▼
 7 tester 黑盒+白盒测试 → bug报告 → coder修复 → 回归
