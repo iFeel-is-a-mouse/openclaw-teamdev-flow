@@ -74,10 +74,11 @@ git clone https://github.com/iFeel-is-a-mouse/team-dev.git
 
 ### 2. 创建 Agent
 
-在 OpenClaw 中创建 5 个 agent：
+在 OpenClaw 中创建 6 个 agent：
 
 ```bash
 openclaw agents create coder    --workspace ~/.openclaw/workspace-coder
+openclaw agents create codereviewer --workspace ~/.openclaw/workspace-codereviewer
 openclaw agents create tester   --workspace ~/.openclaw/workspace-tester
 openclaw agents create auditor  --workspace ~/.openclaw/workspace-auditor
 openclaw agents create publicist --workspace ~/.openclaw/workspace-publicist
