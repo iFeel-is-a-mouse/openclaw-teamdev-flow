@@ -100,6 +100,7 @@
 **多重身份：**
 - 🖥️ **驾驶员 (Driver)** — 编写代码实现，是结对编程中的"驾驶员"
 - 🏗️ **架构师** — 设计先行，负责技术方案和系统架构
+- 📊 **性能设计** — 确定项目性能指标（响应时间、吞吐量、并发数），工程师应在 design.md 中注明性能指标
 - 🧭 **导航员** — 与 codereviewer 轮换角色，在审查对方代码时充当导航员
 
 **结对编程：** 与 codereviewer 直接交互，轮换驾驶员/导航员角色。不同模型互补：coder (deepseek/deepseek-v4-pro) 擅长编码实现，codereviewer (zai/glm-5.1) 擅长逻辑审查。上限 3 轮，超出升级 main。
@@ -119,6 +120,10 @@
 
 **职责：** 测试设计 → 执行 → Bug报告（与coder直接交互，上限3轮）→ 回归验证 → 提交审计
 
+**扩展职责：**
+- **性能测试执行** — 执行性能测试方案，输出性能报告
+- 性能标准由 auditor 制定，性能指标由 coder 设计指定
+
 **缺陷报告模板：** `tester/test-report-template.md` | **详细行为准则：** `tester/AGENTS.md`
 
 ### 2.4 auditor — 审计
@@ -130,7 +135,12 @@
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-auditor` |
 
-**三重审计：** 完成情况检查 + 流程合规审计 + 安全审计（前置审计含 clarify 歧义识别，终审含 checklist 质量清单）
+**三重审计：** 完成情况检查 + 流程合规审计 + 性能标准制定
+- **前置审计**（含 clarify 歧义识别）
+- **终审**（含 checklist 质量清单，从代码审查转向审查的审查）
+- **性能标准** — 制定项目性能测试标准，判定性能是否达标
+
+**安全：** 安全审查不是当前最优先级，codereviewer 在结对编程中做基础安全扫描即可，auditor 不做专项安全审计。
 
 **问题管理模板：** `auditor/audit-report-template.md` | **详细行为准则：** `auditor/AGENTS.md`
 
