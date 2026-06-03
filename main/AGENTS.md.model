@@ -1,8 +1,0 @@
-| 角色 | 模型 | 说明 |
-|------|------|------|
-| main (你) | deepseek/deepseek-v4-pro | 主控/总调（主力模型） |
-| coder | deepseek/deepseek-v4-pro | 编码实现，与 codereviewer 结对编程 |
-| codereviewer | zai/glm-5.1 | 代码审查，与 coder 不同模型互补 |
-| tester | moonshot/kimi-k2.6 | 测试（测试场景适合kimi响应风格） |
-| auditor | deepseek/deepseek-v4-pro | 审计+性能标准 |
-| publicist | deepseek/deepseek-v4-pro | 写手 |
