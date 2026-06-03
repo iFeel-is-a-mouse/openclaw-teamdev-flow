@@ -114,7 +114,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `tester` |
-| **模型** | `deepseek/deepseek-v4-pro` |
+| **模型** | `moonshot/kimi-k2.6` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-tester` |
 
