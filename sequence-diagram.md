@@ -23,7 +23,7 @@ journey.md = 项目日志 — 任务下达和完成时真实记录
 | | todo.md | checklist.md |
 |------|---------|-------------|
 | **本质** | 过程管理（做什么事） | 结果验证（做对了没有） |
-| **谁写** | 5个agent都可编辑 | auditor在阶段8生成 |
+| **谁写** | 6个agent都可编辑 | auditor在阶段8生成 |
 | **何时生成** | 阶段0起，贯穿全程 | 阶段8（终审时） |
 | **粒度** | 12阶段 → 可逐步求精到子任务 | 可计量的质量标准 |
 | **内容示例** | `#6 编码实现 → 🔄` | `圈复杂度≤15 ✅` |
@@ -43,6 +43,7 @@ actor 用户
 participant "main\n(主控)" as Main
 participant "auditor\n(审计)" as Auditor
 participant "coder\n(编码)" as Coder
+participant "codereviewer\n(审查)" as CR
 participant "tester\n(测试)" as Tester
 participant "publicist\n(写手)" as Publicist
 

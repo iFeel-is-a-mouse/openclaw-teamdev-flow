@@ -1,5 +1,40 @@
 # MA 团队研发框架 — 变更日志
 
+## [3.9.0] — 2026-06-04
+
+### 复盘决议实施
+
+- **模型分配最终确定** — coder=deepseek-v4-pro, tester=moonshot/kimi-k2.6, codereviewer=zai/glm-5.1
+- **性能测试分工** — tester 执行, auditor 定标准, coder 定指标
+- **安全弱化** — codereviewer 基础扫描即可，不设专项审计
+- **文档变更红线** — 禁止 `cp` 覆盖，必须 edit 融合+备份
+- **README 补全** — 团队表和工作流加入 codereviewer+结对编程
+
+## [3.8.0] — 2026-06-03
+
+### 结对编程工作流
+
+- **新增 codereviewer 角色** — 代码审查员 & 导航员，使用 zai/glm-5.1
+- **结对编程模式** — coder ⟷ codereviewer 轮换驾驶员/导航员
+- **审查输出规范** — 🔴🟡🟢 三级标记
+- **文档变更流程** — §8 新增，只能修改不能覆盖
+
+## [3.7.0] — 2026-06-03
+
+### 模型切换
+
+- **主力模型恢复** — deepseek/deepseek-v4-pro 恢复为主力
+- **codereviewer 互补模型** — 保持 zai/glm-5.1 不变
+- **多模型架构定稿** — 不同角色使用不同模型互补
+
+## [3.6.0] — 2026-06-03
+
+### codereviewer 角色加入
+
+- **架构扩展** — codereviewer 加入 MA 团队，位于 coder→tester 之间
+- **multi-agent-design.md** — 架构图更新、角色定义、通信矩阵
+- **各 agent AGENTS.md** — 同步更新协作关系
+
 ## [3.5.0] — 2026-05-31
 
 ### 文档去重与一致性（v3.4.0 复盘遗留项）
