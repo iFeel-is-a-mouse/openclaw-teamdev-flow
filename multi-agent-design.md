@@ -67,7 +67,7 @@
 ⚠️ codereviewer 发现问题 → 直接与 coder 交互修复（上限 2 轮）→超出升级 main
 ```
 
-**核心流程：** `需求 → auditor前置审计 → coder → codereviewer → tester → auditor终审 → main ✅ → 用户`
+**核心流程：** `需求 → auditor前置审计 → coder设计 → codereviewer设计审查(🔴门禁) → coder实现 → codereviewer代码审查 → tester → auditor终审 → main ✅ → 用户`
 
 **全流程时序详见：** `sequence-diagram.md`
 
@@ -166,9 +166,14 @@
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-codereviewer` |
 
-**双重身份：**
+**三重身份：**
+- 🔍 **设计审查员** — 在 coder 产出 design.md 后，对照源代码验证代码证据准确性（方法存在性、行号、文件位置）。🔴 M/L 级项目门禁，不通过则 coder 不得进入实现阶段
 - 🔍 **代码审查员** — 在 coder 自测完成后审查代码质量（功能、可读性、安全、性能）
 - 🧭 **导航员** — 与 coder 结对编程，轮换驾驶员/导航员角色，边写边审
+
+**双重审查机制（变更#14经验）：**
+1. **设计审查 (Stage 4b)**: coder 产出 design.md → codereviewer 逐项对照源码验证 → 不通过则退回 coder 修正
+2. **代码审查 (Stage 6b)**: coder 实现完成 → codereviewer 审查代码质量 → 发现问题直接与 coder 交互修复
 
 **协作模式：**
 - coder ⟷ codereviewer 直接交互（结对编程，上限 3 轮）→超出升级 main

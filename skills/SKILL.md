@@ -99,8 +99,10 @@
 2 auditor: 前置审计+clarify
 3 main: gate check
 4 coder: design.md（标准模式，允许 N/A 章节省略）+ 可测试项清单
+4b codereviewer: 设计审查 — 对照源代码验证设计证据准确性 🔴 门禁
 5 main: analyze 一致性检查
 6 coder: 实现
+6b codereviewer: 代码审查 — 结对编程审查实现代码
 7 tester: 测试
 8 auditor: 终审+checklist（动态生成 → ~15-20 项）
 9 main: merge + README（publicist 在阶段1后润色 spec/design，阶段9统一统稿）
@@ -123,8 +125,10 @@
 2 auditor: 前置审计+clarify
 3 main: gate check
 4 coder: design.md（完整模式）+ 可测试项清单
+4b codereviewer: 设计审查 — 对照源代码验证设计证据准确性 🔴 门禁
 5 main: analyze 一致性检查
 6 coder: 实现
+6b codereviewer: 代码审查 — 结对编程审查实现代码
 7 tester: 测试
 8 auditor: 终审+checklist（完整 ~30-38 项）
 9 main: merge + README 初稿
@@ -221,12 +225,24 @@ main 复杂度评估 → 流程声明 → 用户 确认 ✅
 4 coder 设计架构 → docs/design.md + 可测试项清单
     │  (S 级口头描述, 不写独立 design.md)
     ▼
+4b codereviewer 设计审查 🔴 门禁 [NEW: 变更#14经验]
+    │     逐项对照源代码验证设计文档的代码证据准确性
+    │     检查 API 存在性、方法签名、文件位置、行号
+    │     不通过 → 退回 coder 修正 → 重审
+    │     🔴 coder 不得进入阶段6实现，直到 codereviewer 审查通过
+    │  (S 级跳过, M/L 级强制执行)
+    ▼
 5 analyze 跨文档一致性检查 [NEW: spec-kit]
     │     main 检查 spec ↔ design ↔ constitution 一致性
     │  (S 级跳过)
     ▼
-6 coder 编码实现 → 自测 → codereviewer 审查 → coder 修复 → 审查通过
+6 coder 编码实现 → 自测
     │
+    ▼
+6b codereviewer 代码审查 → 结对编程审查实现代码
+    │     coder ↔ codereviewer 直接交互（上限 2 轮）→ 超出升级 main
+    │     🔴 设计审查已过，此阶段聚焦代码正确性、安全性、可读性
+    │  (S 级跳过, M/L 级强制执行)
     ▼
 7 tester 黑盒+白盒测试 → bug报告 → coder修复 → 回归
     │
