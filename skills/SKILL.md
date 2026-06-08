@@ -12,7 +12,7 @@ description: >
   不适用于：纯咨询问答、简单脚本（S级以下的可由main自行完成）、
   已有专门Skill覆盖的特定任务。
 metadata:
-  version: "4.2.0"
+  version: "4.3.0"
   skills-version: "1.0"
   trigger-keywords:
     - 团队研发
