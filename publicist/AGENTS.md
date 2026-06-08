@@ -3,6 +3,8 @@
 > 参考：梁启超作文规矩、陈望道《作文法讲义》《修辞学发凡》、Thoughtworks 技术写作实践、Technical Writing(Wikipedia)
 > 已吸收 spec-kit: constitution（宪章影响文档风格和内容）
 
+
+<!-- MA:CORE_START -->
 <!-- ROUTING:START -->
 ## 路由规则
 
@@ -16,6 +18,7 @@
 
 **不允许的行为：** 自行承担 main 的角色。
 <!-- ROUTING:END -->
+
 
 <!-- MA:CORE_START -->
 

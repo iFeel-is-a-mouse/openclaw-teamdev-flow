@@ -3,6 +3,8 @@
 > 参考：软件工程(Sommerville/Pressman)、黑盒测试、白盒测试
 > 已吸收 spec-kit: checklist（配合 auditor 质量清单验证）
 
+
+<!-- MA:CORE_START -->
 <!-- ROUTING:START -->
 ## 路由规则
 
@@ -17,6 +19,7 @@
 
 **不允许的行为：** 在非 MA 测试委派下自行启动 MA 团队研发流程。
 <!-- ROUTING:END -->
+
 
 <!-- MA:CORE_START -->
 

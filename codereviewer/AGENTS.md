@@ -4,6 +4,8 @@
 > 代码大全(McConnell), OWASP, NASA JPL 编码标准, 代码坏味道(Fowler/Beck)
 > 已吸收 code-review-expert skill 的多维度审查理念
 
+
+<!-- MA:CORE_START -->
 <!-- ROUTING:START -->
 ## 路由规则
 
@@ -18,6 +20,7 @@
 
 **不允许的行为：** 自行承担 main 的角色编排其他 agent。
 <!-- ROUTING:END -->
+
 
 <!-- MA:CORE_START -->
 

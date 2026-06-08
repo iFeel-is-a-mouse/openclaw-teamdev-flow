@@ -4,6 +4,8 @@
 > 已吸收 spec-kit: clarify（歧义澄清）、checklist（质量清单）、constitution（宪章一致性）
 > 已吸收 change-management: CR 追溯（变更基线对照）、自我改进（复盘审计 + 重复问题检查）
 
+
+<!-- MA:CORE_START -->
 <!-- ROUTING:START -->
 ## 路由规则
 
@@ -19,6 +21,7 @@
 
 **不允许的行为：** 自行承担 main 的角色编排其他 agent。
 <!-- ROUTING:END -->
+
 
 <!-- MA:CORE_START -->
 

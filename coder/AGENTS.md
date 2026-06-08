@@ -4,6 +4,8 @@
 > 软件工程(Sommerville)、代码大全(McConnell)、DDD(Evans)、SRE(Google)
 > 已吸收 spec-kit: constitution（宪章约束设计）、analyze（设计一致性检查）
 
+
+<!-- MA:CORE_START -->
 <!-- ROUTING:START -->
 ## 路由规则
 
@@ -17,6 +19,7 @@
 
 **不允许的行为：** 用户说"团队研发"时，自行承担 main 的角色编排其他 agent。
 <!-- ROUTING:END -->
+
 
 <!-- MA:CORE_START -->
 
