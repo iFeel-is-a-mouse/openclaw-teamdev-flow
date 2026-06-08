@@ -96,19 +96,80 @@ sequenceDiagram
     M->>U: ✅交付
 ```
 
-### 各阶段参数表
+### 各阶段参数
 
 每个阶段由触发条件驱动，执行行动，产出交付物，通过门禁后才能进入下一阶段。
 
-| 阶段 | 触发条件 | 行动 | 条件分支 | 产出物 | 门禁 |
-|------|---------|------|---------|-------|------|
-| **1. CR登记** (main) | 用户提出需求 / 发现 bug / 需变更 | main 登记 CR：编号、类型、摘要、优先级、评估复杂度(S/M/L) | — | `docs/CR.md` 新增 CR 记录 | 🔴 无 CR 不得开发 |
-| **2. 影响分析** (coder→main) | CR 登记完成 | coder 填写 10 项自查清单；main 审核 | 跨模块数据变换→design.md 给≥2组示例；核心文件修改→走 coder；范围大→走 M/L 级流程 | CR.md 影响分析列 + 自查清单 | main 审核通过 |
-| **3. 设计审查** (coder→codereviewer) | design.md 完成 | codereviewer 审查变更兼容性+数据变换示例+边界覆盖；发现设计问题→升级 main | 审查通过→进编码；退回→coder 修改 design 后重审 | `docs/design.md`（追加变更说明） | 🔴 codereviewer 通过 |
-| **4. 实现+审查** (coder→codereviewer) | 设计审查通过 | coder 在 feature 分支实现（commit 注明 CR 编号）；codereviewer 代码审查 | 审查通过→进测试；退回→coder 修复→重审(上限 2轮，超限升级 main) | 代码 commit + `docs/code-review-report.md` | 🔴 codereviewer 通过 |
-| **5. 测试** (tester+coder) | 代码审查通过 | 保留原测试用例，追加变更用例；执行 delta 回归测试（全量）；发现 bug→coder+tester 直接交互(上限 3轮) | 全部通过→进终审；超限→main 介入裁决 | `docs/test-report.md` | 测试通过率=100%，无 P0/P1 bug |
-| **6. 终审** (auditor) | 测试通过 | auditor 生成 checklist；对照 git diff 追溯；检查回归破坏 + 非阻塞问题追踪 | 通过→进闭合；退回→逐项修复→重审 | `docs/checklist.md` + `docs/audit-report.md` | 🔴 checklist 100% ✅ |
-| **7. 闭合** (main) | 终审通过 | git merge；更新 VERSION / CHANGELOG（注明 CR）；标记 CR closed；更新 journey.md | — | 合并 commit + CHANGELOG 更新 | CR 已闭合 |
+```json
+{
+  "lifecycle": [
+    {
+      "id": 1, "name": "CR登记", "owner": "main",
+      "trigger": "用户提出需求 / 发现 bug / 需变更",
+      "actions": ["登记 CR：编号、类型、摘要、优先级", "评估复杂度(S/M/L)"],
+      "branches": null,
+      "output": "docs/CR.md",
+      "gate": "无 CR 不得开发"
+    },
+    {
+      "id": 2, "name": "影响分析", "owner": "coder→main",
+      "trigger": "CR 登记完成",
+      "actions": ["coder 填写 10 项自查清单", "main 审核"],
+      "branches": [
+        "跨模块数据变换→design.md 给≥2组示例",
+        "核心文件修改→走 coder",
+        "范围大→走 M/L 级流程"
+      ],
+      "output": "CR.md 影响分析列 + 自查清单",
+      "gate": "main 审核通过"
+    },
+    {
+      "id": 3, "name": "设计审查", "owner": "coder→codereviewer",
+      "trigger": "design.md 完成",
+      "actions": ["审查变更兼容性", "验证数据变换示例", "检查边界覆盖"],
+      "branches": [
+        "通过→编码",
+        "退回→coder 修改 design 后重审",
+        "设计争议→升级 main"
+      ],
+      "output": "docs/design.md（追加变更说明）",
+      "gate": "codereviewer 🔴"
+    },
+    {
+      "id": 4, "name": "实现+审查", "owner": "coder→codereviewer",
+      "trigger": "设计审查通过",
+      "actions": ["feature 分支实现（commit 注明 CR 编号）", "codereviewer 代码审查"],
+      "branches": ["通过→测试", "退回→修复→重审(上限 2轮)", "超限→升级 main"],
+      "output": "代码 commit + docs/code-review-report.md",
+      "gate": "codereviewer 🔴"
+    },
+    {
+      "id": 5, "name": "测试", "owner": "tester+coder(直连)",
+      "trigger": "代码审查通过",
+      "actions": ["保留原测试用例，追加变更用例", "delta 回归测试（全量）", "发现 bug→coding 直连修复"],
+      "branches": ["全部通过→终审", "超限 3轮→main 介入裁决"],
+      "output": "docs/test-report.md",
+      "gate": "通过率=100%，无 P0/P1 bug"
+    },
+    {
+      "id": 6, "name": "终审", "owner": "auditor",
+      "trigger": "测试通过",
+      "actions": ["生成 checklist", "对照 git diff 追溯", "检查回归破坏 + 非阻塞问题"],
+      "branches": ["通过→闭合", "退回→逐项修复→重审"],
+      "output": "docs/checklist.md + docs/audit-report.md",
+      "gate": "checklist 100% 🔴"
+    },
+    {
+      "id": 7, "name": "闭合", "owner": "main",
+      "trigger": "终审通过",
+      "actions": ["git merge", "更新 VERSION/CHANGELOG（注明 CR）", "标记 CR closed", "更新 journey.md"],
+      "branches": null,
+      "output": "合并 commit + CHANGELOG 更新",
+      "gate": "CR 已闭合"
+    }
+  ]
+}
+```
 - 变更必须走 feature 分支，不与 main 分支直接混合
 - git commit 注明 CR 编号（如 `feat: 用户认证 #CR-003`）
 - codereviewer 重点关注：变更与已有代码的边界处理、数据泄露、竞态条件
@@ -243,26 +304,24 @@ CR 记录在 `docs/CR.md` 文件中，按顺序追加。
 > - M/L 级变更必须写到 design.md 或 CR.md 中
 > - 任一问题答案为"是" → 涉及的风险点必须在 design.md 中展开说明
 
-| # | 问题 | 是/否/NA | 如"是"，说明 |
-|---|------|---------|------------|
-| 1 | 是否修改了核心文件（>500 行）？ | ⬜ | 核心文件仅允许 coder 编辑，main 不直接修改 |
-| 2 | 是否涉及跨模块的数据格式/路径变换？ | ⬜ | 必须在 design.md 给出输入→输出示例（≥2组） |
-| 3 | 是否跨模块？（修改了 2+ 模块间的接口/调用关系） | ⬜ | codereviewer 设计审查必须重点检查数据流 |
-| 4 | 是否有跨技术栈的数据交互？（前后端、进程间通信等） | ⬜ | 序列化/反序列化边界最容易出错 |
-| 5 | 是否有竞态条件风险？（共享数据/并发调用/异步回调） | ⬜ | 必须写清楚锁策略或不可变设计 |
-| 6 | 是否涉及文件 IO 或网络 IO？ | ⬜ | 必须有超时控制、错误重试、资源释放 |
-| 7 | 是否修改了配置文件/环境变量/启动参数？ | ⬜ | 配置变更必须同步更新相关部署文档 |
-| 8 | 是否新增了外部依赖（库/服务/API）？ | ⬜ | 必须在 design.md 中给出选型理由 |
-| 9 | 是否会影响已存在的测试用例（致其失效或需修改）？ | ⬜ | 测试用例必须是增量追加，不删除原有用例 |
-| 10 | 是否涉及安全敏感操作（权限/认证/敏感数据/输入校验）？ | ⬜ | auditor 必须在终审中重点检查 |
+```json
+{
+  "impactChecklist": [
+    {"id": 1, "question": "是否修改了核心文件（>500行）？", "actionIfYes": "核心文件仅允许 coder 编辑，main 不直接修改", "risk": "core"},
+    {"id": 2, "question": "是否涉及跨模块的数据格式/路径变换？", "actionIfYes": "design.md 给出输入→输出示例（≥2组）", "risk": "data"},
+    {"id": 3, "question": "是否跨模块？（修改了 2+ 模块间的接口/调用关系）", "actionIfYes": "codereviewer 设计审查重点检查数据流", "risk": "cross"},
+    {"id": 4, "question": "是否有跨技术栈的数据交互？", "actionIfYes": "序列化/反序列化边界最容易出错", "risk": "serialize"},
+    {"id": 5, "question": "是否有竞态条件风险？", "actionIfYes": "写清楚锁策略或不可变设计", "risk": "concurrency"},
+    {"id": 6, "question": "是否涉及文件 IO 或网络 IO？", "actionIfYes": "超时控制、错误重试、资源释放", "risk": "io"},
+    {"id": 7, "question": "是否修改了配置文件/环境变量/启动参数？", "actionIfYes": "同步更新相关部署文档", "risk": "config"},
+    {"id": 8, "question": "是否新增了外部依赖？", "actionIfYes": "design.md 中给出选型理由", "risk": "dependency"},
+    {"id": 9, "question": "是否会影响已存在的测试用例？", "actionIfYes": "增量追加用例，不删除原有用例", "risk": "test"},
+    {"id": 10, "question": "是否涉及安全敏感操作？", "actionIfYes": "auditor 终审重点检查", "risk": "security"}
+  ]
+}
+```
 
 ### 示例
-
-```markdown
-## 影响分析自查清单 — CR-003 模块间消息通道
-
-| # | 问题 | 答案 | 说明 |
-|---|------|------|------|
 | 1 | 修改核心文件？ | 是 | server.py (1200行) — 新增消息路由端点 |
 | 2 | 跨模块数据变换？ | 是 | channel_service 内部消息格式 → HTTP JSON API |
 | 3 | 跨模块？ | 是 | controller → service → dao 三层调用 |
@@ -556,19 +615,23 @@ todo.md 待修复条目格式：
 
 ### 10.4 变更质量门禁（逐项确认，缺一不可）
 
-| # | 门禁项 | 确认人 | 确认时机 |
-|---|-------|-------|---------|
-| 1 | CR 已登记（docs/CR.md） | auditor 阶段8 / main 阶段9 | 终审时检查登记完整性，闭合时更新状态 |
-| 2 | 影响分析自查清单已填写 | auditor 阶段8 | 终审检查 |
-| 3 | （如涉及核心文件）走 coder 实现，main 未直接编辑 | auditor 阶段8 | 终审检查 |
-| 4 | （如涉及跨模块数据变换）design.md 已给出示例 | auditor 阶段8 | 终审检查，codereviewer 审查通过作为前提 |
-| 5 | codereviewer 已审查设计 | auditor 阶段8 | 流程合规检查 |
-| 6 | codereviewer 已审查代码 | auditor 阶段8 | 流程合规检查 |
-| 7 | 非阻塞问题已记入 todo.md | auditor 阶段8 | 终审检查 |
-| 8 | delta 回归测试通过 | auditor 阶段8 | 终审确认 |
-| 9 | auditor 终审通过 | main 阶段9 | main 闭合前确认终审报告 |
-| 10 | CHANGELOG 已更新（注明 CR 编号） | main 阶段9 | 闭合时更新 |
-| 11 | CR 已闭合 | main 阶段9 | 闭合时标记 |
+```json
+{
+  "qualityGates": [
+    {"id": 1, "check": "CR 已登记（docs/CR.md）", "approvedBy": "auditor(阶段8)", "when": "终审"},
+    {"id": 2, "check": "影响分析自查清单已填写", "approvedBy": "auditor(阶段8)", "when": "终审"},
+    {"id": 3, "check": "（如涉及核心文件）走 coder 实现，main 未直接编辑", "approvedBy": "auditor(阶段8)", "when": "终审"},
+    {"id": 4, "check": "（如涉及跨模块数据变换）design.md 已给出示例", "approvedBy": "auditor(阶段8)", "when": "终审（前提：codereviewer 已审）"},
+    {"id": 5, "check": "codereviewer 已审查设计", "approvedBy": "auditor(阶段8)", "when": "流程合规检查"},
+    {"id": 6, "check": "codereviewer 已审查代码", "approvedBy": "auditor(阶段8)", "when": "流程合规检查"},
+    {"id": 7, "check": "非阻塞问题已记入 todo.md", "approvedBy": "auditor(阶段8)", "when": "终审"},
+    {"id": 8, "check": "delta 回归测试通过", "approvedBy": "auditor(阶段8)", "when": "终审"},
+    {"id": 9, "check": "auditor 终审通过", "approvedBy": "main(阶段9)", "when": "闭合前"},
+    {"id": 10, "check": "CHANGELOG 已更新（注明 CR 编号）", "approvedBy": "main(阶段9)", "when": "闭合"},
+    {"id": 11, "check": "CR 已闭合", "approvedBy": "main(阶段9)", "when": "闭合"}
+  ]
+}
+```
 
 ---
 
@@ -581,13 +644,17 @@ todo.md 待修复条目格式：
 
 MA 框架从《原则》中吸收了以下理念：
 
-| 原则 | 在 MA 中的映射 |
-|------|---------------|
-| **激进的事实性** — 直面问题，不回避 | 任何 CR、红线违反、bug 逃逸都公开记录到 journey.md，不做掩盖 |
-| **允许犯错，不容忍罔顾教训、一错再错** | 第一次犯错是学习机会，第二次是系统漏洞，第三次是流程缺陷 |
-| **像操作机器一样管理** — 设计系统，不是靠人治 | 出现问题时，先问"流程中哪个环节允许了这个问题发生"，不问责个人 |
-| **五步流程法** — 目标→问题→诊断→方案→执行 | 每个复盘按这五步结构输出，确保不遗漏诊断环节 |
-| **从可信度出发做决策** — 可信度加权 | codereviewer 和 auditor 的审查结论比任务执行者有更高的可信度权重 |
+```json
+{
+  "principles": [
+    {"name": "激进的事实性", "essence": "直面问题，不回避", "maMapping": "CR/红线违反/bug逃逸公开记录到 journey.md"},
+    {"name": "不容忍同错", "essence": "允许犯错，不容忍罔顾教训、一错再错", "maMapping": "第一次=学习机会，第二次=系统漏洞，第三次=流程缺陷"},
+    {"name": "机器化管理", "essence": "设计系统，不是靠人治", "maMapping": "问题→问流程而不是问责个人"},
+    {"name": "五步流程法", "essence": "目标→问题→诊断→方案→执行", "maMapping": "复盘按五步结构输出"},
+    {"name": "可信度决策", "essence": "可信度加权", "maMapping": "codereviewer/auditor 审查结论权重更高"}
+  ]
+}
+```
 
 ### 11.2 疼痛→反思→进步闭环
 
