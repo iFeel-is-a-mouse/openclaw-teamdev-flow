@@ -19,6 +19,40 @@ metadata:
     - 多agent开发
     - MA开发
     - 团队协作开发
+  # Agent 路由表 — 当用户说出对应关键词时，OpenClaw 路由到哪个 agent
+  # 每个 agent 的 AGENTS.md 也需配置相应的转发规则
+  agents:
+    orchestrator: main          # 主控，负责调度和路由
+    designer: coder              # 架构设计与编码实现
+    reviewer: codereviewer       # 代码审查与设计审查
+    tester: tester               # 测试
+    auditor: auditor             # 审计
+    writer: publicist            # 文档编写
+  routing:
+    - trigger: "团队研发"
+      target: main
+      action: "main 评估复杂度后编排 coder/codereviewer/tester/auditor/publicist"
+      note: "其他 agent 收到此关键词时必须转发给 main"
+    - trigger: "多agent开发"
+      target: main
+      action: "同团队研发"
+      note: "同团队研发"
+  routing-redirects:
+    - if_agent: coder
+      trigger: "团队研发"
+      action: "redirect to main: '用户想启动团队研发，我已转交 main 处理'"
+    - if_agent: tester
+      trigger: "团队研发"
+      action: "redirect to main: '用户想启动团队研发，我已转交 main 处理'"
+    - if_agent: codereviewer
+      trigger: "团队研发"
+      action: "redirect to main: '用户想启动团队研发，我已转交 main 处理'"
+    - if_agent: auditor
+      trigger: "团队研发"
+      action: "redirect to main: '用户想启动团队研发，我已转交 main 处理'"
+    - if_agent: publicist
+      trigger: "团队研发"
+      action: "redirect to main: '用户想启动团队研发，我已转交 main 处理'"
 ---
 
 # 团队研发 — 多Agent协作开发技能
