@@ -1,25 +1,160 @@
+---
+name: ma-team-dev
+name-zh: 团队研发
+provider: openclaw
+description: >
+  多Agent团队协作开发技能。
+  当用户说"团队研发"或"多agent开发"时触发。
+  main agent 收到开发需求后，按复杂度（S/M/L）编排
+  coder/codereviewer/tester/auditor/publicist 六个专业 agent
+  完成端到端交付。
+  适用于：新功能开发、Bug修复、重构、设计变更、文档编写。
+  不适用于：纯咨询问答、简单脚本（S级以下的可由main自行完成）、
+  已有专门Skill覆盖的特定任务。
+metadata:
+  version: "4.2.0"
+  skills-version: "1.0"
+  trigger-keywords:
+    - 团队研发
+    - 多agent开发
+    - MA开发
+    - 团队协作开发
+---
+
 # 团队研发 — 多Agent协作开发技能
 
-> 触发词：`团队研发` 或 `多agent开发` 或 `MA开发`
-> 
-> 输入用户开发需求 → 按 MA 架构编排 4 个专业 agent 完成端到端交付
->
-> **当前版本**: 3.6.0 | [变更日志](./CHANGELOG.md)
->
-> **关联文档：**
-> - MA 架构设计: `projects/ma/multi-agent-design.md` — 完整架构、配置、通信矩阵
-> - 迁移指南: `projects/ma/SETUP.md` — 换机器快速重建 MA 环境
-> - main 规则: `projects/ma/main/AGENTS.md` — main 团队研发行为准则（权威版本）
-> - main 人格: `projects/ma/main/SOUL.md` — main 团队研发人格
-> - 宪章模板: `projects/ma/main/constitution-template.md` — 项目宪章模板
-> - 任务看板模板: `projects/ma/main/todo-template.md` — 项目任务看板
-> - 过程日志模板: `projects/ma/main/journey-template.md` — 项目过程日志
-> - 审计问题模板: `projects/ma/auditor/audit-report-template.md` — 问题登记·跟踪·验证·闭环
-> - 缺陷报告模板: `projects/ma/tester/test-report-template.md` — 缺陷报告与验证闭环
-> - 日常规则: `AGENTS.md` — 含团队研发规则章节（由 main/AGENTS.md 同步）
-> - **诊断方法论: `skills/problem-solving-methodology/`** — 结构化问题诊断（main/coder/tester 必读）
-> 
-> **Git 仓库**: `projects/ma/` — MA 框架独立仓库，与各项目仓库隔离。版本号见 `projects/ma/VERSION`，变更历史见 `projects/ma/CHANGELOG.md`。
+## 概述
+
+编排 6 个专业 AI Agent（main/coder/codereviewer/tester/auditor/publicist）组成虚拟开发团队，
+按工业化流程完成软件开发项目。每个 Agent 各司其职，质量层层把关，交付可靠代码。
+
+### 做什么
+- 用户提出开发需求 → main 评估复杂度 → 编排对应流程 → 各 agent 协作交付
+- 覆盖：需求分析、架构设计、代码审查、测试验证、审计把关、文档产出
+
+### 不做什么
+- 纯工具脚本、一行配置修改等 S 级以下任务（main 自行完成即可）
+- 已有独立 Skill 覆盖的专项任务（如数据库迁移、API 对接等）
+- 需要人工决策的架构争议（main 升级给用户决策）
+
+### 什么时候该用
+| 应该用 | 不该用 |
+|--------|--------|
+| 新功能开发 → "团队研发：帮我加上用户注册功能" | 简单修改 → "把标题改成红色" |
+| Bug 修复 → "团队研发：登录页面报 500 错误" | 纯咨询 → "Java 8 和 11 有什么区别" |
+| 重构优化 → "团队研发：重构支付模块" | 已有 Skill → "帮我做数据库迁移"（走 db-migrate Skill） |
+| 设计变更 → "团队研发：订单状态机需要调整" | 紧急修复 → main 直接处理和交付，事后补流程 |
+
+### 核心优势
+- **质量门禁层层把关**：codereviewer 审查 → tester 测试 → auditor 终审，三层防线
+- **复杂度自适应**：S(简单)/M(中等)/L(大型) 三级流程，小项目快跑大项目稳扎
+- **知识持续沉淀**：journey.md 记录过程，RETROSPECTIVE.md 沉淀教训
+
+---
+
+## 环境与前置条件
+
+执行本 Skill 前，main 必须确认以下条件满足：
+
+### 环境检查
+
+```bash
+# 1. Projects 软链接检查（所有 agent workspace 必须可访问 projects 目录）
+for ws in workspace-coder workspace-tester workspace-auditor workspace-publicist; do
+  target="$HOME/.openclaw/$ws/projects"
+  if [ ! -e "$target" ]; then
+    echo "❌ $ws: projects 软链接缺失"
+    exit 1
+  fi
+  echo "✅ $ws: projects OK"
+done
+
+# 2. Agent 可用性检查
+for agent in coder tester auditor publicist; do
+  echo "→ 检查 $agent 是否可达..."
+  # main 通过 sessions_spawn 快速确认 agent 响应
+done
+```
+
+**前置条件满足后**才进入复杂度评估阶段。条件不满足时，先修环境再开始。
+
+---
+
+## 三、执行流程
+
+### 流程速览
+
+main 收到需求后，按复杂度走对应的流程。判断依据见 §2.5。
+
+**复杂度 → 流程映射：**
+
+```
+main 评估复杂度
+  如果 代码量<200行 且 文件数≤3 且 单模块 且 无外部依赖 → S 级
+  如果 代码量200-1000行 或 文件数4-10 或 2-3模块 → M 级
+  如果 代码量>1000行 或 文件数>10 或 多模块 或 安全敏感 → L 级
+  如果 不确定 → 取高一级
+```
+
+**各复杂度对应的阶段：**
+
+| 阶段 | S 级（简单） | M 级（中等） | L 级（大型） | 说明 |
+|------|------------|------------|------------|------|
+| 0 main: 复杂度评估 | ✅ | ✅ | ✅ | 必须执行，声明流程给用户确认 |
+| 0 main: constitution | 跳过 | 按需 | ✅ | 项目宪章，定义不可妥协原则 |
+| 1 main: spec | 合并到需求描述 | ✅ | ✅ | 含 style-guide |
+| 2 auditor: 前置审计 | main 自查替代 | ✅ | ✅ | 含 clarify 歧义识别 |
+| 3 main: gate check | 跳过 | ✅ | ✅ | 审核自查清单，委派 coder |
+| 4 coder: design.md | 口头描述 | ✅ | ✅ | M+级有数据变换的必须给示例 |
+| 4b codereviewer: 设计审查 | 跳过 | 🔴 门禁 | 🔴 门禁 | 验证设计 + 数据变换示例 |
+| 5 main: analyze | 跳过 | ✅ | ✅ | spec↔design↔constitution 一致性 |
+| 6 coder: 实现 | ✅ | ✅ | ✅ | 含自测 |
+| 6b codereviewer: 代码审查 | 跳过 | 🔴 门禁 | 🔴 门禁 | 结对编程审查 |
+| 7 tester: 测试 | 轻量测试 | ✅ | ✅ | 基于可测试项清单 |
+| 8 auditor: 终审 | 简化 checklist | ✅ | ✅ | 完整 checklist |
+| 9 main: merge | ✅ | ✅ | ✅ | + README 初稿 |
+| 10 publicist: 定稿 | 跳过 | 并入9 | ✅ | 文档总结完善 |
+| 11 复盘 | 跳过 | 按需 | ✅ | 五步复盘法 |
+
+**阶段缩写速查：**
+- ✅ = 必须执行
+- 🔴 门禁 = 不通过禁止进入下一阶段
+- 跳过 = 该阶段不执行
+- 按需 = 根据项目实际情况决定
+
+### 阶段间的检查点
+
+每个阶段完成后，main 执行以下检查点确认可进入下一阶段：
+
+```markdown
+## 检查点速查
+
+| 阶段 | 通过条件 | 检查命令/步骤 |
+|------|---------|------------|
+| 0 (声明) | 用户确认流程声明 | 用户回复了确认消息 |
+| 1 (spec) | spec.md 写的需求用户确认了 | 用户确认无歧义 |
+| 2 (审计) | auditor 前置审计通过，无未解决的 CLARIFY | 审计报告无 P0/P1 |
+| 3 (gate) | 自查清单审核通过 | main 确认所有"是"项已在 design 中展开 |
+| 4 (design) | codereviewer 设计审查通过 | 审查结论为 ✅ |
+| 5 (analyze) | spec↔design↔constitution 无矛盾 | main 确认一致 |
+| 6b (审查) | codereviewer 代码审查通过 | 审查结论为 ✅ 或有条件通过 |
+| 7 (测试) | 全部测试通过，无 P0/P1 bug | tester 测试报告通过率=100% |
+| 8 (终审) | auditor checklist 全部 ✅ | checklist 无未通过项 |
+| 9 (merge) | CHANGELOG 更新，CR 闭合 | git merge 成功 |
+```
+
+### 检查点不通过时的处理
+
+| 不通过阶段 | 问题类型 | 处理方式 | 涉及角色 |
+|----------|---------|---------|---------|
+| 阶段4b (设计审查) | 设计问题 | coder 修改 design.md → codereviewer 重新审查 | coder, codereviewer |
+| 阶段6b (代码审查) | 编码问题 | coder 修复 → codereviewer 复审（直接交互） | coder, codereviewer |
+| 阶段7 (测试) | 编码问题 | coder 修复 → tester 回归验证（直接交互） | coder, tester |
+| 阶段2 (前置审计) | 需求问题 | main 与用户确认歧义 → main 修改 spec | main |
+| 阶段8 (终审) | 审计问题 | coder 逐项修复 → auditor 重新终审 | coder, auditor |
+| **连续 2 轮同一阶段不通过** | 越级 | main 升级给用户决策 | main + 用户 |
+
+**直接交互规则：** 阶段6b/7 中 coder 直接与 codereviewer/tester 交互，不经过 main 中转。每轮更新 todo.md/journey.md，迭代上限 2轮(审查)或3轮(测试)。超限由 main 介入。
 
 ---
 
@@ -974,30 +1109,50 @@ main 在阶段1 后即可向 publicist 发送上下文：
 
 #### 复盘步骤
 
-**auditor 先审：**
-1. 回看已完成项目的 journey.md，对照标准 8 阶段流程，找出记录缺失
-2. 检查 audit-report.md 的完整性（前置审计 + 终审是否都记录）
-3. 输出"过程记录审计报告"给 main
+复盘按《原则》五步流程法（目标→问题→诊断→方案→执行）组织。详见 `projects/ma/docs/change-management.md §11.4`。
 
-**auditor 报告下发各 agent 确认（必须执行，不可跳过）：**
-4. main 将审计报告通过 sessions_spawn 发给 coder、tester、publicist
-5. 各 agent 阅读审计报告，针对与自己相关的发现，返回**事实确认书**：
-   - **事实确认**：审计发现的这个事，是不是确实发生了？如实确认或纠正。
-   - **原因说明**：为什么会发生？是不知道？忘了？还是流程没要求？
-   - **改进意见**：如何避免再次发生？
-   - **对流程的修改建议**：如果有，具体是什么？
-6. 各 agent 的 SOUL.md 要求面对审计必须坦诚、实事求是：
-   - 不否认事实（右倾）
-   - 不无原则认下不属实的指责（左倾）
-   - 不狡辩、不推诿、不欺骗
+**Step 1: 回顾目标（main）**
+- 本次/本轮开发的目标是什么？当初的 spec 和 CR 是什么？
+- 所有角色先对齐原始目标，避免"事后诸葛亮"式的判断
 
-**main 汇总反馈：**
-4. 确认 auditor 发现的问题
-5. 追溯根因——问题是 MA 流程文档的缺陷，还是单次执行失误？
-6. **如果是流程缺陷**（如缺少必做步骤、检查项不完整）→ 修改 skills/SKILL.md 或 projects/ma/<agent>/AGENTS.md
-7. **如果是执行失误**（agent 跳步、遗漏）→ 记录到 RETROSPECTIVE.md，评估是否需要强化红线
-8. 修改完成后同步 agent workspace
-9. 写入 `projects/ma/RETROSPECTIVE.md`
+**Step 2: 呈现事实（auditor 先审）**
+- 回看已完成项目的 journey.md，对照标准流程，找出缺失和偏离
+- 检查 audit-report.md 的完整性（前置审计 + 终审是否都记录）
+- 检查 recurring-issues.md 是否有重复性问题未修复
+- 输出"过程记录审计报告"给 main
+
+**Step 3: 诊断根因（auditor 报告下发各 agent + main 汇总）**
+
+auditor 报告下发各 agent 确认（必须执行，不可跳过）：
+- main 将审计报告通过 sessions_spawn 发给 coder、tester、publicist
+- 各 agent 阅读审计报告，针对与自己相关的发现，返回**事实确认书**：
+  - **事实确认**：审计发现的这个事，是不是确实发生了？如实确认或纠正。
+  - **原因说明**：为什么会发生？是不知道？忘了？还是流程没要求？
+  - **改进意见**：如何避免再次发生？
+  - **对流程的修改建议**：如果有，具体是什么？
+- 各 agent 的 SOUL.md 要求面对审计必须坦诚、实事求是：
+  - 不否认事实（右倾）
+  - 不无原则认下不属实的指责（左倾）
+  - 不狡辩、不推诿、不欺骗
+
+main 汇总诊断：
+- 确认 auditor 发现的问题
+- 追溯**三层根因**（参见 change-management.md §11.2 诊断三问）：
+  1. 表层根因：直接原因是什么？（谁做了什么/没做什么）
+  2. 系统根因：流程中哪个环节允许了这个问题？
+  3. 机制根因：MA 框架中有什么机制应该捕获但没捕获？
+- 判断：问题是**流程缺陷**还是**单次执行失误**？
+
+**Step 4: 设计方案**
+- **如果是流程缺陷**（如缺少必做步骤、检查项不完整）→ 修改 change-management.md 或 skills/SKILL.md 或 projects/ma/<agent>/AGENTS.md
+- **如果是执行失误**（agent 跳步、遗漏）→ 记录到 RETROSPECTIVE.md，评估是否需要强化红线或加门禁
+- 如果问题已出现 ≥ 2 次 → 必须走流程级修复，写入 change-management.md
+
+**Step 5: 执行与验证**
+- 修改完成后同步 agent workspace
+- 写入 `projects/ma/RETROSPECTIVE.md`
+- 更新 `docs/recurring-issues.md`（如适用）
+- 定义验证标准：下次同样场景下，这个问题不会再次发生
 
 #### 复盘产出
 
@@ -1180,6 +1335,66 @@ projects/<project-name>/
 
 **如果 agent 未配置：** main 应回退到 single-agent 模式，自行完成所有角色（按 AGENTS.md 规则执行 design→code→test→audit 全流程）。并在任务完成后告知 用户 "agent 未配置，由 main 单枪匹马完成"。
 
+## 11. 变更管理
+
+> 变更管理全流程规范详见 `projects/ma/docs/change-management.md`
+
+变更管理是标准团队研发流程的**强化层**——在已有 S/M/L 标准流程之上，加入正式化、可追踪的变更控制机制。
+
+### 11.1 核心变更规则
+
+MA 框架吸收了以下变更管理规则，所有角色必须遵守：
+
+| # | 规则 | 关联章节 |
+|---|------|---------|
+| R1 | **每个变更都必须登记 CR。** 没有 CR 不得进入开发 | change-management.md §2/§3 |
+| R2 | **变更前填写影响分析自查清单。** 任一高风险项命中，必须在 design.md 中展开 | change-management.md §4 |
+| R3 | **核心文件（>500行）变更走 coder，main 不直接 edit。** 违者红线 | change-management.md §5 |
+| R4 | **跨模块数据变换必须在 design.md 给出输入→输出示例（≥2组）。** codereviewer 逐组验证 | change-management.md §6 |
+| R5 | **非阻塞问题必须记入 todo.md 待修复清单。** 不口头约定"下次改" | change-management.md §7 |
+| R6 | **Agent 必须有降级模型，主模型不可用时自动切换。** 不可用时不静默继续 | change-management.md §9 |
+| R7 | **每 3 个 Sprint 至少安排一次 coder↔codereviewer 角色互换。** 打破思维定势 | change-management.md §8 |
+| R8 | **疼痛+反思=进步。** 每次问题/违规触发根因诊断，不容忍两次同样的错误 | change-management.md §11 |
+
+### 11.2 变更流程整合
+
+变更管理与标准团队研发流程的整合方式：
+
+```
+用户提出变更
+    │
+    ▼
+1. main 评估变更类型和范围 ──→ 见 change-management.md §10
+    │  ├── 新增功能 → 标准 M/L 流程
+    │  ├── 修复缺陷 → 标准 S/M 流程
+    │  └── 开发中需求变更 → 下文的 delta 变更流程
+    │
+    ▼
+2. CR 登记
+    │  记录到 docs/CR.md（简化或完整版按变更类型定）
+    │
+    ▼
+3. 影响分析自查清单
+    │  coder 填写 → main 审核
+    │  (S 级可口头过一遍，M/L 级必须写入文档)
+    │
+    ▼
+4. 进入标准团队研发流程（S/M/L 级对应）
+    │  注意事项：
+    │  - design.md 追加变更说明，不覆盖原设计
+    │  - commit 注明 CR 编号
+    │  - 回归测试确保无破坏
+    │  - 非阻塞问题记入 todo.md
+    │
+    ▼
+5. 闭合
+    │  CHANGELOG 注明 CR 编号
+    │  更新 docs/CR.md 标记 closed
+    │
+    ▼
+完成
+```
+
 ## 12. 异常处理
 
 ### 12.1 问题诊断流程（problem-solving-methodology）
@@ -1316,6 +1531,71 @@ Step 6: 复盘 — 根因一句话 + 弯路 + 教训
 | README | 全文替换 | 项目概述保留；新增"需求变更记录"小节 |
 | design.md | 覆盖架构设计 | 原方案保留；新增"## 变更 #1 架构调整"小节 |
 
+---
+
+## 12.5 常见问题与故障排查
+
+> 参考《如何写好 Skill》的故障排查方法论。
+
+### Q1: AI 没触发这个 Skill，而是用通用知识回答
+
+**排查步骤：**
+```
+Skill 没触发
+    ↓
+1. 用户说了"团队研发"或"多agent开发"吗？—— 没有 → 用触发词重新提问
+    ↓ 有
+2. 当前会话中 Skill 已加载吗？—— 没有 → 检查 SKILL.md 路径和 YAML 元数据格式
+    ↓ 加载了
+3. main 是否处于其他任务中？—— 是 → 等当前任务完成，或用 /new 开新会话
+    ↓ 否
+4. 直接说"团队研发：..."触发
+```
+
+### Q2: main 启动了但 agent 不响应
+
+```
+agent 无响应
+    ↓
+1. 检查 agent workspace 的 projects 软链接：`ls -la ~/.openclaw/<agent>/projects`
+    ↓ OK
+2. 检查 agent 是否可达：`sessions_send → <agent>` 发一条测试消息
+    ↓ 不可达
+3. 确认 agent 模型可用（余额、服务状态）
+4. 备用方案：换备用模型重新 spawn
+```
+
+### Q3: coder 设计偏离了需求
+
+**常见原因：**
+- spec.md 写得不明确（歧义未在阶段2 clarify 中解决）
+- constitution.md 没被 coder 读取（默认在阶段4设计中已固化，但新加入的 coder 可能遗漏）
+
+**处理：** main 在阶段5 analyze 时发现不一致 → 退回 coder 修改 design → codereviewer 重审。
+
+### Q4: tester 发现严重 bug，影响范围大
+
+**处理流程：**
+1. tester 直接告知 coder（走阶段7直接交互）
+2. coder 评估修复范围，更新 journey.md
+3. 修复后 tester 做全量回归（不只是验证该 bug）
+4. 如果修复涉及核心文件，codereviewer 重审
+5. 如果迭代超 3 轮，main 介入裁决
+
+### Q5: CR 流程被跳过，直接改代码了
+
+**根因分析：**
+- 如果是一次性遗忘 → 补登记 CR，更新 journey.md 记录
+- 如果再次发生 → 说明 CR 流程不够强约束 → 在 CR.md 中加门禁：没 CR 编号的 commit 不 merge
+
+### Q6: 复盘发现的问题没有闭环
+
+**原因：** 复盘产出没变成可追踪的行动项。
+
+**修复：** 复盘后必须产出明确的行动项（谁 + 做什么 + 截止时间），写入 RETROSPECTIVE.md、todo.md 和 change-management.md（如适用）。下轮启动时 main 先检查复盘行动项是否已完成。
+
+---
+
 ## 13. 红线
 
 - **走合规流程** — 按复杂度 S/M/L 执行裁剪后流程，不允许跳过规则内的必要步骤
@@ -1333,3 +1613,16 @@ Step 6: 复盘 — 根因一句话 + 弯路 + 教训
 - 🔴 **编译产物交付门禁** — 需要编译的项目，main 不得在 tester+coder 迭代完成、测试全通过、auditor 终审前将 bin/apk/jar 等编译产物交付给 用户。
 - 🔴 **coder-tester 直接交互必须留痕** — 阶段7中 coder 和 tester 可直接交互提高效率，但每轮必须更新 todo.md 和 journey.md，首次 bug 和最终通过必须告知 main。迭代上限 3 轮。
 - 🔴 **coder 实现不确定必须升级** — 阶段4/6 发现 examples 无参考、实现方案不确定时，coder 不擅自决定。升级路径：coder→main→tester（可测试性评估）→main→coder，决策依据记录到对应阶段的 design.md（阶段4）或 journey.md（阶段6）。
+
+---
+
+### 变更管理特定红线 🔴
+
+> 详见 `projects/ma/docs/change-management.md`
+
+- 🔴 **每个变更必须登记 CR** — 没有 CR 不得进入开发。即使 1 行 bugfix 也要做 CR 登记（简化版）。见 change-management.md §3。
+- 🔴 **变更前必须做影响分析** — coder 填写自查清单，main 审核。S 级可口头过一遍，M/L 级必须写入文档。见 change-management.md §4。
+- 🔴 **核心文件（>500行）main 不得直接 edit** — 核心文件修改必须走 coder。main 只做决策和审查。Edit 工具适用范围：配置文件、测试文件、文档、小型工具脚本（<500行）。见 change-management.md §5。
+- 🔴 **跨模块数据变换必须在 design.md 给出输入→输出示例（≥2组）** — 编码实现前提供给 codereviewer 审查，审查通过后方可编码。见 change-management.md §6。
+- 🔴 **非阻塞问题不得口头约定"下次改"** — codereviewer/tester 发现的不阻塞问题，必须记入 todo.md 待修复清单，由 main 安排修复计划。见 change-management.md §7。
+- 🔴 **tester 主模型不可用时必须降级或上报** — primary model 失败时自动使用 fallback，fallback 也失败时告知用户。不允许静默继续。见 change-management.md §9。

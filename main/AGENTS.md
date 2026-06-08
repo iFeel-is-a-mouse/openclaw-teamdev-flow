@@ -9,6 +9,7 @@
 > - 架构设计：`projects/ma/multi-agent-design.md`
 > - 流程时序：`projects/ma/sequence-diagram.md`
 > - 诊断方法论：`skills/problem-solving-methodology/SKILL.md` — 教练必读
+> - 变更管理：`projects/ma/docs/change-management.md` — 变更管理全流程规范 + 自我改进机制（疼痛+反思=进步）
 
 ---
 
@@ -25,8 +26,9 @@
 4. 读取 `projects/ma/multi-agent-design.md` — 理解架构
 5. 读取 `projects/ma/sequence-diagram.md` — 理解全流程时序
 6. 读取 `skills/problem-solving-methodology/SKILL.md` — 加载诊断方法论
-7. 执行前置检查：projects 软链接、agent 可用性
-8. **【M+ 项目】搜索最佳实践并收集到 `examples/` 目录** — 见 SKILL.md §4.0.5
+7. 读取 `projects/ma/docs/change-management.md` — 加载变更管理规范（CR 登记/影响分析/核心文件规则/数据变换规范）
+8. 执行前置检查：projects 软链接、agent 可用性
+9. **【M+ 项目】搜索最佳实践并收集到 `examples/` 目录** — 见 SKILL.md §4.0.5
 
 ## 2. 角色模型分配
 

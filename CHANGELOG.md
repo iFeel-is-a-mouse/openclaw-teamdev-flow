@@ -1,5 +1,64 @@
 # MA 团队研发框架 — 变更日志
 
+## [4.2.0] — 2026-06-08
+
+### 变更管理强化
+
+- **新增变更管理规范** — `docs/change-management.md`，覆盖：
+  - 变更生命周期（CR登记→影响分析→设计审查→实现→测试→终审→闭合）
+  - CR 模板（完整版 + S 级简化版）
+  - 影响分析 10 项自查清单
+  - 核心文件（>500行）修改规则 — main 不得直接 edit
+  - 跨模块数据变换设计规范 — design.md 必须给出≥2组输入→输出示例
+  - 非阻塞问题追踪规则 — 必须记入 todo.md，不得口头约定
+  - Tester 模型冗余策略（primary→fallback 自动降级）
+  - 角色互换常态化策略（每3个Sprint一次）
+- **新增自我改进机制（基于《原则》Ray Dalio）** — change-management.md §11：
+  - 疼痛+反思=进步闭环
+  - 不容忍两次同样的错误 — recurring-issues.md 重复性问题追踪
+  - 五步复盘法（目标→问题→诊断→方案→执行）
+  - 流程健康度巡检（季度指标）
+  - 改进思维 vs 问责思维
+- **SKILL.md 结构重构（对标 Skill 编写规范）** — 见 kb/AI开发/Skill编写/2026-06-05-如何写好Skill.md：
+  - 添加 YAML 元数据头（name/description/trigger-keywords）
+  - 新增"做什么/不做什么/什么时候用"概述
+  - 新增环境前置检查步骤和命令
+  - 新增执行流程决策树速览
+  - 新增阶段间检查点表和超限处理流程
+  - 新增常见问题与故障排查（FAQ §12.5）
+- **SKILL.md 阶段11 复盘增强** — 融入五步流程法和三层根因诊断
+- **SKILL.md §11 新增变更管理章节** — 8 条核心规则 + 变更流程整合图
+- **SKILL.md §13 新增 6 条变更管理红线**
+- **main/AGENTS.md 新增变更管理关联文档和启动时必读**
+- **coder/AGENTS.md 新增 3 条变更管理红线**
+- **codereviewer/AGENTS.md 新增变更管理项目知识**
+- **README.md 文档导航更新** — 新增 change-management.md 入口
+
+### 多角色审查后修复（codereviewer/coder/auditor 联合审查）
+
+- **codereviewer/AGENTS.md 新增阶段4b设计审查流程**（P0审计项修复）
+- **auditor/AGENTS.md 新增复盘审计职责 + 变更质量门禁checklist**（P1审计项修复）
+- **tester/AGENTS.md 新增 2 条变更管理红线**（delta回归 + 非阻塞追踪）
+- **创建 docs/recurring-issues.md**（P1 — 版本号不同步重复问题登记）
+- **change-management.md §6.3 简单映射豁免条件**（P1 — 直接赋值可不给2组示例）
+- **change-management.md §5.2 澄清 Edit/write 工具范围**（P1 — write 也不适用核心文件）
+- **change-management.md §10.4 门禁表增加确认人归属**（P1）
+- **SKILL.md metadata version 同步修复**（P1 — 3.6.0→4.2.0，登记到 recurring-issues.md）
+
+### 影响文件
+
+- `projects/ma/docs/change-management.md`（新文件）
+- `projects/ma/docs/recurring-issues.md`（新文件）
+- `projects/ma/skills/SKILL.md` — §11 变更管理、§13 红线、metadata版本
+- `projects/ma/main/AGENTS.md` — 关联文档 + 启动加载列表
+- `projects/ma/coder/AGENTS.md` — 红线
+- `projects/ma/codereviewer/AGENTS.md` — 阶段4b设计审查流程、项目知识
+- `projects/ma/tester/AGENTS.md` — 红线
+- `projects/ma/auditor/AGENTS.md` — 复盘审计职责、变更质量门禁
+- `projects/ma/README.md` — 文档导航
+- `projects/ma/CHANGELOG.md` — 本条目
+- `projects/ma/VERSION` — 4.1 → 4.2
+
 ## [3.9.0] — 2026-06-04
 
 ### 复盘决议实施

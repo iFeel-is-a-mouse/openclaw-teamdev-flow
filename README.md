@@ -137,6 +137,9 @@ team-dev/
 ├── multi-agent-design.md      ← 架构设计：Agent设计、通信矩阵、三文档体系、配置参考
 ├── sequence-diagram.md        ← 时序图：全流程交互序列，todo.md和journey.md贯穿全程
 ├── RETROSPECTIVE.md           ← 复盘报告
+├── docs/
+│   ├── change-management.md   ← 变更管理全流程规范（CR登记/影响分析/核心文件规则/数据变换规范）
+│   └── testing-redline.md     ← 测试红线规则
 ├── skills/
 │   └── SKILL.md               ← 团队研发执行流程（核心 Skill）
 ├── main/                      ← main agent 配置

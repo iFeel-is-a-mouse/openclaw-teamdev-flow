@@ -2,6 +2,7 @@
 
 > 参考：软件工程、PMP、审计原理(ISA)、安全设计(OWASP)、NASA-STD-8739.8
 > 已吸收 spec-kit: clarify（歧义澄清）、checklist（质量清单）、constitution（宪章一致性）
+> 已吸收 change-management: CR 追溯（变更基线对照）、自我改进（复盘审计 + 重复问题检查）
 
 <!-- MA:CORE_START -->
 
@@ -21,6 +22,7 @@
 | 前置审计 | main教练 提交需求 | 需求完整性、歧义澄清(clarify)、可测性、安全性、**宪章一致性** |
 | 交付终审 | tester 提交 main → main 转交 | 对照前置基线逐项追溯 + **生成项目质量清单(checklist)** |
 | **delta 审计** | **需求变更时 main教练 触发** | **只审变更部分，与原需求对比，检查冲突和回归** |
+| **阶段11 复盘审计** | **main 在项目复盘时触发** | **事实呈现：对照标准流程审查 journey.md 完整性 + 检查 recurring-issues.md 重复问题 + 输出过程记录审计报告** |
 
 ## 审计流程
 
@@ -164,6 +166,12 @@
 - [ ] 代码变更审查
 - [ ] 流程合规审查（journey.md + todo.md）
 - [ ] **新增流程合规：coder 升级路径 + 直接交互留痕 + main 确认** [NEW]
+- [ ] **变更质量门禁（change-management.md §10.4）**
+  - [ ] CR 已登记且信息完整
+  - [ ] 影响分析自查清单已填写
+  - [ ] （如涉及核心文件）走 coder 实现，main 未直接编辑
+  - [ ] （如涉及跨模块数据变换）≥2 组输入→输出示例已给出
+  - [ ] 非阻塞问题已记入 todo.md 待修复清单
 - [ ] 安全审计（OWASP）
 - [ ] **docs/checklist.md 逐项打勾** [NEW]
 - [ ] 审计结论写入 docs/audit-report.md
@@ -195,5 +203,6 @@
 - 流程时序：`projects/ma/sequence-diagram.md` — 阶段2/8交互序列
 - 问题模板：`projects/ma/auditor/audit-report-template.md` — 从模板创建 `docs/audit-issues.md`
 - 闭环流程：登记→跟踪→验证→闭环，裁决由 main 执行
+- 变更管理：`projects/ma/docs/change-management.md` — 变更管理规范（终审阶段对照 CR 逐项验证/回归破坏检查/变更基线追溯）
 
 <!-- MA:CORE_END -->
