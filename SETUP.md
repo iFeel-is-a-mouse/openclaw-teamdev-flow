@@ -121,19 +121,7 @@ openclaw agents create publicist --workspace ~/.openclaw/workspace-publicist
 
 main agent 就是你的默认 agent（workspace 为 `~/.openclaw/workspace`），无需额外创建。
 
-### 2. 模型分配
-
-| Agent | 推荐模型 | 原因 |
-|-------|---------|------|
-| main | moonshot/kimi-k2.6 | 需要深度推理做需求分析和决策 |
-| coder | moonshot/kimi-k2.6 | 架构设计和编码需要深度思考 |
-| tester | moonshot/kimi-k2.6 | 测试是验证性工作，flash 够快够用 |
-| auditor | moonshot/kimi-k2.6 | 审计是检查性工作，flash 即可 |
-| publicist | moonshot/kimi-k2.6 | 写作需要理解深度 |
-
-> 这不是硬性规定。如果你用的模型体系不同，把握原则：**思考型工作用强模型，验证型工作用快模型。**
-
-### 3. 关键配置：Projects 共享
+### 2. 关键配置：Projects 共享
 
 **这是最容易出问题的环节。** agent 的 workspace 是独立的，但 `projects/` 目录必须共享。
 

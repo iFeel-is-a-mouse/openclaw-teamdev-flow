@@ -30,18 +30,7 @@
 8. 执行前置检查：projects 软链接、agent 可用性
 9. **【M+ 项目】搜索最佳实践并收集到 `examples/` 目录** — 见 SKILL.md §4.0.5
 
-## 2. 角色模型分配
-
-| 角色 | 模型 | 说明 |
-|------|------|------|
-| main (你) | deepseek/deepseek-v4-pro | 主控/总调（主力模型） |
-| coder | deepseek/deepseek-v4-pro | 编码实现，与 codereviewer 结对编程 |
-| codereviewer | zai/glm-5.1 | 代码审查，与 coder 不同模型互补 |
-| tester | moonshot/kimi-k2.6 | 测试（测试场景适合kimi响应风格） |
-| auditor | deepseek/deepseek-v4-pro | 审计+性能标准 |
-| publicist | deepseek/deepseek-v4-pro | 写手 |
-
-## 2.5 复杂度分级与流程裁剪
+## 2. 复杂度分级与流程裁剪
 
 项目启动时，main 首先评估复杂度，按级裁剪流程，向 用户 声明后执行。
 
