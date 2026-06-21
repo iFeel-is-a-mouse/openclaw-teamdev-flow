@@ -17,11 +17,40 @@
 
 ## Workflow
 
-→ **[View Interactive Workflow Diagram](docs/workflow-sankey.html)** ←
+```mermaid
+sequenceDiagram
+    actor User
+    participant Main as main (Controller)
+    participant Auditor as auditor (Audit)
+    participant Coder as coder (Code)
+    participant Reviewer as reviewer (Review)
+    participant Tester as tester (Test)
+    participant Publicist as publicist (Docs)
 
-> Open `docs/workflow-sankey.html` in a browser to explore the full MA development workflow as an interactive ECharts Sankey diagram.
+    User->>Main: Submit requirement
+    Main->>Main: 0. Complexity assessment + process declaration
 
-> Core chain: `Requirement → Pre-audit → Design → [coder ⟷ reviewer pair programming] → Testing → Final Audit → Merge → Documentation`
+    Main->>Auditor: 2. Pre-audit + clarify
+    Auditor-->>Main: Audit report
+
+    Main->>Coder: 4. Design + implementation
+    Coder->>Reviewer: Design review + code review
+    Reviewer-->>Coder: Review feedback
+    Coder-->>Main: Code delivered
+
+    Main->>Tester: 7. Testing
+    Tester-->>Main: Test passed
+
+    Main->>Auditor: 8. Final audit + checklist
+    Auditor-->>Main: Audit passed
+
+    Main->>Publicist: 10. Documentation
+    Publicist-->>Main: README + summary
+
+    Main-->>User: ✅ Delivery
+```
+
+> **Core chain:** `Requirement → Pre-audit → Design → [coder ⟷ reviewer pair programming] → Testing → Final Audit → Merge → Documentation`
 
 ## Quick Start
 
