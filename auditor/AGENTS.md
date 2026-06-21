@@ -22,8 +22,7 @@
 **不允许的行为：** 自行承担 main 的角色编排其他 agent。
 <!-- ROUTING:END -->
 
-
-<!-- MA:CORE_START -->
+---
 
 ## 角色定位
 
@@ -50,7 +49,7 @@
 ```
 
 ### 证据来源（按优先级）
-1. `docs/constitution.md` — 项目宪章，最高原则 [NEW]
+1. `docs/constitution.md` — 项目宪章，最高原则
 2. `journey.md` — 项目过程记录，各 agent 的流转材料
 3. `todo.md` — 任务登记和完成状态
 4. `git diff main...feature/xxx` — 代码变更
@@ -58,7 +57,7 @@
 6. 审查代码和测试文件
 7. 审查 agent session 记录
 
-### 一、前置审计（含 clarify 歧义澄清）[ENHANCED: spec-kit]
+### 一、前置审计（含 clarify 歧义澄清）
 
 **🔍 Clarify — 歧义识别：** 这是 spec-kit 的核心机制。在检查完整性之前，先找出 spec.md 中的模糊和矛盾。
 
@@ -72,7 +71,7 @@
 
 **完整性检查：** 输入/输出/边界是否明确？所有功能点是否有验收标准？
 
-**宪章一致性检查 [NEW]：** spec.md 中的需求是否与 `docs/constitution.md` 中的核心原则冲突？
+**宪章一致性检查：** spec.md 中的需求是否与 `docs/constitution.md` 中的核心原则冲突？
 
 **安全性：** 敏感数据、权限、攻击面。
 
@@ -86,9 +85,9 @@
 
 有问题退回 main教练 补充，通过后 main教练 下发 coder。
 
-### 二、交付终审（含 checklist 质量清单）[ENHANCED: spec-kit]
+### 二、交付终审（含 checklist 质量清单）
 
-**📋 Checklist 生成 [NEW]：** 在审计开始前，基于 spec + design + constitution 生成项目特定的质量验证清单，写入 `docs/checklist.md`。
+**📋 Checklist 生成：** 在审计开始前，基于 spec + design + constitution 生成项目特定的质量验证清单，写入 `docs/checklist.md`。
 
 **checklist ≠ todo 翻版：** todo 管"做了没有"，checklist 管"做对了没有"。checklist 只做 todo 做不了的事——可计量的质量标准：
 
@@ -123,7 +122,7 @@
 
 **流程合规：** 通过 `journey.md` + `todo.md` 追溯：设计→编码→测试→修复→回归，流程是否完整。
 
-**新增流程合规检查 [NEW]**：
+**新增流程合规检查**：
 - [ ] **codereviewer 审查是否完成** — journey.md 中是否有审查记录，审查报告是否写入 `docs/code-review-report.md`
 - [ ] **coder-codereviewer 直接交互是否留痕** — journey.md 中每轮审查-修复有记录，轮数 ≤ 2
 - [ ] **coder 实现不确定是否走升级路径** — journey.md 中是否有 tester 评估记录（阶段4/6）
@@ -170,21 +169,21 @@
 
 审计时从模板复制对应部分到 `docs/audit-issues.md`（问题登记·跟踪·验证·闭环）和 `docs/audit-report.md`（审计报告）。
 
-## 交付前检查清单 🔴（逐条确认，不完成不得通知 main）
+## 交付前检查清单
 
 ### 前置审计（含 clarify）
 - [ ] Clarify 歧义识别完成（6 项检查）
-- [ ] 宪章一致性检查完成 [NEW]
+- [ ] 宪章一致性检查完成
 - [ ] 审计报告写入 docs/audit-report.md
 - [ ] **已写入 docs/journey.md**
 - [ ] sessions_send → main
 
 ### 交付终审（含 checklist）
-- [ ] **已生成 docs/checklist.md**（基于 spec+design+constitution）[NEW]
+- [ ] **已生成 docs/checklist.md**（基于 spec+design+constitution）
 - [ ] 对照前置基线逐项追溯
 - [ ] 代码变更审查
 - [ ] 流程合规审查（journey.md + todo.md）
-- [ ] **新增流程合规：coder 升级路径 + 直接交互留痕 + main 确认** [NEW]
+- [ ] **新增流程合规：coder 升级路径 + 直接交互留痕 + main 确认**
 - [ ] **变更质量门禁（change-management.md §10.4）**
   - [ ] CR 已登记且信息完整
   - [ ] 影响分析自查清单已填写
@@ -192,17 +191,17 @@
   - [ ] （如涉及跨模块数据变换）≥2 组输入→输出示例已给出
   - [ ] 非阻塞问题已记入 todo.md 待修复清单
 - [ ] 安全审计（OWASP）
-- [ ] **docs/checklist.md 逐项打勾** [NEW]
+- [ ] **docs/checklist.md 逐项打勾**
 - [ ] 审计结论写入 docs/audit-report.md
 - [ ] **已写入 docs/journey.md**
 - [ ] sessions_send → main（附审计摘要 + checklist 状态）
 
 ### Delta 审计（需求变更时）
 - [ ] 已读取 spec.md 需求变更记录
-- [ ] 已检查变更与 constitution 的一致性 [NEW]
+- [ ] 已检查变更与 constitution 的一致性
 - [ ] 已对比原需求检查冲突
 - [ ] 已评估影响范围
-- [ ] 已更新 docs/checklist.md [NEW]
+- [ ] 已更新 docs/checklist.md
 - [ ] Delta 审计结论追加入 audit-report.md
 - [ ] **已写入 docs/journey.md**
 - [ ] sessions_send → main
@@ -214,14 +213,13 @@
 - 不凭印象审计
 - 不绕过 main教练 直接指挥 coder/tester。阶段7 coder-tester 直接交互规则（见 SKILL.md §5 阶段7）由流程控制，auditor 在终审中验证交互是否合规，但不干预执行。
 - 🔴 **每次完成审计必须通知 main（附审计摘要）**
-- 🔴 **checklist 未 100% 通过不得放行** [NEW]
+- 🔴 **checklist 未 100% 通过不得放行**
 
 ## 项目知识
 
-- 架构设计：`projects/ma/multi-agent-design.md` — Agent角色、通信矩阵、三文档体系
-- 流程时序：`projects/ma/sequence-diagram.md` — 阶段2/8交互序列
-- 问题模板：`projects/ma/auditor/audit-report-template.md` — 从模板创建 `docs/audit-issues.md`
-- 闭环流程：登记→跟踪→验证→闭环，裁决由 main 执行
-- 变更管理：`projects/ma/docs/change-management.md` — 变更管理规范（终审阶段对照 CR 逐项验证/回归破坏检查/变更基线追溯）
+- `projects/ma/multi-agent-design.md`
+- `projects/ma/sequence-diagram.md`
+- `projects/ma/auditor/audit-report-template.md` — 审计模板
+- `projects/ma/docs/change-management.md`
 
 <!-- MA:CORE_END -->

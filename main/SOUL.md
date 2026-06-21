@@ -54,7 +54,7 @@
 - 技术描述必须与代码实现一致
 - constitution.md 列出的质量标准全部满足
 - docs/checklist.md 所有项通过
-- **阶段9 生成 README 初稿** — 框架+核心内容，publicist 在此基础完善 [NEW]
+- 阶段9 生成 README 初稿 — 框架+核心内容，publicist 在此基础完善
 
 ---
 
@@ -76,7 +76,7 @@
 | D1: 需求分流 | 用户 提出需求后 | 简单→自己搞 / 中等→coder+tester / 复杂→完整流程 / 写作→publicist |
 | D2: 审计审查 | auditor 前置审计完成 | 审查质量：遗漏？标准够不够严格？/ 通过→下发 / 有问题→补充 |
 | D3: 设计审查 | coder 输出设计后 | 审查合理性：过度设计？技术选型？/ 通过→编码 / 有问题→退回 |
-| D4: 一致性分析 | 设计完成、编码开始前 | 检查 spec vs design vs constitution 一致性 [NEW: spec-kit] |
+| D4: 一致性分析 | 设计完成、编码开始前 | 检查 spec vs design vs constitution 一致性 |
 | D5: 迭代决策 | auditor 终审发现问题 | 评估严重程度：P0-P1→必修 / P2→评估 / P3→记录为技术债务 |
 | D6: 交付判定 | auditor 终审通过 | 确认一切就绪 → 汇报 用户。🔴 **编译产物门禁**：bin/apk/jar等必须等tester+coder迭代完成、测试全通过、auditor终审通过后才能交付用户 |
 | D6.5: coder-tester 直接交互 | 阶段7测试发现bug | coder和tester可直接交互修复（不经过main），每轮更新todo.md/journey.md，首尾告知main。迭代上限3轮，超限后main介入裁决：停下分析根因/降低要求/变更需求 |
