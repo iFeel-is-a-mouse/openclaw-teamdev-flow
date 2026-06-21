@@ -1,91 +1,91 @@
-# auditor/audit-report-template.md — 审计模板集
+# auditor/audit-report-template.md — Audit Template Set
 
-> auditor 使用此模板进行问题管理和审计报告。使用时复制对应部分到 `docs/audit-issues.md` 和 `docs/audit-report.md`。
+> auditor uses this template for issue management and audit reports. When using, copy corresponding sections to `docs/audit-issues.md` and `docs/audit-report.md`.
 
 ---
 
-# 第一部分：问题登记·跟踪·验证·闭环
+# Part 1: Issue Registration · Tracking · Verification · Closure
 
-> 复制到 `docs/audit-issues.md`，审计过程中逐条登记。
+> Copy to `docs/audit-issues.md`, register issues one by one during the audit.
 
-## 审计信息
+## Audit Info
 
-| 项目 | 审计类型（前置/终审/Delta） | 日期 | 基线 |
+| Project | Audit Type (Pre-Audit/Final/Delta) | Date | Baseline |
 |------|---------------------------|------|------|
-| `<项目名>` | | `YYYY-MM-DD` | constitution + spec + design |
+| `<Project Name>` | | `YYYY-MM-DD` | constitution + spec + design |
 
-## 问题登记表
+## Issue Registry
 
-| 编号 | 级别 | 分类 | 问题描述 | 基线对照 | 状态 | 处理 |
+| ID | Severity | Category | Issue Description | Baseline Reference | Status | Resolution |
 |------|------|------|---------|---------|------|------|
 | AUDIT-001 | | | | | ⬜ | |
 
-## 问题详情
+## Issue Details
 
 ### AUDIT-001
 
-**级别：** P0/P1/P2/P3 | **分类：** 完整性/安全性/可测性/宪章一致性/歧义/流程合规
+**Severity:** P0/P1/P2/P3 | **Category:** Completeness/Security/Testability/Constitution Compliance/Ambiguity/Process Compliance
 
-**问题：** [描述] | **基线对照：** [引用 spec/constitution 条目]
+**Issue:** [Description] | **Baseline Reference:** [Cite spec/constitution item]
 
-**修复：** 人：[ ] | 方案：[ ] | 文件：[ ]
+**Fix:** Person: [ ] | Plan: [ ] | File: [ ]
 
-**验证：** 人：[ ] | 结果：✅/❌ | 说明：[ ]
+**Verification:** Person: [ ] | Result: ✅/❌ | Notes: [ ]
 
-**闭环裁决：** 人：main | 结果：✅放行/🔁继续/📝技术债务 | 理由：[ ]
+**Closure Verdict:** Person: main | Result: ✅ Pass/🔁 Continue/📝 Technical Debt | Reason: [ ]
 
-## 严重级别
+## Severity Levels
 
-| P0 阻断 | P1 严重 | P2 一般 | P3 建议 |
+| P0 Blocker | P1 Critical | P2 Moderate | P3 Suggestion |
 |---------|---------|---------|---------|
 
-## 闭环流程
+## Closed-Loop Process
 
-`登记 → 报告main → main决策 → coder修复 → tester验证 → auditor复核 → main裁决闭环`
+`Registration → Report to main → main decides → coder fixes → tester verifies → auditor reviews → main closes`
 
 ---
 
-# 第二部分：审计报告
+# Part 2: Audit Report
 
-> 复制到 `docs/audit-report.md`，审计完成后填写。
+> Copy to `docs/audit-report.md`, fill in after audit is complete.
 
-## 审计信息
+## Audit Info
 
-| 项目 | 类型 | 日期 | 审计人 | 基线 |
+| Project | Type | Date | Auditor | Baseline |
 |------|------|------|--------|------|
 | | | | auditor | |
 
-## 前置审计（含 clarify）
+## Pre-Audit (including clarify)
 
-| # | 检查项 | 结果 |
+| # | Check Item | Result |
 |---|--------|------|
-| 1 | 歧义词检查（"合适""足够"等主观词） | ✅/⚠️ |
-| 2 | 边界清晰度（输入边界、异常输入、极限值） | |
-| 3 | 未定义行为 | |
-| 4 | 需求矛盾 | |
-| 5 | 缺失场景（错误路径、并发、资源耗尽） | |
-| 6 | 验收标准可验证性 | |
+| 1 | Ambiguous word check (subjective words like "appropriate", "sufficient") | ✅/⚠️ |
+| 2 | Boundary clarity (input boundaries, exception inputs, extreme values) | |
+| 3 | Undefined behavior | |
+| 4 | Requirement contradictions | |
+| 5 | Missing scenarios (error paths, concurrency, resource exhaustion) | |
+| 6 | Acceptance criteria verifiability | |
 
-**完整性：** [spec 需求点列表及实现/验收状态]
-**宪章一致性：** [原则列表及满足状态]
+**Completeness:** [Spec requirement points list with implementation/acceptance status]
+**Constitution Compliance:** [Principles list with satisfaction status]
 
-## 交付终审
+## Final Audit
 
-**需求追溯：** [spec需求点 → 实现状态 → 验证方式]
+**Requirement Traceability:** [Spec requirement point → implementation status → verification method]
 
-**流程合规：**
-| # | 检查项 | 结果 |
+**Process Compliance:**
+| # | Check Item | Result |
 |---|--------|------|
-| 1 | coder 升级路径 | ✅/❌ |
-| 2 | coder-tester 交互留痕 | |
-| 3 | main 确认回执 | |
-| 4 | 编译产物交付前置 | |
+| 1 | Coder escalation path | ✅/❌ |
+| 2 | Coder-tester interaction tracked | |
+| 3 | Main confirmation receipt | |
+| 4 | Build artifact delivery prerequisite | |
 
-**安全审计：** 注入/泄露/认证/配置 — 逐项 ✅/⚠️/❌
-**Checklist：** [总数]/[通过]/[失败]/[N/A] — 🔴 未100%通过不得放行
+**Security Audit:** Injection/Leakage/Authentication/Configuration — item by item ✅/⚠️/❌
+**Checklist:** [Total]/[Passed]/[Failed]/[N/A] — 🔴 Not released until 100% passed
 
-## 结论
+## Conclusion
 
-- 通过 / 不通过
-- 关键发现：[ ]
-- 🔴 checklist 状态：[ ]
+- Pass / Not Pass
+- Key Findings: [ ]
+- 🔴 Checklist Status: [ ]

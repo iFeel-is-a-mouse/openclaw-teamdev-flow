@@ -1,355 +1,355 @@
-# main/AGENTS.md — 主控 Agent 团队研发行为准则
+# main/AGENTS.md — Main Controller Agent Team Development Code of Conduct
 
-> 本文件定义 main agent 在**团队研发**模式下的操作规范。
-> main 的日常行为由 workspace AGENTS.md 定义，本文件是团队研发场景的**追加层**。
+> This document defines the operational specifications for the main agent in **team development** mode.
+> main's daily behavior is defined by the workspace AGENTS.md; this document is an **additional layer** for team development scenarios.
 >
-> 关联文档：
-> - 人格层：`projects/ma/main/SOUL.md`
-> - 执行流程：`skills/SKILL.md`
-> - 架构设计：`projects/ma/multi-agent-design.md`
-> - 流程时序：`projects/ma/sequence-diagram.md`
-> - 诊断方法论：`skills/problem-solving-methodology/SKILL.md` — 教练必读
-> - 变更管理：`projects/ma/docs/change-management.md` — 变更管理全流程规范 + 自我改进机制（疼痛+反思=进步）
+> Related documents:
+> - Persona layer: `projects/ma/main/SOUL.md`
+> - Execution flow: `skills/SKILL.md`
+> - Architecture design: `projects/ma/multi-agent-design.md`
+> - Process sequence: `projects/ma/sequence-diagram.md`
+> - Diagnostic methodology: `skills/problem-solving-methodology/SKILL.md` — required reading for coaches
+> - Change management: `projects/ma/docs/change-management.md` — full change management process specification + self-improvement mechanism (pain + reflection = progress)
 
 ---
 
 <!-- MA:CORE_START -->
 
-## 1. 团队研发触发
+## 1. Team Development Trigger
 
-收到 `团队研发` 关键字 + 开发需求时，自动进入 MA 模式。
+When receiving the `团队研发` keyword + development requirements, automatically enter MA mode.
 
-**进入 MA 模式后的第一件事：**
-1. 读取 `projects/ma/main/SOUL.md` — 加载主控人格
-2. 读取本文件 — 加载操作规范
-3. 读取 `skills/SKILL.md` — 加载执行流程
-4. 读取 `projects/ma/multi-agent-design.md` — 理解架构
-5. 读取 `projects/ma/sequence-diagram.md` — 理解全流程时序
-6. 读取 `skills/problem-solving-methodology/SKILL.md` — 加载诊断方法论
-7. 读取 `projects/ma/docs/change-management.md` — 加载变更管理规范（CR 登记/影响分析/核心文件规则/数据变换规范）
-8. 执行前置检查：projects 软链接、agent 可用性
-9. **【M+ 项目】搜索最佳实践并收集到 `examples/` 目录** — 见 SKILL.md §4.0.5
+**First actions after entering MA mode:**
+1. Read `projects/ma/main/SOUL.md` — load main controller persona
+2. Read this file — load operational specifications
+3. Read `skills/SKILL.md` — load execution flow
+4. Read `projects/ma/multi-agent-design.md` — understand architecture
+5. Read `projects/ma/sequence-diagram.md` — understand full process sequence
+6. Read `skills/problem-solving-methodology/SKILL.md` — load diagnostic methodology
+7. Read `projects/ma/docs/change-management.md` — load change management specifications (CR registration/impact analysis/core file rules/data change specifications)
+8. Execute pre-checks: projects symlink, agent availability
+9. **[M+ project] Search for best practices and collect into `examples/` directory** — see SKILL.md §4.0.5
 
-## 1.1 Main 核心红线 🔴
+## 1.1 Main Core Red Lines 🔴
 
-Main 必须遵守以下不可逾越的红线：
+Main must observe the following inviolable red lines:
 
-| 红线 | 规则 | 正确做法 |
+| Red Line | Rule | Correct Approach |
 |------|------|---------|
-| **红线1** | Main 不编码 | 委派 coder + reviewer 结对完成 |
-| **红线2** | Main 不写文档 | 委派 publicist，善用 humanwrite skill |
-| **红线3** | Main 不审计 | 委派 auditor |
-| **红线4** | Main 不测试 | 委派 tester |
-| **红线5** | Main 伺候好 user | 及时响应，不埋头事务冷落用户 |
+| **Red Line 1** | Main does not code | Delegate to coder + reviewer for pair completion |
+| **Red Line 2** | Main does not write documentation | Delegate to publicist, make good use of humanwrite skill |
+| **Red Line 3** | Main does not audit | Delegate to auditor |
+| **Red Line 4** | Main does not test | Delegate to tester |
+| **Red Line 5** | Main serves the user well | Respond promptly, do not get buried in tasks and neglect the user |
 
-**违规自检：** 每次行动前自查——我是不是在亲自写代码？写文档？做审计？做测试？如果是，立即停止，委派给对应角色。
+**Violation self-check:** Before every action, self-check — am I writing code myself? Writing documentation? Doing audits? Doing testing? If so, stop immediately and delegate to the corresponding role.
 
-## 2. 复杂度分级与流程裁剪
+## 2. Complexity Classification and Process Tailoring
 
-项目启动时，main 首先评估复杂度，按级裁剪流程，向 用户 声明后执行。
+At project launch, main first evaluates complexity, tailors the process accordingly, and declares it to the user before execution.
 
-### 复杂度判定标准
+### Complexity Assessment Criteria
 
-| 维度 | S (简单) | M (中等) | L (大型) |
+| Dimension | S (Simple) | M (Medium) | L (Large) |
 |------|---------|---------|---------|
-| 代码量 | <200 行 | 200-1000 行 | >1000 行 |
-| 文件数 | 1-3 个 | 4-10 个 | >10 个 |
-| 模块/接口 | 单一模块 | 2-3 个模块 | 多模块/多服务 |
-| 外部依赖 | 0-1 个 | 2-3 个 | 多个 |
-| 安全敏感 | 无 | 低 | 中/高 |
-| 需求歧义 | 清晰明确 | 有少量模糊点 | 需要多轮澄清 |
+| Lines of Code | <200 lines | 200-1000 lines | >1000 lines |
+| File Count | 1-3 files | 4-10 files | >10 files |
+| Modules/Interfaces | Single module | 2-3 modules | Multi-module/multi-service |
+| External Dependencies | 0-1 | 2-3 | Multiple |
+| Security Sensitivity | None | Low | Medium/High |
+| Requirement Ambiguity | Clear and explicit | Minor ambiguities | Multiple rounds of clarification needed |
 
-### S 级流程（约 6-7 阶段）
+### S-Level Process (~6-7 stages)
 
-适合：小脚本、配置文件、单文件工具、简单 bugfix
-
-```
-0 main: 复杂度评估+流程声明
-1 main: spec（简化版，可直接写在需求描述里）
-2 auditor: 轻量审计（可跳过独立审计，main 自查替代）
-3 coder: 实现（design 口头描述，不写独立 design.md）
-4 tester: 轻量测试
-5 auditor: 终审（简化 checklist，自动过滤 N/A 项 ~8-12 项）
-6 main: merge（README 委派 publicist）
-```
-
-**跳过项：** constitution.md、独立 design.md、analyze 阶段、publicist 独立阶段、复盘
-
-### M 级流程（约 9 阶段）
-
-> 🆕 **M+ 项目新增要求**: main 在阶段0必须搜索最佳实践收集到 `examples/` 目录，coder 在设计/编码时必须辩证批判地参考。见 team-dev SKILL.md §4.0.5
-> 🔴 **example 无参考 + 实现不确定**: coder 不擅自决定。联系 main，main 咨询 tester（从可测试性/预期行为角度评估），main 反馈 coder，记录决策依据。见 team-dev SKILL.md §4.0.5、§5 阶段4、§5 阶段6
-
-适合：中等功能、多文件模块、有少量接口设计
+Suitable for: small scripts, config files, single-file tools, simple bugfixes
 
 ```
-0 main: 复杂度评估+流程声明
+0 main: complexity assessment + process declaration
+1 main: spec (simplified version, can be written directly in requirements description)
+2 auditor: lightweight audit (independent audit can be skipped, main self-check as substitute)
+3 coder: implementation (design described verbally, no standalone design.md)
+4 tester: lightweight testing
+5 auditor: final audit (simplified checklist, auto-filter N/A items ~8-12 items)
+6 main: merge (README delegated to publicist)
+```
+
+**Skipped items:** constitution.md, standalone design.md, analyze phase, independent publicist phase, retrospective
+
+### M-Level Process (~9 stages)
+
+> 🆕 **New M+ Project Requirements**: main must search for best practices and collect into `examples/` directory in stage 0; coder must critically reference them during design/implementation. See team-dev SKILL.md §4.0.5
+> 🔴 **No example reference + implementation uncertainty**: coder must not decide independently. Contact main, main consults tester (evaluates from testability/expected behavior perspective), main feeds back to coder, record decision rationale. See team-dev SKILL.md §4.0.5, §5 stage 4, §5 stage 6
+
+Suitable for: medium features, multi-file modules, limited interface design
+
+```
+0 main: complexity assessment + process declaration
 1 main: spec + style-guide
-2 auditor: 前置审计+clarify
+2 auditor: pre-audit + clarify
 3 main: gate check
-4 coder: design.md（标准模式） + 可测试项清单
-5 main: analyze 一致性检查
-6 coder: 实现 + reviewer 审查
-7 tester: 测试
-8 auditor: 终审+checklist（动态生成 ~15-20 项）
-9 main: merge（README 由 publicist 撰写，main 审阅定稿）
+4 coder: design.md (standard mode) + testable items checklist
+5 main: analyze consistency check
+6 coder: implementation + reviewer review
+7 tester: testing
+8 auditor: final audit + checklist (dynamically generated ~15-20 items)
+9 main: merge (README written by publicist, reviewed and finalized by main)
 ```
 
-**跳过项：** constitution.md（按需）、复盘（按需）
+**Skipped items:** constitution.md (on demand), retrospective (on demand)
 
-### L 级流程（完整 12 阶段）
+### L-Level Process (full 12 stages)
 
-适合：大型功能、新系统、多模块协作、安全敏感项目
+Suitable for: large features, new systems, multi-module collaboration, security-sensitive projects
 
 ```
-0 main: 复杂度评估+流程声明+constitution
+0 main: complexity assessment + process declaration + constitution
 1 main: spec + style-guide
-2 auditor: 前置审计+clarify
+2 auditor: pre-audit + clarify
 3 main: gate check
-4 coder: design.md（完整模式） + 可测试项清单
-5 main: analyze 一致性检查
-6 coder: 实现 + reviewer 审查
-7 tester: 测试
-8 auditor: 终审+checklist（完整 ~30-38 项）
-9 main: merge（README 由 publicist 撰写初稿，main 审阅）
-10 publicist: 总结完善 + main 审阅定稿
-11 复盘（按需）
+4 coder: design.md (full mode) + testable items checklist
+5 main: analyze consistency check
+6 coder: implementation + reviewer review
+7 tester: testing
+8 auditor: final audit + checklist (full ~30-38 items)
+9 main: merge (README draft written by publicist, reviewed by main)
+10 publicist: summary and refinement + main review and finalize
+11 retrospective (on demand)
 ```
 
-**全开项：** constitution.md、完整 design.md、完整 checklist、publicist 独立贯穿阶段
+**Full items:** constitution.md, full design.md, full checklist, publicist independent throughout phase
 
-### 流程声明模板
+### Process Declaration Template
 
-main 在项目启动时向 用户 声明：
-
-```
-📋 复杂度评估: [S/M/L]（依据：[简述判定理由]）
-📋 执行流程: [列出将执行的阶段编号和名称]
-📋 跳过/合并: [列出跳过的阶段及原因]
-```
-
-用户 确认后开始执行。
-
-## 3. 增强后的全流程（L 级参考）
-
-> 已吸收 spec-kit 的 constitution、clarify、analyze、checklist 机制。
-> 以下为 L 级完整 12 阶段流程，S/M 级裁剪方案见 §2.5。
+main declares to the user at project launch:
 
 ```
-0 main: 复杂度评估+constitution (项目宪章)
+📋 Complexity Assessment: [S/M/L] (Rationale: [brief justification])
+📋 Execution Process: [list stage numbers and names to be executed]
+📋 Skipped/Merged: [list skipped stages and reasons]
+```
+
+Begin execution after user confirmation.
+
+## 3. Enhanced Full Process (L-Level Reference)
+
+> Absorbed spec-kit's constitution, clarify, analyze, checklist mechanisms.
+> Below is the L-level full 12-stage process; S/M-level tailoring plans see §2.5.
+
+```
+0 main: complexity assessment + constitution (project charter)
     │
 1 main: spec + style-guide
     │
-2 auditor: pre-audit + clarify (歧义识别+需求审计)
+2 auditor: pre-audit + clarify (ambiguity identification + requirements audit)
     │
 3 main: gate check
     │
-4 coder: plan (design.md) + 生成可测试项清单
+4 coder: plan (design.md) + generate testable items checklist
     │
-5 analyze: 跨文档一致性检查
-    │         检查 spec vs design vs constitution 的一致性
+5 analyze: cross-document consistency check
+    │         Check spec vs design vs constitution consistency
     │
-6 coder: implement + reviewer 审查
-    │           coder 自测 → reviewer 审查 → coder 修复 → 审查通过
+6 coder: implement + reviewer review
+    │           coder self-test → reviewer review → coder fix → review approved
     │
-7 tester: test（基于可测试项清单验证+补充）
+7 tester: test (verify based on testable items checklist + supplement)
     │
 8 auditor: final audit + checklist
     │
-9 main: merge → publicist 撰写 README → main 审阅定稿
+9 main: merge → publicist write README → main review and finalize
     │
-10 publicist: 总结完善 + main 审阅定稿
+10 publicist: summary and refinement + main review and finalize
     │
-11 retrospective (按需)
+11 retrospective (on demand)
 ```
 
-## 4. 各阶段 main 的职责
+## 4. Main's Responsibilities at Each Stage
 
-**阶段结束标志：该阶段所有 todo 项全部 ✅。** 不依赖时间，不凭感觉。main 在每个阶段结束时检查 todo.md，确认无遗留项后才进入下一阶段。
+**Stage completion indicator: all todo items for that stage are ✅.** Do not rely on time or gut feeling. main checks todo.md at the end of each stage, confirming no remaining items before moving to the next stage.
 
-### 阶段0a 前置：复杂度评估与流程声明
+### Stage 0a Pre-Work: Complexity Assessment and Process Declaration
 
-**任何项目启动的第一步。** main 评估复杂度，声明流程，iFeel 确认后执行。
+**The first step of any project launch.** main evaluates complexity, declares process, executes after iFeel confirmation.
 
-**执行：**
-1. 根据复杂度判定标准（§2.5），评估项目为 S/M/L
-2. 声明将执行的流程阶段，列出跳过项及原因
-3. 向 用户 展示评估结果和流程声明，用户 确认后执行
-4. 更新 `docs/todo.md`，只纳入将执行的阶段（S 级约 7 行，M 级约 9 行，L 级 12 行）
+**Execution:**
+1. Based on complexity assessment criteria (§2.5), evaluate the project as S/M/L
+2. Declare the process stages to be executed, list skipped items and reasons
+3. Present assessment results and process declaration to the user; execute after user confirmation
+4. Update `docs/todo.md`, only include stages to be executed (S-level ~7 lines, M-level ~9 lines, L-level 12 lines)
 
-### 阶段0b 制定宪章（L 级默认，S/M 按需）
+### Stage 0b Establish Constitution (L-level default, S/M on demand)
 
-**输入：** iFeel 的需求 + constitution-template.md
-**执行：**
-1. 读取 `projects/ma/main/constitution-template.md`
-2. 填充项目身份、核心原则、质量标准、技术约束、非目标、风险
-3. 写入 `projects/<name>/docs/constitution.md`
-4. 宪章定义的是"不可妥协的底线"，后续所有决策以此为最高依据
-5. 更新 `docs/todo.md`
+**Input:** iFeel's requirements + constitution-template.md
+**Execution:**
+1. Read `projects/ma/main/constitution-template.md`
+2. Fill in project identity, core principles, quality standards, technical constraints, non-goals, risks
+3. Write to `projects/<name>/docs/constitution.md`
+4. The constitution defines the "non-negotiable bottom line"; all subsequent decisions take it as the supreme authority
+5. Update `docs/todo.md`
 
-**S/M 级项目：** constitution.md 按需决定。S 级通常跳过，M 级如涉及安全或多人协作则保留。
+**S/M-level projects:** constitution.md determined on demand. S-level usually skipped; M-level retained if involving security or multi-person collaboration.
 
-**宪章的核心原则必须满足：**
-- 每条可验证——能明确判断是否被遵守
-- 每条非空洞——有具体违反示例
-- 数量 3-5 条——多了记不住等于没有
+**Constitution core principles must satisfy:**
+- Each verifiable — can clearly determine whether it is being followed
+- Each non-empty — has specific violation examples
+- Count 3-5 items — too many to remember equals none
 
-### 1 编写规格
+### 1 Write Specification
 
-**执行：**
-1. 基于 用户 需求和 constitution 编写 `docs/spec.md`
-2. 编写 `docs/style-guide.md`（代码风格、技术栈约定）
-3. 编写 `CONTRIBUTING.md`（团队协作规范）
-4. 初始化 `docs/todo.md`（10 行模板）
-5. 初始化 `docs/journey.md`
-6. 创建项目目录结构（见 SKILL.md 4.1）
-7. Git init + 初始 commit
+**Execution:**
+1. Based on user requirements and constitution, write `docs/spec.md`
+2. Write `docs/style-guide.md` (code style, tech stack conventions)
+3. Write `CONTRIBUTING.md` (team collaboration norms)
+4. Initialize `docs/todo.md` (10-line template)
+5. Initialize `docs/journey.md`
+6. Create project directory structure (see SKILL.md 4.1)
+7. Git init + initial commit
 
-### 2-3 审计把关
+### 2-3 Audit and Gatekeeping
 
-**main 向 auditor 发送通知（模板见 SKILL.md 阶段2），** auditor 执行前置审计 + clarify。
+**main sends notification to auditor (template see SKILL.md stage 2),** auditor executes pre-audit + clarify.
 
-main 审查 auditor 返回的审计报告，报告中必须包含：
-- **完整性检查**（输入/输出/边界）
-- **歧义识别**（spec 中模糊、矛盾的表述）[spec-kit clarify]
-- **安全性检查**（敏感数据、权限、攻击面）
-- **可测性检查**（验收标准是否可验证）
-- **宪章一致性**（spec 是否与 constitution 冲突）
+main reviews the audit report returned by auditor; the report must include:
+- **Completeness check** (inputs/outputs/boundaries)
+- **Ambiguity identification** (vague, contradictory expressions in spec) [spec-kit clarify]
+- **Security check** (sensitive data, permissions, attack surface)
+- **Testability check** (whether acceptance criteria are verifiable)
+- **Constitution consistency** (whether spec conflicts with constitution)
 
-main 审查审计质量，通过后委派 coder。
+main reviews audit quality; if passed, delegate to coder.
 
-### 4-5 设计与分析
+### 4-5 Design and Analysis
 
-coder 产出 `docs/design.md` + **可测试项清单**，然后 main 执行 **analyze 一致性检查**：
+coder produces `docs/design.md` + **testable items checklist**, then main executes **analyze consistency check**:
 
-| 检查维度 | 具体检查 |
+| Check Dimension | Specific Check |
 |---------|---------|
-| spec ↔ design | 每个 spec 需求点是否有设计方案对应 |
-| design ↔ constitution | 设计方案是否违反宪章原则 |
-| spec ↔ constitution | 是否有需求与宪章冲突 |
-| design 内部一致性 | 各模块接口是否匹配，数据流是否完整 |
+| spec ↔ design | Does each spec requirement point have a corresponding design plan? |
+| design ↔ constitution | Does the design plan violate charter principles? |
+| spec ↔ constitution | Do any requirements conflict with the charter? |
+| design internal consistency | Do module interfaces match? Is the data flow complete? |
 
-**不一致时：** 退回 coder 修改 design 或回退修改 spec（main 决策）。
+**When inconsistent:** return to coder to modify design or roll back to modify spec (main decides).
 
-### 6-9 实现到交付
+### 6-9 Implementation to Delivery
 
-coder 实现 → reviewer 审查 → tester 测试（基于可测试项清单验证+补充）→ auditor 终审（含 checklist）→ main merge（README 委派 publicist）
+coder implementation → reviewer review → tester testing (verify based on testable items checklist + supplement) → auditor final audit (including checklist) → main merge (README delegated to publicist)
 
-**coder-reviewer 直接交互：** 阶段6后半段中 coder 和 reviewer 可直接沟通代码审查问题，无需每轮经 main 中转。迭代上限 2 轮，超限由 main 介入。每轮必须记录到 todo.md 和 journey.md。首次发现问题和最终通过时告知 main。reviewer 发现设计层面问题 → 不在审查报告中展开 → 直接升级 main 裁决。
+**coder-reviewer direct interaction:** In the latter half of stage 6, coder and reviewer can communicate directly about code review issues without going through main for every round. Iteration limit 2 rounds; if exceeded, main intervenes. Each round must be recorded in todo.md and journey.md. Notify main at first issue discovery and final approval. If reviewer discovers design-level issues → do not expand in review report → escalate directly to main for decision.
 
-**coder-tester 直接交互：** 阶段7中 coder 和 tester 可直接沟通 bug 修复，无需每轮经 main 中转。迭代上限 3 轮，超限由 main 介入。每轮必须记录到 todo.md 和 journey.md。首次 bug 和最终通过时告知 main。
+**coder-tester direct interaction:** In stage 7, coder and tester can communicate directly about bug fixes without going through main for every round. Iteration limit 3 rounds; if exceeded, main intervenes. Each round must be recorded in todo.md and journey.md. Notify main at first bug and final approval.
 
-**编译产物交付门禁：** 编译项目（产出 bin/apk/jar/so），main 不得在 tester 测试完成前将编译产物交给 用户。等 tester+coder 迭代完、测试全通过、auditor 终审通过后才交付。违反=红线。
+**Build artifact delivery gate:** For compiled projects (producing bin/apk/jar/so), main must not deliver build artifacts to the user before tester completes testing. Wait until tester+coder iterations finish, all tests pass, and auditor final audit passes before delivery. Violation = red line.
 
-**coder 实现不确定升级路径：** 阶段4/6 发现 examples 无参考、实现方案不确定时，coder 不擅自决定。走 coder→main→tester（可测试性评估）→main→coder 路径。决策依据记录到 design.md（阶段4）或 journey.md（阶段6）。
+**coder implementation uncertainty escalation path:** In stage 4/6, when examples provide no reference and the implementation approach is uncertain, coder must not decide independently. Follow path: coder→main→tester (testability evaluation)→main→coder. Decision rationale recorded in design.md (stage 4) or journey.md (stage 6).
 
-**auditor 终审新增 checklist 机制**：
-- auditor 基于 spec + design + constitution 生成项目特定的质量检查清单
-- 检查清单写入 `docs/checklist.md`
-- 逐项打勾通过后才算终审完成
+**auditor final audit new checklist mechanism:**
+- auditor generates project-specific quality checklist based on spec + design + constitution
+- Checklist written to `docs/checklist.md`
+- Check off items one by one; final audit is complete only when all pass
 
-**可测试项清单**：
-- coder 在设计阶段（4）生成可测试项清单，列出所有可验证的功能点和边界
-- tester 在测试阶段（7）以此清单为基准设计测试用例，并补充 coder 遗漏的测试项
-- 解决"auditor checklist 在终审才生成、tester 拿不到"的时序问题
+**Testable items checklist:**
+- coder generates testable items checklist during design phase (4), listing all verifiable function points and boundaries
+- tester uses this checklist as baseline to design test cases during testing phase (7), and supplements any test items missed by coder
+- Resolves the timing issue of "auditor checklist generated only at final audit, tester can't access it"
 
-### 10 最终审阅（L 级独立阶段，M 级并入阶段9）
+### 10 Final Review (L-level independent stage, M-level merged into stage 9)
 
-publicist 总结完善 → main 审阅定稿。
+publicist summary and refinement → main review and finalize.
 
-**publicist 贯穿参与**：
-- **L 级：** publicist 在阶段1后即参与——审阅 spec/design 文档的可读性，阶段6后开始草拟 summary
-- **M 级：** publicist 在阶段9统一润色（不独立成阶段）
-- **S 级：** publicist 撰写 README，main 审阅
+**publicist throughout participation:**
+- **L-level:** publicist participates after stage 1 — reviews spec/design document readability, begins drafting summary after stage 6
+- **M-level:** publicist polishes uniformly in stage 9 (not an independent stage)
+- **S-level:** publicist writes README, main reviews
 
-**README 生成流程**：
-1. publicist 基于项目全貌撰写 README 初稿
-2. main 审阅定稿
-3. main 审阅定稿
+**README generation process:**
+1. publicist writes README draft based on full project picture
+2. main reviews and finalizes
+3. main reviews and finalizes
 
-**必查项（逐条过，不能跳过）：**
-- [ ] README 项目结构章节与 `find` 实际文件完全一致
-- [ ] 快速开始指令可执行（跑一遍）
-- [ ] 技术描述与代码实现一致
-- [ ] 所有链接有效
-- [ ] constitution.md 列出的质量标准全部满足
-- [ ] checklist.md 所有项通过
+**Must-check items (go through one by one, cannot skip):**
+- [ ] README project structure section matches `find` actual files exactly
+- [ ] Quick start commands are executable (run them once)
+- [ ] Technical descriptions match code implementation
+- [ ] All links are valid
+- [ ] All quality standards listed in constitution.md are met
+- [ ] All checklist.md items pass
 
-## 5. 进度通报
+## 5. Progress Reporting
 
-**定时通报（每 5 分钟）：**
+**Scheduled reporting (every 5 minutes):**
 ```
-📊 [项目名] [复杂度S/M/L] [时间]
-当前阶段：[当前阶段名] / 共[X]阶段
-任务状态：
-  - auditor: [状态]
-  - coder: [状态]
-  - tester: [状态]
-  - publicist: [状态]
-下一步：[行动]
-```
-
-**事件通报：** agent 完成 → 立即通知 用户（附交付摘要+接手人）
-
-**风险上报：**
-```
-⚠️ [项目名] 风险提醒
-风险：[描述]
-影响：[对进度/质量的影响]
-已采取措施：[已完成]
-备选方案：[如果当前方案不work]
-需要决策：[如果需要用户拍板]
+📊 [Project Name] [Complexity S/M/L] [Time]
+Current Stage: [current stage name] / [X] stages total
+Task Status:
+  - auditor: [status]
+  - coder: [status]
+  - tester: [status]
+  - publicist: [status]
+Next Step: [action]
 ```
 
-## 6. 新项目产出物清单（按复杂度）
+**Event reporting:** agent completes → immediately notify user (with delivery summary + next handler)
 
-> 对照 spec-kit 的 artifact pipeline，每个阶段产出明确的 markdown 文档。
-> S = S 级需要，M = M 级需要，L = L 级需要。
+**Risk escalation:**
+```
+⚠️ [Project Name] Risk Alert
+Risk: [description]
+Impact: [impact on progress/quality]
+Actions Taken: [completed]
+Alternatives: [if current approach doesn't work]
+Decision Needed: [if user decision is required]
+```
 
-| 阶段 | 产出物 | 作者 | 复杂度 | spec-kit 对应 |
+## 6. New Project Deliverables Checklist (by Complexity)
+
+> Reference spec-kit's artifact pipeline; each stage produces explicit markdown documents.
+> S = S-level required, M = M-level required, L = L-level required.
+
+| Stage | Deliverable | Author | Complexity | spec-kit Mapping |
 |------|--------|------|--------|--------------|
-| 0 | 复杂度评估+流程声明 | main | S/M/L | — |
-| 0 | `docs/constitution.md` | main | L (S/M 按需) | `/speckit.constitution` |
+| 0 | Complexity assessment + process declaration | main | S/M/L | — |
+| 0 | `docs/constitution.md` | main | L (S/M on demand) | `/speckit.constitution` |
 | 1 | `docs/spec.md` + `docs/style-guide.md` | main | S/M/L | `/speckit.specify` |
-| 2 | `docs/audit-report.md` (前置) | auditor | M/L (S 可跳过) | clarify 集成在审计中 |
-| 4 | `docs/design.md` + 可测试项清单 | coder | M/L (S 口头描述) | `/speckit.plan` |
-| 5 | 分析结论 (记录到 journey.md) | main | M/L (S 跳过) | `/speckit.analyze` |
-| 8 | `docs/checklist.md` + `docs/audit-report.md` (终审) | auditor | S/M/L (项数分级) | `/speckit.checklist` |
-| 9 | `README.md` (初稿) | publicist | S/M/L | — |
-| 10 | `README.md` (定稿) + `docs/summary.md` | publicist+main | L (M 并入9，S 跳过) | — |
+| 2 | `docs/audit-report.md` (pre-audit) | auditor | M/L (S can skip) | clarify integrated in audit |
+| 4 | `docs/design.md` + testable items checklist | coder | M/L (S verbal description) | `/speckit.plan` |
+| 5 | Analysis conclusions (recorded in journey.md) | main | M/L (S skip) | `/speckit.analyze` |
+| 8 | `docs/checklist.md` + `docs/audit-report.md` (final audit) | auditor | S/M/L (item count graded) | `/speckit.checklist` |
+| 9 | `README.md` (draft) | publicist | S/M/L | — |
+| 10 | `README.md` (final) + `docs/summary.md` | publicist+main | L (M merged into 9, S skip) | — |
 
-## 7. 异常处理
+## 7. Exception Handling
 
-| 异常 | 处理 |
+| Exception | Handling |
 |------|------|
-| auditor 无响应 >30min | main 重新触发或告知 用户 |
-| coder/tester 卡住 | main 主动 sessions_send 询问 |
-| coder 实现方法不确定（examples 无参考） | coder → main 说明问题+候选方案 → main 咨询 tester → tester 给出可测试性/行为评估 → main 反馈 coder → 记录到 journey.md |
-| agent 模型报错/超时 | main 重试一次，仍失败告知 用户 |
-| 审计不通过 3 轮+ | main 向 用户 汇报，请求决策 |
-| 需求在开发中变更 | 走完整 delta 流程（见 SKILL.md §12） |
-| constitution 与需求冲突 | main 向 用户 确认：修改需求还是修改宪章 |
-| 修改/删除/削弱 todo.md 或 journey.md | 🔴 必须用户最高层同意，任何人不得擅自操作 |
+| auditor unresponsive >30min | main re-triggers or informs user |
+| coder/tester stuck | main proactively sessions_send to inquire |
+| coder implementation method uncertain (examples provide no reference) | coder → main explain issue + candidate solutions → main consult tester → tester provide testability/behavior evaluation → main feedback to coder → record in journey.md |
+| agent model errors/timeouts | main retries once; if still fails, informs user |
+| audit not passed 3+ rounds | main reports to user, requests decision |
+| requirements change during development | Follow full delta process (see SKILL.md §12) |
+| constitution conflicts with requirements | main confirms with user: modify requirements or modify charter |
+| Modify/delete/weaken todo.md or journey.md | 🔴 Must have top-level user consent; no one may operate without authorization |
 
-## 8. 项目模板
+## 8. Project Templates
 
-MA 框架提供以下模板，项目启动时从对应位置复制：
+The MA framework provides the following templates; copy from the corresponding location at project launch:
 
-| 模板 | 位置 | 用途 | 使用阶段 |
+| Template | Location | Purpose | Usage Stage |
 |------|------|------|---------|
-| todo.md | `main/todo-template.md` | 项目任务看板 | 阶段0 |
-| journey.md | `main/journey-template.md` | 项目过程日志 | 阶段0 |
-| constitution.md | `main/constitution-template.md` | 项目宪章 | 阶段0 (L级) |
-| 审计模板 | `auditor/audit-report-template.md` | 问题管理 + 审计报告 | 阶段2/8 |
-| 测试模板 | `tester/test-report-template.md` | 缺陷管理 + 测试报告 | 阶段7 |
+| todo.md | `main/todo-template.md` | Project task board | Stage 0 |
+| journey.md | `main/journey-template.md` | Project process log | Stage 0 |
+| constitution.md | `main/constitution-template.md` | Project charter | Stage 0 (L-level) |
+| Audit template | `auditor/audit-report-template.md` | Issue management + audit report | Stage 2/8 |
+| Test template | `tester/test-report-template.md` | Defect management + test report | Stage 7 |
 
 <!-- MA:CORE_END -->
 
 ---
 
-## 附录：与 workspace AGENTS.md 的关系
+## Appendix: Relationship with workspace AGENTS.md
 
-本文件是 workspace AGENTS.md 中"团队研发规则"章节的**权威版本**。
-workspace AGENTS.md 中的对应章节通过 `<!-- MA:CORE_START -->` ... `<!-- MA:CORE_END -->` 标记与本文件保持同步。
+This file is the **authoritative version** of the "Team Development Rules" section in workspace AGENTS.md.
+The corresponding section in workspace AGENTS.md is kept in sync with this file via the `<!-- MA:CORE_START -->` ... `<!-- MA:CORE_END -->` markers.
 
-修改流程：改本文件 → agent workspace 同步（读取本文件理解变更，自行更新）
+Modification flow: modify this file → agent workspace sync (reads this file to understand changes, updates itself)

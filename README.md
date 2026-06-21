@@ -1,80 +1,76 @@
-# MA — Multi-Agent 开发团队
+# MA — Multi-Agent Development Team
 
-> 一支由 AI Agent 组成的软件开发团队。各司其职，相互协作，质量把关，交付可靠。
+> A software development team composed of AI Agents. Each has a defined role, collaborates with others, enforces quality gates, and delivers reliably.
 
 ---
 
-## 团队构成
+## Team Composition
 
-| Agent | 角色 | 一句话职责 |
-|-------|------|-----------|
-| **main** 🎓🏅📋 | 顾问·教练·项目经理 | 用户的唯一接口，需求入口，结果出口，团队调度 |
-| **coder** 🏗️🖥️ | 架构师·驾驶员 | 设计编码，与 reviewer 结对编程 |
-| **reviewer** 🔍🧭 | 审查员·导航员 | 代码审查+结对编程，与 coder 互补 |
-| **tester** 🧪 | 测试 | 黑盒+白盒+性能测试，保证代码质量 |
-| **auditor** 🔒 | 审计·守门员 | 前置审计+终审+性能标准 |
-| **publicist** ✍️ | 写手 | 技术文档、润色修改 |
+| Agent | Role | One-Line Responsibility |
+|-------|------|------------------------|
+| **main** 🎓🏅📋 | Advisor · Coach · Project Manager | The user's sole interface: requirements entry, results exit, team dispatcher |
+| **coder** 🏗️🖥️ | Architect · Driver | Design and coding, pair programming with reviewer |
+| **reviewer** 🔍🧭 | Inspector · Navigator | Code review + pair programming, complementary to coder |
+| **tester** 🧪 | Tester | Black-box + white-box + performance testing, ensuring code quality |
+| **auditor** 🔒 | Auditor · Gatekeeper | Pre-audit + final audit + performance standards |
+| **publicist** ✍️ | Writer | Technical documentation, copy editing |
 
-## 工作流
+## Workflow
 
 ```
-用户提需求
+User submits requirement
     │
     ▼
-0 main 复杂度评估+流程声明
+0 main: complexity assessment + process declaration
     │
     ▼
-1 main 需求分析 → auditor 前置审计+clarify ──→ main 把关
-                                                    │
-                                                    ▼
-                                              4 coder 设计+技术方案
-                                                    │
-                                                    ▼
-                                              5 analyze 一致性检查
-                                                    │
-                                                    ▼
-                                        ┌─────────┴─────────┐
-                                        │   结对编程阶段       │
-                                        │  coder ⟷ reviewer│
-                                        │  驾驶员/导航员轮换    │
-                                        │  实时审查+正式审查    │
-                                        └─────────┬─────────┘
-                                                    │
-                                                    ▼
-                                              7 tester 测试
-                                                    │
-                                                    ▼
-                                              8 auditor 终审+checklist
-                                               │         │
-                                           有问题     ✅ 通过
-                                               │         │
-                                               ▼         ▼
-                                          main 决策    main ✅
-                                          迭代修复    → merge
-                                                        │
-                                                        ▼
-                                              9 main README初稿
-                                                        │
-                                                        ▼
-                                              10 publicist 文档定稿
-                                                        │
-                                                        ▼
-                                              11 复盘（按需）
+1 main: requirement analysis → auditor: pre-audit + clarify ──→ main: gate check
+                                                                    │
+                                                                    ▼
+                                                              4 coder: design + technical proposal
+                                                                    │
+                                                                    ▼
+                                                              5 analyze: consistency check
+                                                                    │
+                                                                    ▼
+                                                        ┌─────────┴─────────┐
+                                                        │  Pair Programming   │
+                                                        │  coder ⟷ reviewer │
+                                                        │  Driver/navigator   │
+                                                        │  rotation           │
+                                                        │  Real-time + formal │
+                                                        │  review             │
+                                                        └─────────┬─────────┘
+                                                                    │
+                                                                    ▼
+                                                              7 tester: testing
+                                                                    │
+                                                                    ▼
+                                                              8 auditor: final audit + checklist
+                                                               │         │
+                                                          issues found  ✅ passed
+                                                               │         │
+                                                               ▼         ▼
+                                                          main: decide  main: ✅
+                                                          iterate/fix  → merge
+                                                                          │
+                                                                          ▼
+                                                                    9 main: README draft
+                                                                          │
+                                                                          ▼
+                                                                    10 publicist: finalize docs
+                                                                          │
+                                                                          ▼
+                                                                    11 retrospective (on demand)
 ```
 
-> 核心链路：`需求 → 前置审计 → 设计 → [coder ⟷ reviewer 结对编程] → 测试 → 终审 → merge → 文档`
+> Core chain: `Requirement → Pre-audit → Design → [coder ⟷ reviewer pair programming] → Testing → Final Audit → Merge → Documentation`
 
-## 快速开始
+## Quick Start
 
-### 1. 下载
+### 1. Create Agents
 
-```bash
-git clone https://github.com/iFeel-is-a-mouse/team-dev.git
-```
-
-### 2. 创建 Agent
-
-在 OpenClaw 中创建 6 个 agent：
+Create 6 agents in OpenClaw:
 
 ```bash
 openclaw agents create coder    --workspace ~/.openclaw/workspace-coder
@@ -84,9 +80,9 @@ openclaw agents create auditor  --workspace ~/.openclaw/workspace-auditor
 openclaw agents create publicist --workspace ~/.openclaw/workspace-publicist
 ```
 
-main agent 即你的默认 agent，无需额外创建。
+The main agent is your default agent and does not need to be created separately.
 
-创建 projects 软链接（所有 agent 共享同一目录）：
+Create projects symlinks (all agents share the same directory):
 
 ```bash
 for agent in coder tester auditor publicist; do
@@ -94,85 +90,85 @@ for agent in coder tester auditor publicist; do
 done
 ```
 
-### 3. 初始化
+### 3. Initialize
 
-告诉 main：
+Tell main:
 
-> 学习 `SETUP.md`，为 coder、tester、auditor、publicist 融合同步各自的 AGENTS.md 和 SOUL.md，让他们准备好团队研发。
+> Study `SETUP.md`, synchronize and merge the respective AGENTS.md and SOUL.md for coder, tester, auditor, and publicist, and get them ready for team development.
 
-main 会读取各角色模板，通过 `sessions_send` 发送给对应 agent，**融合（而非覆盖）**写入各 agent 的 workspace。详见 `SETUP.md`。
+main will read each role template, send them to the corresponding agent via `sessions_send`, and **merge (not overwrite)** into each agent's workspace. See `SETUP.md` for details.
 
-### 4. 验证配置
+### 4. Verify Configuration
 
-告诉 main：
+Tell main:
 
-> 团队研发：验证配置，检查各 agent 是否就绪。
+> Team development: verify configuration, check if all agents are ready.
 
-main 会逐一确认 agent 可达、软链接正确、模板已同步。全部通过后即可开始。
+main will confirm each agent is reachable, symlinks are correct, and templates are synced. Once all checks pass, you're ready to begin.
 
-### 5. 开始开发
+### 5. Start Developing
 
-对 main 说出你的需求：
+Tell main what you want:
 
-> 团队研发：帮我开发一个 XXX 功能
+> Team development: help me build an XXX feature
 
-main 会自动评估复杂度、分配合适的流程（S/M/L 三级），调度整个团队协作完成。
+main will automatically assess complexity, assign the appropriate process (S/M/L tier), and orchestrate the entire team to collaborate and deliver.
 
-## 关键设计决策
+## Key Design Decisions
 
-1. **Auditor 覆盖完整生命周期** — 前置审计确保需求质量，终审确保交付质量
-2. **文件系统是通信总线** — 所有 agent 共享 `projects/` 目录，零配置，零延迟
-3. **宪法先行** — 项目启动先定 constitution.md，所有后续决策以此为最高依据
-4. **模型按角色分配** — main/coder/auditor 使用优选模型，reviewer/tester/publicist 使用互补模型
-5. **信任但验证** — main 相信 agent 的能力，但每次关键产出都要审查
+1. **Auditor covers the full lifecycle** — Pre-audit ensures requirement quality; final audit ensures delivery quality
+2. **Filesystem is the communication bus** — All agents share the `projects/` directory, zero config, zero latency
+3. **Constitution first** — Start every project by establishing constitution.md; all subsequent decisions defer to it as the supreme authority
+4. **Model allocation by role** — main/coder/auditor use preferred models; reviewer/tester/publicist use complementary models
+5. **Trust but verify** — main trusts agent capabilities, but every critical output must be reviewed
 
-## 文档导航
+## Documentation Map
 
 ```
 team-dev/
-├── README.md                  ← 你在这里
-├── SETUP.md                   ← 理解、部署与配置指南
-├── CHANGELOG.md               ← 版本变更记录
-├── VERSION                    ← 当前版本号
-├── multi-agent-design.md      ← 架构设计：Agent设计、通信矩阵、三文档体系、配置参考
-├── sequence-diagram.md        ← 时序图：全流程交互序列，todo.md和journey.md贯穿全程
+├── README.md                  ← You are here
+├── SETUP.md                   ← Understanding, deployment & configuration guide
+├── CHANGELOG.md               ← Version changelog
+├── VERSION                    ← Current version number
+├── multi-agent-design.md      ← Architecture design: Agent design, communication matrix, three-document system, configuration reference
+├── sequence-diagram.md        ← Sequence diagrams: full-process interaction sequences, with todo.md and journey.md running through the entire process
 ├── docs/
-│   ├── change-management.md   ← 变更管理全流程规范（CR登记/影响分析/核心文件规则/数据变换规范）
-│   └── testing-redline.md     ← 测试红线规则
+│   ├── change-management.md   ← Change management full-process specification (CR registration / impact analysis / core file rules / data transformation specification)
+│   └── testing-redline.md     ← Testing redline rules
 ├── skills/
-│   └── SKILL.md               ← 团队研发执行流程（核心 Skill）
-├── main/                      ← main agent 配置
-│   ├── AGENTS.md              ← 团队研发行为准则
-│   ├── SOUL.md                ← 三重身份人格
-│   ├── constitution-template.md ← 项目宪章模板
-│   ├── todo-template.md       ← 项目任务看板模板
-│   └── journey-template.md    ← 项目过程日志模板
+│   └── SKILL.md               ← Team development execution process (Core Skill)
+├── main/                      ← main agent configuration
+│   ├── AGENTS.md              ← Team development code of conduct
+│   ├── SOUL.md                ← Triple-identity persona
+│   ├── constitution-template.md ← Project constitution template
+│   ├── todo-template.md       ← Project task board template
+│   └── journey-template.md    ← Project process log template
 ├── coder/
-│   ├── AGENTS.md              ← 编码规范、设计层次
-│   └── SOUL.md                ← 工匠精神
+│   ├── AGENTS.md              ← Coding standards, design tiers
+│   └── SOUL.md                ← Craftsmanship spirit
 ├── tester/
-│   ├── AGENTS.md              ← 测试方法论
-│   ├── SOUL.md                ← 职业怀疑者
-│   └── test-report-template.md ← 缺陷管理 + 测试报告模板
+│   ├── AGENTS.md              ← Testing methodology
+│   ├── SOUL.md                ← Professional skeptic
+│   └── test-report-template.md ← Defect management + test report template
 ├── auditor/
-│   ├── AGENTS.md              ← 三重审计+checklist
-│   ├── SOUL.md                ← 公正法官
-│   └── audit-report-template.md ← 问题管理 + 审计报告模板
+│   ├── AGENTS.md              ← Triple audit + checklist
+│   ├── SOUL.md                ← Impartial judge
+│   └── audit-report-template.md ← Issue management + audit report template
 └── publicist/
-    ├── AGENTS.md              ← 写作规矩
-    └── SOUL.md                ← 书卷气、文采
+    ├── AGENTS.md              ← Writing rules
+    └── SOUL.md                ← Literary flair, elegance
 ```
 
 ---
 
-## 团队格言
+## Team Mottos
 
-| Agent | 格言 |
-|-------|------|
-| **main** 🎓 | "将者，智、信、仁、勇、严也。" — 孙子 |
-| **coder** 🏗️ | "代码是写给人看的，只是顺便让机器执行。" — SICP |
-| **tester** 🧪 | "质量不是测出来的，但测不出来的质量不是质量。" |
-| **auditor** 🔒 | "信任是好的，审计更好。" |
-| **publicist** ✍️ | "辞达而已矣。" — 孔子 |
+| Agent | Motto |
+|-------|-------|
+| **main** 🎓 | "The general must possess wisdom, credibility, benevolence, courage, and discipline." — Sun Tzu |
+| **coder** 🏗️ | "Programs must be written for people to read, and only incidentally for machines to execute." — SICP |
+| **tester** 🧪 | "Quality is not tested in, but quality that cannot be tested out is not quality." |
+| **auditor** 🔒 | "Trust is good, auditing is better." |
+| **publicist** ✍️ | "Expression that communicates is enough." — Confucius |
 
 ---

@@ -1,90 +1,90 @@
-# constitution.md — 项目宪章
+# constitution.md — Project Constitution
 
-> 模板文件。每个项目启动时，main 基于此模板生成 `docs/constitution.md`。
-> 
-> 宪章定义项目的**治理原则**——所有后续决策的最高依据。
-> 与 spec.md（做什么）和 style-guide.md（怎么写）不同，宪章回答：**什么不可妥协**。
+> Template file. When each project starts, main generates `docs/constitution.md` based on this template.
+>
+> The constitution defines the project's **governance principles** — the supreme basis for all subsequent decisions.
+> Unlike spec.md (what to do) and style-guide.md (how to write), the constitution answers: **what is non-negotiable**.
 
 ---
 
-## 1. 项目身份
+## 1. Project Identity
 
-- **项目名称：** [项目名]
-- **一句话定位：** [这个项目解决什么问题，为谁解决]
-- **创建日期：** YYYY-MM-DD
+- **Project Name:** [ProjectName]
+- **One-Line Positioning:** [What problem this project solves, and for whom]
+- **Creation Date:** YYYY-MM-DD
 
-## 2. 核心原则
+## 2. Core Principles
 
-> 3-5 条不可妥协的原则。每条原则必须可验证——能判断是否被遵守。
+> 3-5 non-negotiable principles. Each principle must be verifiable — it must be possible to determine whether it has been followed.
 
-### 原则 1：[名称]
-**声明：** [一句话表述]
-**验证方式：** [如何判断这条原则被遵守了]
-**违反示例：** [什么算违反]
+### Principle 1: [Name]
+**Statement:** [One-sentence description]
+**Verification Method:** [How to verify this principle has been followed]
+**Violation Example:** [What constitutes a violation]
 
-### 原则 2：[名称]
-**声明：**
-**验证方式：**
-**违反示例：**
+### Principle 2: [Name]
+**Statement:**
+**Verification Method:**
+**Violation Example:**
 
-### 原则 3：[名称]
-**声明：**
-**验证方式：**
-**违反示例：**
+### Principle 3: [Name]
+**Statement:**
+**Verification Method:**
+**Violation Example:**
 
-## 3. 质量标准
+## 3. Quality Standards
 
-### 代码质量
-- [ ] 所有公开 API 有文档注释
-- [ ] 圈复杂度不超过 [X]
-- [ ] 测试覆盖率不低于 [X]%
-- [ ] 无已知安全漏洞（OWASP Top 10）
-- [ ] [项目特定标准]
+### Code Quality
+- [ ] All public APIs have documentation comments
+- [ ] Cyclomatic complexity does not exceed [X]
+- [ ] Test coverage no less than [X]%
+- [ ] No known security vulnerabilities (OWASP Top 10)
+- [ ] [Project-specific standards]
 
-### 文档质量
-- [ ] README 的"快速开始"指令可执行
-- [ ] 所有对外接口有使用示例
-- [ ] 设计决策有 ADR 记录
+### Documentation Quality
+- [ ] README "Quick Start" instructions are executable
+- [ ] All external interfaces have usage examples
+- [ ] Design decisions have ADR records
 
-### 流程质量
-- [ ] 每个功能点经过 auditor 审计
-- [ ] 测试通过率 100% 才可进入终审
-- [ ] 需求变更走完整的 delta 流程
+### Process Quality
+- [ ] Every feature point is audited by auditor
+- [ ] 100% test pass rate required before final audit
+- [ ] Requirement changes follow the complete delta process
 
-## 4. 技术约束
+## 4. Technical Constraints
 
-> 不可选的约束——项目的基础设定。
+> Non-optional constraints — fundamental project settings.
 
-| 约束项 | 决定 | 理由 |
+| Constraint | Decision | Rationale |
 |--------|------|------|
-| 编程语言 | [Java/Python/JS/...] | [为什么] |
-| 构建系统 | [Maven/Gradle/npm/...] | |
-| 目标平台 | [JVM/Node/Browser/...] | |
-| 数据库 | [如有] | |
-| 部署方式 | [如有] | |
+| Programming Language | [Java/Python/JS/...] | [Why] |
+| Build System | [Maven/Gradle/npm/...] | |
+| Target Platform | [JVM/Node/Browser/...] | |
+| Database | [If applicable] | |
+| Deployment Method | [If applicable] | |
 
-## 5. 非目标 (Non-Goals)
+## 5. Non-Goals
 
-> 明确列出本项目**不做**什么，防止范围蔓延。
+> Explicitly state what this project does **not** do, to prevent scope creep.
 
-1. [本项目不做什么]
-2. [不优化的场景]
-3. [不支持的平台/环境]
+1. [What this project does not do]
+2. [Scenarios not optimized for]
+3. [Platforms/environments not supported]
 
-## 6. 风险登记
+## 6. Risk Register
 
-| 风险 | 可能性 | 影响 | 缓解措施 |
+| Risk | Likelihood | Impact | Mitigation |
 |------|--------|------|---------|
-| [风险描述] | 高/中/低 | 高/中/低 | [如何缓解] |
+| [Risk description] | High/Medium/Low | High/Medium/Low | [Mitigation strategy] |
 
 ---
 
-## 版本历史
+## Version History
 
-| 日期 | 版本 | 变更 | 作者 |
+| Date | Version | Change | Author |
 |------|------|------|------|
-| YYYY-MM-DD | 1.0 | 初始宪章 | main |
+| YYYY-MM-DD | 1.0 | Initial constitution | main |
 
 ---
 
-*"宪章不是愿望清单——是契约。违反宪章就是违约。"*
+*"A constitution is not a wish list — it is a contract. Violating the constitution means breach of contract."*

@@ -1,770 +1,771 @@
-# 变更管理规范 — Change Management
+# Change Management Specification
 
-> 版本: v1.0 | 生效日期: 2026-06-08
+> Version: v1.0 | Effective Date: 2026-06-08
 >
-> 适用对象：main、coder、reviewer、tester、auditor、publicist
+> Applicable to: main, coder, reviewer, tester, auditor, publicist
 >
-> 核心理念借用《原则》（Ray Dalio）：**疼痛+反思=进步**，**不容忍两次同样的错误**。
-> 每个变更不是只改代码，也是改进流程的机会。
+> Core philosophy borrowed from *Principles* (Ray Dalio): **Pain + Reflection = Progress**, **Don’t tolerate the same mistake twice**.
+> Every change is not just about fixing code — it's an opportunity to improve the process.
 
 ---
 
-## 目录
+## Table of Contents
 
-1. [变更管理总则](#1-变更管理总则)
-2. [变更生命周期](#2-变更生命周期)
-3. [变更请求（CR）模板](#3-变更请求cr模板)
-4. [影响分析自查清单](#4-影响分析自查清单)
-5. [核心文件修改规则](#5-核心文件修改规则)
-6. [跨模块数据变换规范](#6-跨模块数据变换规范)
-7. [非阻塞问题追踪规则](#7-非阻塞问题追踪规则)
-8. [角色互换常态化](#8-角色互换常态化)
-9. [Agent 故障冗余策略](#9-agent-故障冗余策略)
-10. [变更与标准流程的映射](#10-变更与标准流程的映射)
-11. [附录：变更历史](#11-附录变更历史)
-
----
-
-## 1. 变更管理总则
-
-### 1.1 什么是"变更"
-
-在 MA 框架中，"变更"指团队研发模式下**对已有代码库的任何修改**，包括：
-
-| 变更类型 | 示例 | 典型流程 |
-|---------|------|---------|
-| 🆕 **新增功能** | 在现有代码上叠加新能力 | M/L 级标准流程 |
-| 🐛 **修复缺陷** | 修复 tester 或用户发现的 bug | S/M 级流程 |
-| 🔧 **重构优化** | 不改变行为的内部重写 | M 级标准流程 |
-| 📐 **设计调整** | 接口变更、数据模型修改 | M/L 级标准流程 |
-| 📝 **文档更新** | README、注释、设计文档 | S 级流程 |
-| 🔀 **需求变更** | 开发中用户需求发生变化 | 走 delta 变更流程 |
-
-### 1.2 变更管理核心原则
-
-1. **每个变更都必须有 CR（Change Request 变更请求）。** 哪怕是 1 行的 bugfix 也要做影响评估。没有 CR 的变更不进入开发。
-2. **每个变更必须做影响分析。** 修改前问"改了什么"、"影响了什么"、"会坏什么"。
-3. **影响大的变更必须在 design.md 中给出数据变换示例。** 跨模块的数据格式变换是最高风险点。
-4. **核心文件修改必须走 coder。** main 不直接修改超过 500 行的核心文件。
-5. **审查发现的问题必须追踪。** 即使不阻塞合入，也要记入 todo.md 的"待修复"清单。
-6. **Agent 必须有冗余机制。** 主 agent 不可用时自动降级到备用。
-
-### 1.3 术语表
-
-| 术语 | 含义 |
-|------|------|
-| CR | Change Request，变更请求 |
-| 变更基线 | 变更前代码库的状态（git diff 基准） |
-| 影响范围 | 变更涉及的文件、模块、数据流的集合 |
-| 回归风险 | 变更可能破坏已有功能的风险等级 |
-| 数据变换 | 数据在模块间传递时格式/结构的变化点 |
-| 核心文件 | 超过 500 行的核心逻辑文件（主 handler、store、server 等） |
-| delta 变更 | 在已有变更基础上追加的修改，不覆盖原变更 |
+1. [Change Management General Rules](#1-change-management-general-rules)
+2. [Change Lifecycle](#2-change-lifecycle)
+3. [Change Request (CR) Template](#3-change-request-cr-template)
+4. [Impact Analysis Self-Checklist](#4-impact-analysis-self-checklist)
+5. [Core File Modification Rules](#5-core-file-modification-rules)
+6. [Cross-Module Data Transformation Specification](#6-cross-module-data-transformation-specification)
+7. [Non-Blocking Issue Tracking Rules](#7-non-blocking-issue-tracking-rules)
+8. [Role Rotation Normalization](#8-role-rotation-normalization)
+9. [Agent Failure Redundancy Strategy](#9-agent-failure-redundancy-strategy)
+10. [Mapping Changes to Standard Process](#10-mapping-changes-to-standard-process)
+11. [Self-Improvement Mechanism](#11-self-improvement-mechanism)
+12. [Appendix: Change History](#appendix-change-history)
 
 ---
 
-## 2. 变更生命周期
+## 1. Change Management General Rules
 
-### 基础时序（Mermaid）
+### 1.1 What Is a "Change"
+
+In the MA framework, a "change" refers to **any modification to the existing codebase** in team development mode, including:
+
+| Change Type | Example | Typical Process |
+|-------------|---------|-----------------|
+| 🆕 **New Feature** | Adding new capabilities on top of existing code | M/L-level standard process |
+| 🐛 **Bug Fix** | Fixing a bug found by tester or user | S/M-level process |
+| 🔧 **Refactoring** | Internal rewrite without behavioral change | M-level standard process |
+| 📐 **Design Adjustment** | Interface changes, data model modifications | M/L-level standard process |
+| 📝 **Documentation Update** | README, comments, design docs | S-level process |
+| 🔀 **Requirement Change** | User requirements change during development | Delta change process |
+
+### 1.2 Core Principles of Change Management
+
+1. **Every change must have a CR (Change Request).** Even a 1-line bugfix requires an impact assessment. No development begins without a CR.
+2. **Every change must undergo impact analysis.** Before modifying, ask: "What changed?", "What is affected?", "What could break?".
+3. **High-impact changes must provide data transformation examples in design.md.** Cross-module data format transformations are the highest-risk points.
+4. **Core file modifications must go through coder.** main does not directly modify core files exceeding 500 lines.
+5. **Issues found during review must be tracked.** Even if they don't block merging, they must be recorded in the todo.md "To Fix" list.
+6. **Agents must have redundancy mechanisms.** Automatically degrade to fallback when the primary agent is unavailable.
+
+### 1.3 Glossary
+
+| Term | Meaning |
+|------|---------|
+| CR | Change Request |
+| Change Baseline | The state of the codebase before the change (git diff baseline) |
+| Impact Scope | The set of files, modules, and data flows affected by the change |
+| Regression Risk | The risk level that the change may break existing functionality |
+| Data Transformation | Points where data format/structure changes when passing between modules |
+| Core File | Core logic files exceeding 500 lines (main handler, store, server, etc.) |
+| Delta Change | Additional modifications applied on top of an existing change, not overwriting the original change |
+
+---
+
+## 2. Change Lifecycle
+
+### Basic Sequence (Mermaid)
 
 ```mermaid
 sequenceDiagram
-    actor U as 用户
+    actor U as User
     participant M as main
     participant D as coder
     participant R as reviewer
     participant T as tester
     participant A as auditor
 
-    U->>M: 需求/bug
-    M->>M: 1. CR 登记
-    M->>D: 2. 影响分析
-    D->>M: 自查清单
-    Note over D,R: 3. 设计审查 🔴
+    U->>M: Requirement / Bug
+    M->>M: 1. CR Registration
+    M->>D: 2. Impact Analysis
+    D->>M: Self-Checklist
+    Note over D,R: 3. Design Review 🔴
     D->>R: design.md
-    R-->>D: ✅通过
-    Note over D,R: 4. 实现+代码审查 🔴
-    D->>R: 代码
-    R-->>D: ✅通过
-    Note over D,T: 5. 测试(直连上限3轮)
-    T->>D: bug
-    D->>T: 修复
+    R-->>D: ✅ Approved
+    Note over D,R: 4. Implementation + Code Review 🔴
+    D->>R: Code
+    R-->>D: ✅ Approved
+    Note over D,T: 5. Testing (direct connect, max 3 rounds)
+    T->>D: Bug
+    D->>T: Fix
     T->>M: test-report.md
-    M->>A: 6. 终审 🔴
+    M->>A: 6. Final Audit 🔴
     A-->>M: checklist 100%
-    M->>M: 7. 闭合
-    M->>U: ✅交付
+    M->>M: 7. Closure
+    M->>U: ✅ Delivered
 ```
 
-### 各阶段参数
+### Stage Parameters
 
-每个阶段由触发条件驱动，执行行动，产出交付物，通过门禁后才能进入下一阶段。
+Each stage is driven by trigger conditions, executes actions, produces deliverables, and passes through gates before proceeding to the next stage.
 
 ```json
 {
   "lifecycle": [
     {
-      "id": 1, "name": "CR登记", "owner": "main",
-      "trigger": "用户提出需求 / 发现 bug / 需变更",
-      "actions": ["登记 CR：编号、类型、摘要、优先级", "评估复杂度(S/M/L)"],
+      "id": 1, "name": "CR Registration", "owner": "main",
+      "trigger": "User submits requirement / bug discovered / change needed",
+      "actions": ["Register CR: number, type, summary, priority", "Assess complexity (S/M/L)"],
       "branches": null,
       "output": "docs/CR.md",
-      "gate": "无 CR 不得开发"
+      "gate": "No development without a CR"
     },
     {
-      "id": 2, "name": "影响分析", "owner": "coder→main",
-      "trigger": "CR 登记完成",
-      "actions": ["coder 填写 10 项自查清单", "main 审核"],
+      "id": 2, "name": "Impact Analysis", "owner": "coder→main",
+      "trigger": "CR registration complete",
+      "actions": ["coder fills out 10-item self-checklist", "main reviews"],
       "branches": [
-        "跨模块数据变换→design.md 给≥2组示例",
-        "核心文件修改→走 coder",
-        "范围大→走 M/L 级流程"
+        "Cross-module data transformation → provide ≥2 example sets in design.md",
+        "Core file modification → go through coder",
+        "Large scope → use M/L-level process"
       ],
-      "output": "CR.md 影响分析列 + 自查清单",
-      "gate": "main 审核通过"
+      "output": "CR.md impact analysis section + self-checklist",
+      "gate": "main review approved"
     },
     {
-      "id": 3, "name": "设计审查", "owner": "coder→reviewer",
-      "trigger": "design.md 完成",
-      "actions": ["审查变更兼容性", "验证数据变换示例", "检查边界覆盖"],
+      "id": 3, "name": "Design Review", "owner": "coder→reviewer",
+      "trigger": "design.md completed",
+      "actions": ["Review change compatibility", "Validate data transformation examples", "Check boundary coverage"],
       "branches": [
-        "通过→编码",
-        "退回→coder 修改 design 后重审",
-        "设计争议→升级 main"
+        "Approved → coding",
+        "Returned → coder revises design, re-review",
+        "Design dispute → escalate to main"
       ],
-      "output": "docs/design.md（追加变更说明）",
+      "output": "docs/design.md (appended change description)",
       "gate": "reviewer 🔴"
     },
     {
-      "id": 4, "name": "实现+审查", "owner": "coder→reviewer",
-      "trigger": "设计审查通过",
-      "actions": ["feature 分支实现（commit 注明 CR 编号）", "reviewer 代码审查"],
-      "branches": ["通过→测试", "退回→修复→重审(上限 2轮)", "超限→升级 main"],
-      "output": "代码 commit + docs/code-review-report.md",
+      "id": 4, "name": "Implementation + Review", "owner": "coder→reviewer",
+      "trigger": "Design review approved",
+      "actions": ["Implement on feature branch (commit references CR number)", "reviewer code review"],
+      "branches": ["Approved → testing", "Returned → fix → re-review (max 2 rounds)", "Exceeded → escalate to main"],
+      "output": "Code commit + docs/code-review-report.md",
       "gate": "reviewer 🔴"
     },
     {
-      "id": 5, "name": "测试", "owner": "tester+coder(直连)",
-      "trigger": "代码审查通过",
-      "actions": ["保留原测试用例，追加变更用例", "delta 回归测试（全量）", "发现 bug→coding 直连修复"],
-      "branches": ["全部通过→终审", "超限 3轮→main 介入裁决"],
+      "id": 5, "name": "Testing", "owner": "tester+coder (direct connect)",
+      "trigger": "Code review approved",
+      "actions": ["Retain original test cases, add change-specific cases", "Delta regression testing (full suite)", "Bug found → coding direct fix"],
+      "branches": ["All passed → final audit", "Exceeded 3 rounds → main intervention"],
       "output": "docs/test-report.md",
-      "gate": "通过率=100%，无 P0/P1 bug"
+      "gate": "Pass rate = 100%, no P0/P1 bugs"
     },
     {
-      "id": 6, "name": "终审", "owner": "auditor",
-      "trigger": "测试通过",
-      "actions": ["生成 checklist", "对照 git diff 追溯", "检查回归破坏 + 非阻塞问题"],
-      "branches": ["通过→闭合", "退回→逐项修复→重审"],
+      "id": 6, "name": "Final Audit", "owner": "auditor",
+      "trigger": "Testing passed",
+      "actions": ["Generate checklist", "Trace against git diff", "Check regression damage + non-blocking issues"],
+      "branches": ["Approved → closure", "Returned → fix item by item → re-audit"],
       "output": "docs/checklist.md + docs/audit-report.md",
       "gate": "checklist 100% 🔴"
     },
     {
-      "id": 7, "name": "闭合", "owner": "main",
-      "trigger": "终审通过",
-      "actions": ["git merge", "更新 VERSION/CHANGELOG（注明 CR）", "标记 CR closed", "更新 journey.md"],
+      "id": 7, "name": "Closure", "owner": "main",
+      "trigger": "Final audit approved",
+      "actions": ["git merge", "Update VERSION/CHANGELOG (reference CR)", "Mark CR as closed", "Update journey.md"],
       "branches": null,
-      "output": "合并 commit + CHANGELOG 更新",
-      "gate": "CR 已闭合"
+      "output": "Merge commit + CHANGELOG update",
+      "gate": "CR closed"
     }
   ]
 }
 ```
-- 变更必须走 feature 分支，不与 main 分支直接混合
-- git commit 注明 CR 编号（如 `feat: 用户认证 #CR-003`）
-- reviewer 重点关注：变更与已有代码的边界处理、数据泄露、竞态条件
+- Changes must use feature branches; do not mix directly with the main branch
+- git commit must reference the CR number (e.g., `feat: user authentication #CR-003`)
+- reviewer focuses on: boundary handling between change and existing code, data leaks, race conditions
 
-**交付物：** 代码 commit + `docs/code-review-report.md`
+**Deliverable:** code commit + `docs/code-review-report.md`
 
-### 阶段 5：测试（tester + coder）
+### Stage 5: Testing (tester + coder)
 
-**标准流程阶段7。**
+**Standard process Stage 7.**
 
-**变更场景下的特殊要求：**
-- 保留所有原有测试用例，追加变更相关用例
-- 至少覆盖：功能正确性 + 边界条件 + 回归测试（变更不破坏已有功能）
-- ✅ **delta 回归测试**：原有测试用例全量跑一遍，确认无破坏
-- test-report.md 中注明变更测试摘要
+**Special requirements for change scenarios:**
+- Retain all original test cases, add change-related cases
+- At minimum cover: functional correctness + boundary conditions + regression testing (change does not break existing functionality)
+- ✅ **Delta regression testing**: Run the full original test suite to confirm no damage
+- Note the change testing summary in test-report.md
 
-**交付物：** `docs/test-report.md`
+**Deliverable:** `docs/test-report.md`
 
-### 阶段 6：终审（auditor）
+### Stage 6: Final Audit (auditor)
 
-**标准流程阶段8。**
+**Standard process Stage 8.**
 
-**变更场景下的特殊要求：**
-- auditor 生成项目特定的 checklist
-- checklist 必须包含回归破坏检查项
-- 对照变更基线（git diff）追溯，确认变更覆盖了 CR 中所有需求
-- 非阻塞问题（reviewer/tester 发现但不立即需要修复的）→ 记入 todo.md"待修复"清单
+**Special requirements for change scenarios:**
+- auditor generates project-specific checklist
+- Checklist must include regression damage check items
+- Trace against the change baseline (git diff) to confirm the change covers all CR requirements
+- Non-blocking issues (found by reviewer/tester but not immediately requiring fix) → record in todo.md "To Fix" list
 
-**交付物：** `docs/checklist.md` + `docs/audit-report.md`
+**Deliverable:** `docs/checklist.md` + `docs/audit-report.md`
 
-### 阶段 7：闭合（main）
+### Stage 7: Closure (main)
 
-1. main 确认所有条件满足后 git merge
-2. 更新版本号
-3. 更新 CHANGELOG.md，注明 CR 编号
-4. 在 `docs/CR.md` 标记变更完成
-5. 更新 `docs/journey.md`
+1. main confirms all conditions are met, then git merge
+2. Update version number
+3. Update CHANGELOG.md, referencing the CR number
+4. Mark change complete in `docs/CR.md`
+5. Update `docs/journey.md`
 
-**交付物：** git merge + CHANGELOG 更新 + CR 闭合
-
----
-
-## 3. 变更请求（CR）模板
-
-CR 记录在 `docs/CR.md` 文件中，按顺序追加。
-
-### CR 记录格式
-
-```markdown
-## CR-001 — [变更标题]
-
-| 字段 | 内容 |
-|------|------|
-| **登记时间** | YYYY-MM-DD HH:MM |
-| **类型** | `feature` / `bugfix` / `refactor` / `design-change` / `docs` |
-| **优先级** | `P0-阻断` / `P1-重要` / `P2-一般` / `P3-建议` |
-| **变更范围** | S / M / L（按代码量/文件数/跨模块数综合评估） |
-| **摘要** | 一句话描述变更内容和目标 |
-| **关联CR** | 如有依赖或被依赖的 CR 编号 |
-| **状态** | `open` → `impact-analysis` → `design-review` → `implementing` → `testing` → `auditing` → `closed` |
-
-### 详细描述
-
-变更的具体内容，包括：
-- 做什么
-- 不做什么（非目标）
-- 验收标准
-
-### 影响分析
-
-| 维度 | 评估 |
-|------|------|
-| 涉及文件 | ... |
-| 涉及模块 | ... |
-| 核心文件（>500行） | 是/否 — 文件名 |
-| 跨模块数据变换 | 是/否 — 描述 |
-| 安全敏感 | 是/否 |
-| 回归风险 | 高/中/低 |
-| **自查清单** | 见 [docs/change-management.md §4](change-management.md) |
-
-### 设计审查结论
-
-| 审查人 | 结论 | 时间 |
-|--------|------|------|
-| reviewer | ✅ 通过 / 🔴 退回 / ⏸ 有条件（问题见下） | YYYY-MM-DD HH:MM |
-
-### 测试摘要
-
-| 项目 | 数据 |
-|------|------|
-| 新增用例数 | ... |
-| 回归用例数 | ... |
-| 通过率 | ... |
-| 增量覆盖率 | ... |
-
-### 终审结论
-
-| 审查人 | 结论 | 时间 |
-|--------|------|------|
-| auditor | ✅ 通过 / 🔴 退回 | YYYY-MM-DD HH:MM |
-
-### 闭合记录
-
-- **闭合时间：** YYYY-MM-DD HH:MM
-- **合并分支：** feature/xxx → main
-- **版本号：** vX.Y.Z
-- **CHANGELOG 条目：** [链接或摘要]
-```
-
-### 小型变更简化模板（S 级）
-
-对于 S 级变更（1 行 bugfix、简单文档更新），使用简化版：
-
-```markdown
-## CR-002 — [标题]
-
-- **类型/优先级：** bugfix / P0
-- **摘要：** fix: 空指针 when input is null
-- **影响范围：** 单文件（src/util.py:45-52），无跨模块数据变换
-- **自查清单：** 全部 N/A
-- **状态：** `closed` ✅
-```
+**Deliverable:** git merge + CHANGELOG update + CR closed
 
 ---
 
-## 4. 影响分析自查清单
+## 3. Change Request (CR) Template
 
-> 🔴 **每个变更前必须填写。** coder 在阶段4（设计）时完成，main 在阶段3（gate check）审核。
+CRs are recorded in the `docs/CR.md` file, appended in order.
+
+### CR Record Format
+
+```markdown
+## CR-001 — [Change Title]
+
+| Field | Content |
+|-------|---------|
+| **Registration Time** | YYYY-MM-DD HH:MM |
+| **Type** | `feature` / `bugfix` / `refactor` / `design-change` / `docs` |
+| **Priority** | `P0-Blocker` / `P1-Critical` / `P2-Normal` / `P3-Suggestion` |
+| **Change Scope** | S / M / L (comprehensive assessment by code volume / file count / cross-module count) |
+| **Summary** | One-line description of change content and goal |
+| **Related CR** | Dependent or depending CR numbers, if any |
+| **Status** | `open` → `impact-analysis` → `design-review` → `implementing` → `testing` → `auditing` → `closed` |
+
+### Detailed Description
+
+Specific content of the change, including:
+- What to do
+- What not to do (non-goals)
+- Acceptance criteria
+
+### Impact Analysis
+
+| Dimension | Assessment |
+|-----------|-----------|
+| Files Involved | ... |
+| Modules Involved | ... |
+| Core Files (>500 lines) | Yes/No — file name |
+| Cross-Module Data Transformation | Yes/No — description |
+| Security Sensitive | Yes/No |
+| Regression Risk | High/Medium/Low |
+| **Self-Checklist** | See [docs/change-management.md §4](change-management.md) |
+
+### Design Review Conclusion
+
+| Reviewer | Conclusion | Time |
+|----------|-----------|------|
+| reviewer | ✅ Approved / 🔴 Returned / ⏸ Conditional (issues below) | YYYY-MM-DD HH:MM |
+
+### Testing Summary
+
+| Item | Data |
+|------|------|
+| New Test Cases | ... |
+| Regression Test Cases | ... |
+| Pass Rate | ... |
+| Incremental Coverage | ... |
+
+### Final Audit Conclusion
+
+| Auditor | Conclusion | Time |
+|---------|-----------|------|
+| auditor | ✅ Approved / 🔴 Returned | YYYY-MM-DD HH:MM |
+
+### Closure Record
+
+- **Closure Time:** YYYY-MM-DD HH:MM
+- **Merged Branch:** feature/xxx → main
+- **Version:** vX.Y.Z
+- **CHANGELOG Entry:** [link or summary]
+```
+
+### Simplified Template for Small Changes (S-Level)
+
+For S-level changes (1-line bugfix, simple documentation update), use the simplified version:
+
+```markdown
+## CR-002 — [Title]
+
+- **Type/Priority:** bugfix / P0
+- **Summary:** fix: null pointer when input is null
+- **Impact Scope:** Single file (src/util.py:45-52), no cross-module data transformation
+- **Self-Checklist:** All N/A
+- **Status:** `closed` ✅
+```
+
+---
+
+## 4. Impact Analysis Self-Checklist
+
+> 🔴 **Must be completed before every change.** coder completes it at Stage 4 (Design), main reviews at Stage 3 (Gate Check).
 >
-> 规则：
-> - S 级变更可以口头回答，但每个问题必须过一遍
-> - M/L 级变更必须写到 design.md 或 CR.md 中
-> - 任一问题答案为"是" → 涉及的风险点必须在 design.md 中展开说明
+> Rules:
+> - S-level changes may answer verbally, but every question must be considered
+> - M/L-level changes must be written into design.md or CR.md
+> - If any question answer is "Yes" → the associated risk point must be elaborated in design.md
 
 ```json
 {
   "impactChecklist": [
-    {"id": 1, "question": "是否修改了核心文件（>500行）？", "actionIfYes": "核心文件仅允许 coder 编辑，main 不直接修改", "risk": "core"},
-    {"id": 2, "question": "是否涉及跨模块的数据格式/路径变换？", "actionIfYes": "design.md 给出输入→输出示例（≥2组）", "risk": "data"},
-    {"id": 3, "question": "是否跨模块？（修改了 2+ 模块间的接口/调用关系）", "actionIfYes": "reviewer 设计审查重点检查数据流", "risk": "cross"},
-    {"id": 4, "question": "是否有跨技术栈的数据交互？", "actionIfYes": "序列化/反序列化边界最容易出错", "risk": "serialize"},
-    {"id": 5, "question": "是否有竞态条件风险？", "actionIfYes": "写清楚锁策略或不可变设计", "risk": "concurrency"},
-    {"id": 6, "question": "是否涉及文件 IO 或网络 IO？", "actionIfYes": "超时控制、错误重试、资源释放", "risk": "io"},
-    {"id": 7, "question": "是否修改了配置文件/环境变量/启动参数？", "actionIfYes": "同步更新相关部署文档", "risk": "config"},
-    {"id": 8, "question": "是否新增了外部依赖？", "actionIfYes": "design.md 中给出选型理由", "risk": "dependency"},
-    {"id": 9, "question": "是否会影响已存在的测试用例？", "actionIfYes": "增量追加用例，不删除原有用例", "risk": "test"},
-    {"id": 10, "question": "是否涉及安全敏感操作？", "actionIfYes": "auditor 终审重点检查", "risk": "security"}
+    {"id": 1, "question": "Does it modify a core file (>500 lines)?", "actionIfYes": "Core files may only be edited by coder; main does not modify directly", "risk": "core"},
+    {"id": 2, "question": "Does it involve cross-module data format/path transformation?", "actionIfYes": "Provide input→output examples (≥2 sets) in design.md", "risk": "data"},
+    {"id": 3, "question": "Is it cross-module? (Modifies interfaces/call relationships between 2+ modules)", "actionIfYes": "reviewer design review focuses on data flow inspection", "risk": "cross"},
+    {"id": 4, "question": "Is there cross-tech-stack data interaction?", "actionIfYes": "Serialization/deserialization boundaries are most error-prone", "risk": "serialize"},
+    {"id": 5, "question": "Is there a race condition risk?", "actionIfYes": "Clearly document lock strategy or immutable design", "risk": "concurrency"},
+    {"id": 6, "question": "Does it involve file I/O or network I/O?", "actionIfYes": "Timeout control, error retry, resource cleanup", "risk": "io"},
+    {"id": 7, "question": "Does it modify config files / environment variables / startup parameters?", "actionIfYes": "Synchronously update related deployment docs", "risk": "config"},
+    {"id": 8, "question": "Does it add external dependencies?", "actionIfYes": "Provide selection rationale in design.md", "risk": "dependency"},
+    {"id": 9, "question": "Will it affect existing test cases?", "actionIfYes": "Incrementally add cases; do not delete original cases", "risk": "test"},
+    {"id": 10, "question": "Does it involve security-sensitive operations?", "actionIfYes": "auditor focuses on this during final audit", "risk": "security"}
   ]
 }
 ```
 
-### 示例
-| 1 | 修改核心文件？ | 是 | server.py (1200行) — 新增消息路由端点 |
-| 2 | 跨模块数据变换？ | 是 | channel_service 内部消息格式 → HTTP JSON API |
-| 3 | 跨模块？ | 是 | controller → service → dao 三层调用 |
-| 4 | 技术栈交互？ | 否 | 纯后端变更 |
-| 5 | 竞态条件？ | 否 | 无状态接口，请求独立处理 |
-| 6 | 文件/网络 IO？ | 是 | 新增 HTTP 出站调用—需设超时 |
-| 7 | 配置变更？ | 是 | 新增 message_channel.timeout_ms 配置项 |
-| 8 | 外部依赖？ | 否 | 使用已有 HTTP 客户端 |
-| 9 | 影响现有测试？ | 是 | TestServer 需追加消息通道集成测试 |
-| 10 | 安全敏感？ | 否 | 内部服务通信，无外部暴露 |
+### Example
+| 1 | Modify core file? | Yes | server.py (1200 lines) — new message routing endpoint |
+| 2 | Cross-module data transformation? | Yes | channel_service internal message format → HTTP JSON API |
+| 3 | Cross-module? | Yes | controller → service → dao three-layer calls |
+| 4 | Tech stack interaction? | No | Pure backend change |
+| 5 | Race conditions? | No | Stateless endpoint, requests processed independently |
+| 6 | File/Network I/O? | Yes | New HTTP outbound call — needs timeout |
+| 7 | Config change? | Yes | New message_channel.timeout_ms config item |
+| 8 | External dependency? | No | Uses existing HTTP client |
+| 9 | Affects existing tests? | Yes | TestServer needs message channel integration tests |
+| 10 | Security sensitive? | No | Internal service communication, no external exposure |
 ```
 
 ---
 
-## 5. 核心文件修改规则
+## 5. Core File Modification Rules
 
-### 5.1 定义
+### 5.1 Definition
 
-核心文件指同时满足以下条件的文件：
-- **行数 > 500 行**
-- **属于核心业务逻辑**（非配置文件、测试文件、文档）
-- **被 2+ 个模块引用**
+Core files are files that simultaneously meet the following conditions:
+- **Lines > 500 lines**
+- **Belongs to core business logic** (not config files, test files, or documentation)
+- **Referenced by 2+ modules**
 
-典型的超过 500 行的核心文件：主 handler、store、server、核心服务类。
+Typical core files exceeding 500 lines: main handler, store, server, core service classes.
 
-### 5.2 修改规则
+### 5.2 Modification Rules
 
-| 操作 | main | coder |
-|------|------|-------|
-| 直接编辑核心文件（>500行） | ❌ 🔴 **禁止** | ✅ 可以 |
-| 设计变更方案 | ✅ 决策 | ✅ 执行 |
-| 审查核心文件变更 | ✅ 审查 | — |
-| Edit / write 工具适用范围 | ✅ 配置文件、测试文件、文档、小型工具脚本（<500行） | 全部 |
+| Operation | main | coder |
+|-----------|------|-------|
+| Directly edit core files (>500 lines) | ❌ 🔴 **Prohibited** | ✅ Allowed |
+| Design change approach | ✅ Decision | ✅ Execution |
+| Review core file changes | ✅ Review | — |
+| Edit / write tool scope | ✅ Config files, test files, docs, small utility scripts (<500 lines) | All |
 
-> **操作范围说明：** Edit 和 write 两个工具同等对待——main 不得用任意一种修改核心文件（>500行）的方法体。
-> 但允许 main 在核心文件中修改 import 行、常量定义等不会破坏逻辑结构的行级变更。
+> **Scope clarification:** The Edit and write tools are treated equally — main must not use either to modify the method body of core files (>500 lines).
+> However, main is allowed to modify import lines, constant definitions, and other line-level changes in core files that do not disrupt logical structure.
 
-### 5.3 核心文件变更流程
+### 5.3 Core File Change Process
 
-当变更涉及核心文件时，流程不同于普通变更：
+When a change involves core files, the process differs from ordinary changes:
 
-| 步骤 | 行动 | 交付物 | 审查重点 |
-|------|------|-------|---------|
-| 1. main 识别 | 发现变更涉及核心文件 → `sessions_send coder:"CR-xxx 涉及核心文件，请设计方案并实现"` | — | — |
-| 2. coder 设计 | 设计方案 → 写入 design.md | design.md（变更部分） | 变更的精准性、最小影响范围 |
-| 3. reviewer 设计审查 | 审查 design.md 中的变更方案 | 审查结论 | 是否破坏了原有逻辑、是否插入了不应修改的方法体中间 |
-| 4. coder 实现 | 在核心文件中做最小精准变更，不改变文件结构 | 代码（feature 分支） | 只改必须改的部分 |
-| 5. reviewer 代码审查 | 审查实现代码 | code-review-report.md | 变更边界清晰、不破坏原有结构 |
-| 6. tester 测试 | 回归测试（重点：确认原有功能无损） | test-report.md | 全量测试通过，核心文件原有功能无退化 |
-| 7. auditor 终审 | 对照 git diff 逐行审查变更部分 | audit-report.md | 变更范围精确，无意外内容 |
+| Step | Action | Deliverable | Review Focus |
+|------|--------|-------------|-------------|
+| 1. main identifies | Discovers change involves core file → `sessions_send coder:"CR-xxx involves core file, please design approach and implement"` | — | — |
+| 2. coder designs | Design the approach → write to design.md | design.md (change section) | Precision of change, minimal impact scope |
+| 3. reviewer design review | Review the change approach in design.md | Review conclusion | Whether original logic is broken, whether modifications are inserted inappropriately into method bodies |
+| 4. coder implements | Make minimal, precise changes in core file without altering file structure | Code (feature branch) | Only change what must be changed |
+| 5. reviewer code review | Review implementation code | code-review-report.md | Change boundaries are clear, original structure preserved |
+| 6. tester tests | Regression testing (focus: confirm original functionality intact) | test-report.md | Full test suite passed, core file original functionality not degraded |
+| 7. auditor final audit | Line-by-line review of changed portions against git diff | audit-report.md | Change scope is precise, no unintended content |
 
-### 5.4 禁止的行为
+### 5.4 Prohibited Behaviors
 
-- ❌ main 用 edit 工具修改大型核心文件的方法体（Edit 工具不适合精细修改长文件内部结构）
-- ❌ 在不理解核心文件全貌的情况下做局部修改
-- ❌ 没做回归测试就合入核心文件变更
-- ❌ coder 自审自改（核心文件变更必须由 reviewer 审查）
+- ❌ main using the edit tool to modify method bodies of large core files (Edit tool not suitable for fine modifications to long file internal structure)
+- ❌ Making local changes without understanding the full picture of the core file
+- ❌ Merging core file changes without regression testing
+- ❌ coder self-reviewing own changes (core file changes must be reviewed by reviewer)
 
 ---
 
-## 6. 跨模块数据变换规范
+## 6. Cross-Module Data Transformation Specification
 
-### 6.1 定义
+### 6.1 Definition
 
-"数据变换"（Data Transformation）指数据在模块间传递时发生的**格式、结构、语义的变化**。
+"Data Transformation" refers to **format, structure, or semantic changes** that occur when data passes between modules.
 
-### 6.2 高风险数据变换场景
+### 6.2 High-Risk Data Transformation Scenarios
 
-| 场景 | 典型错误 | 说明 |
-|------|---------|------|
-| 数据拼接 | 拼接后的语义不符合设计预期 | 多段数据组合时语义边界混淆 |
-| ID 映射 | 用错键查表 | 不同模块使用不同的标识字段名 |
-| 序列化/反序列化 | 字段丢失或异常 | JSON/YAML/Protobuf 转换时遗漏可选字段 |
-| 类型转换 | 精度或范围丢失 | 高精度→低精度类型转换截断 |
-| 聚合计算 | 口径不一致 | 同一指标在不同模块计算方式不同（含/不含已删除、含/不含缓存等） |
-| 枚举映射 | 值缺失 | 源枚举值在目标模块没有对应项 |
+| Scenario | Typical Error | Description |
+|----------|--------------|-------------|
+| Data Concatenation | Concatenated semantics don't match design expectations | Semantic boundary confusion when combining multiple data segments |
+| ID Mapping | Wrong key used for table lookup | Different modules use different identifier field names |
+| Serialization/Deserialization | Field loss or anomalies | Optional fields missed during JSON/YAML/Protobuf conversion |
+| Type Conversion | Precision or range loss | Truncation when converting from high to low precision types |
+| Aggregation Calculation | Inconsistent metrics | Same metric calculated differently across modules (with/without deleted items, with/without cache, etc.) |
+| Enum Mapping | Missing values | Source enum value has no corresponding entry in target module |
 
-### 6.3 规范要求
+### 6.3 Specification Requirements
 
-**对于每个涉及跨模块数据变换的变更，coder 必须在 design.md 中提供：**
+**For every change involving cross-module data transformation, coder must provide in design.md:**
 
-1. **至少 2 组输入→输出示例**（涵盖正常情况和边界情况）
-2. **数据变换的形式化描述**（自然语言或伪代码）
-3. **关键字段的映射关系**（从源到目标的每个字段是怎么来的）
-4. **异常情况的处理约定**（输入不符合预期时，返回错误还是降级）
+1. **At least 2 sets of input→output examples** (covering normal and boundary cases)
+2. **Formal description of the data transformation** (natural language or pseudocode)
+3. **Key field mapping relationships** (how each field from source maps to target)
+4. **Exception handling conventions** (when input doesn't meet expectations, return error or degrade)
 
-**豁免条件：** 当数据变换仅包含直接赋值（字段名 1:1 映射且无任何转换逻辑）时，可仅提供 1 组示例，并在 design.md 中注明"直接映射，无变换逻辑"。reviewer 在审查时确认豁免是否合理。
+**Exemption conditions:** When the data transformation only involves direct assignment (field name 1:1 mapping with no transformation logic), only 1 example set is required, and "direct mapping, no transformation logic" must be noted in design.md. reviewer confirms the exemption is reasonable during review.
 
-### 6.4 design.md 数据变换章节模板
+### 6.4 design.md Data Transformation Section Template
 
 ```markdown
-## 数据变换设计
+## Data Transformation Design
 
-### 变换描述
-<!-- 一句话说明数据从哪里来到哪里去 -->
+### Transformation Description
+<!-- One sentence describing where data comes from and where it goes -->
 
-### 输入/输出示例
+### Input/Output Examples
 
-#### 示例 1：正常情况
+#### Example 1: Normal Case
 ```
-输入:  {"id": 1, "name": "张三", "role": "admin"}
-输出: {"user_id": 1, "display": "张三(管理员)", "level": 10}
-变换逻辑: role="admin" → display 追加"(管理员)"，level 从配置表查角色等级
-```
-
-#### 示例 2：边界情况（角色未配置等级）
-```
-输入:  {"id": 2, "name": "李四", "role": "guest"}
-输出: {"user_id": 2, "display": "李四(访客)", "level": 0}
-变换逻辑: guest 角色不在等级配置中 → level 默认 0
+Input:  {"id": 1, "name": "Zhang San", "role": "admin"}
+Output: {"user_id": 1, "display": "Zhang San (Admin)", "level": 10}
+Transformation Logic: role="admin" → display appends "(Admin)", level looked up from role config table
 ```
 
-#### 示例 3：异常情况（必填字段缺失）
+#### Example 2: Boundary Case (role not configured with level)
 ```
-输入:  {"id": 3, "name": "王五"}
-输出: 必须约定返回错误还是降级处理
-变换逻辑: role 字段缺失 → 约定：返回 400 错误？还是默认 role="user"？
-```
-
-### 关键字段映射
-
-| 源字段 | 目标字段 | 变换规则 | 示例 |
-|--------|---------|---------|------|
-| `user.id` | `output.user_id` | 直接赋值 | 1 → 1 |
-| `user.name`+`user.role` | `output.display` | name + role 映射文案拼接 | "张三"+"admin" → "张三(管理员)" |
-| `user.role` → 查配置表 | `output.level` | 查 role_level 配置表 | "admin" → 10 |
-
-### 异常处理
-
-| 异常场景 | 处理方式 |
-|---------|---------|
-| role 字段为 null | 默认 "user" 角色，level=1 |
-| role 不在配置表中 | level=0，日志警告 |
-| 必填字段缺失 | 返回 400 错误 + 字段名 |
+Input:  {"id": 2, "name": "Li Si", "role": "guest"}
+Output: {"user_id": 2, "display": "Li Si (Guest)", "level": 0}
+Transformation Logic: guest role not in level config → level defaults to 0
 ```
 
-### 6.5 审查守则
+#### Example 3: Error Case (required field missing)
+```
+Input:  {"id": 3, "name": "Wang Wu"}
+Output: Must decide: return error or degrade
+Transformation Logic: role field missing → convention: return 400 error? or default role="user"?
+```
 
-- reviewer 设计审查（阶段4b）必须**逐组验证**数据变换示例
-  - 手算一遍：输入 → 预期输出，检查变换逻辑是否一致
-  - 检查示例是否覆盖了边界情况
-  - 发现遗漏 → 退回 coder 补充
-- 编码实现后，coder 应写**针对数据变换的专项测试**（覆盖所有示例）
-- 数据变换是回归测试的核心——任何无关变更都不应改变变换结果
+### Key Field Mapping
+
+| Source Field | Target Field | Transformation Rule | Example |
+|-------------|-------------|--------------------|---------|
+| `user.id` | `output.user_id` | Direct assignment | 1 → 1 |
+| `user.name`+`user.role` | `output.display` | name + role mapping text concatenation | "Zhang San"+"admin" → "Zhang San (Admin)" |
+| `user.role` → lookup config table | `output.level` | Look up role_level config table | "admin" → 10 |
+
+### Exception Handling
+
+| Exception Scenario | Handling Approach |
+|-------------------|-------------------|
+| role field is null | Default "user" role, level=1 |
+| role not in config table | level=0, log warning |
+| Required field missing | Return 400 error + field name |
+```
+
+### 6.5 Review Guidelines
+
+- reviewer design review (Stage 4b) must **verify data transformation examples group by group**
+  - Manually compute: input → expected output, check transformation logic consistency
+  - Check whether examples cover boundary cases
+  - If omissions found → return to coder for supplementation
+- After implementation, coder should write **targeted tests for data transformation** (covering all examples)
+- Data transformation is the core of regression testing — no unrelated change should alter transformation results
 
 ---
 
-## 7. 非阻塞问题追踪规则
+## 7. Non-Blocking Issue Tracking Rules
 
-### 7.1 什么是非阻塞问题
+### 7.1 What Is a Non-Blocking Issue
 
-非阻塞问题指 reviewer 或 tester 在审查/测试中发现，但**不影响当前合入**的问题：
-- 当前版本不会触发（边界条件）
-- 性能损耗可接受（少量额外调用）
-- 属于代码异味但不涉及安全或正确性
+Non-blocking issues are problems found by reviewer or tester during review/testing that **do not affect the current merge**:
+- Won't trigger in the current version (boundary conditions)
+- Performance overhead is acceptable (minor extra calls)
+- Code smell but not involving security or correctness
 
-### 7.2 追踪规则
+### 7.2 Tracking Rules
 
-审查/测试发现非阻塞问题后，按以下逻辑判断：
+After review/testing discovers a non-blocking issue, judge as follows:
 
-| 条件 | 行动 |
-|------|------|
-| 影响正确性？→ **是** | 升级为阻塞（标记 Critical 或 High），必须修复后合入 |
-| 影响正确性？→ **否** | 标记为非阻塞，记录到 todo.md 待修复章节 |
+| Condition | Action |
+|-----------|--------|
+| Affects correctness? → **Yes** | Escalate to blocking (mark Critical or High), must fix before merge |
+| Affects correctness? → **No** | Mark as non-blocking, record in todo.md "To Fix" section |
 
-todo.md 待修复条目格式：
+todo.md "To Fix" entry format:
 
-| # | 登记时间 | 来源 | 问题描述 | CR关联 | 优先级 |
-|---|---------|------|---------|-------|--------|
-| TD-1 | YYYY-MM-DD | reviewer | 匿名回调影响可读性，建议命名 | CR-002 | P3 |
-| TD-2 | YYYY-MM-DD | tester | 大数据量加载超过 3 秒 | CR-002 | P3 |
+| # | Registration Time | Source | Issue Description | CR Reference | Priority |
+|---|-------------------|--------|-------------------|-------------|----------|
+| TD-1 | YYYY-MM-DD | reviewer | Anonymous callback affects readability, recommend naming | CR-002 | P3 |
+| TD-2 | YYYY-MM-DD | tester | Large data volume loading exceeds 3 seconds | CR-002 | P3 |
 
-### 7.3 非阻塞问题的处理
+### 7.3 Handling Non-Blocking Issues
 
-| 优先级 | 含义 | 处理时限 |
-|--------|------|---------|
-| P2 | 当前版本建议修复 | 下次同模块变更时顺手修 |
-| P3 | 无实际影响 | 积累 5 个以上时安排专项修复 |
+| Priority | Meaning | Processing Deadline |
+|----------|---------|-------------------|
+| P2 | Recommended fix for current version | Fix alongside next change to the same module |
+| P3 | No practical impact | Arrange dedicated fix when 5+ accumulated |
 
-### 7.4 禁止的行为
+### 7.4 Prohibited Behaviors
 
-- ❌ "算了" 或 "下次改" 口头约定 — 必须记入 todo.md
-- ❌ 在修复前关闭 CR — 非阻塞问题 = 开放技术债务
-- ❌ 把非阻塞问题和阻塞问题混在一起 — 各自独立追踪
-- ❌ 非阻塞问题无人认领 — 必须由 main 指定修复计划
+- ❌ "Forget it" or "fix next time" verbal agreements — must be recorded in todo.md
+- ❌ Closing CR before fixing — non-blocking issues = open technical debt
+- ❌ Mixing non-blocking and blocking issues — track each independently
+- ❌ Non-blocking issues unclaimed — main must designate a fix plan
 
 ---
 
-## 8. 角色互换常态化
+## 8. Role Rotation Normalization
 
-### 8.1 策略
+### 8.1 Strategy
 
-**每 3 个 Sprint 或每次大版本（MINOR 级别）更新时，至少安排一次角色互换。**
+**Every 3 Sprints or each major version (MINOR level) update, arrange at least one role rotation.**
 
-### 8.2 互换方式
+### 8.2 Rotation Methods
 
-| 互换 | 效果 |
-|------|------|
-| coder ↔ reviewer | coder 审查，reviewer 编码 | 发现 coder 视角看不清的问题；reviewer 编码更注意审查要点 |
-| coder → tester | coder 执行一次完整测试 | 理解测试视角，编写更可测试的代码 |
-| coder → navigator | coder 作为导航员指导 reviewer | 锻炼设计表达能力 |
+| Rotation | Effect |
+|----------|--------|
+| coder ↔ reviewer | coder reviews, reviewer codes | Discover problems invisible from coder's perspective; reviewer coding better notes review points |
+| coder → tester | coder performs one complete testing cycle | Understand testing perspective, write more testable code |
+| coder → navigator | coder acts as navigator guiding reviewer | Exercise design communication skills |
 
-### 8.3 互换触发
+### 8.3 Rotation Trigger
 
 ```markdown
-### YYYY-MM-DD [main] 角色互换安排
+### YYYY-MM-DD [main] Role Rotation Arrangement
 
-- Sprint N+1 安排角色互换
-- CR-010 ~ CR-012 由 reviewer 编码，coder 审查
-- 互换结束后的复盘：双方写下收获
+- Sprint N+1 arranges role rotation
+- CR-010 ~ CR-012: reviewer codes, coder reviews
+- Post-rotation retrospective: both parties write down takeaways
 ```
 
-### 8.4 互换期间的审查要求
+### 8.4 Review Requirements During Rotation
 
-- 互换不降低审查标准。reviewer 作为代码作者同样要通过对方的审查
-- 互换周期内发现的问题同等追踪
+- Rotation does not lower review standards. reviewer as code author must still pass the counterparty's review
+- Issues found during rotation period are tracked equally
 
 ---
 
-## 9. Agent 故障冗余策略
+## 9. Agent Failure Redundancy Strategy
 
-### 9.1 原则
+### 9.1 Principle
 
-任何 Agent（tester、auditor、coder 等）在主模型不可用时，应有自动降级机制。
+Any Agent (tester, auditor, coder, etc.) should have an automatic degradation mechanism when the primary model is unavailable.
 
-### 9.2 降级策略
+### 9.2 Degradation Strategy
 
-| 触发条件 | 处理 |
-|---------|------|
-| 主模型报错（余额不足、服务不可用、认证失败） | main 使用备用模型重新 spawn agent |
-| 主模型响应超时（>60s 无回复） | main 使用备用模型重新 spawn |
-| 备用模型也失败 | 告知用户当前 agent 不可用，建议手动处理或等待恢复 |
+| Trigger Condition | Handling |
+|-------------------|----------|
+| Primary model error (insufficient balance, service unavailable, auth failure) | main respawns agent using fallback model |
+| Primary model response timeout (>60s no reply) | main respawns using fallback model |
+| Fallback model also fails | Notify user that current agent is unavailable, suggest manual handling or waiting for recovery |
 
-### 9.3 main 的检测处理流程
+### 9.3 main Detection Handling Process
 
-| 触发 | 条件 | 行动 |
-|------|------|------|
-| `sessions_spawn [agent]` 失败 | 错误是 balance不足/超时/服务不可用 | 切备用模型重试一次 |
-| 备用模型也失败 | — | 告知用户：手动执行 或 等待模型恢复 |
+| Trigger | Condition | Action |
+|---------|-----------|--------|
+| `sessions_spawn [agent]` fails | Error is insufficient balance/timeout/service unavailable | Switch to fallback model, retry once |
+| Fallback model also fails | — | Notify user: execute manually or wait for model recovery |
 
-### 9.4 journey.md 记录示例
+### 9.4 journey.md Recording Example
 
 ```markdown
-### HH:MM [main] [agent名] 降级
-- primary model 不可用（insufficient balance）
+### HH:MM [main] [agent name] Degradation
+- primary model unavailable (insufficient balance)
 - switched to fallback model ✅
-- 已告知用户，不影响当前进度
+- user notified, current progress unaffected
 ```
 
 ---
 
-## 10. 变更与标准流程的映射
+## 10. Mapping Changes to Standard Process
 
-### 10.1 变更类型 → 推荐流程
+### 10.1 Change Type → Recommended Process
 
-| 变更类型 | 推荐流程 | 特殊要求 |
-|---------|---------|---------|
-| 🆕 新增功能 | M 级 / L 级 | CR 登记 + 完整影响分析 |
-| 🐛 修复缺陷 | S 级 / M 级 | CR 登记（简化版）+ 自查清单 + 回归测试 |
-| 🔧 重构优化 | M 级 | CR 登记 + 影响分析 + 完整回归测试 |
-| 📐 设计调整 | M 级 / L 级 | CR 登记 + 核心文件规则 |
-| 📝 文档更新 | S 级 | CR 登记（简化版） |
-| 🔀 需求变更 | delta 流程 | CR 登记 + 最大继承原则 |
+| Change Type | Recommended Process | Special Requirements |
+|-------------|-------------------|---------------------|
+| 🆕 New Feature | M-level / L-level | CR registration + full impact analysis |
+| 🐛 Bug Fix | S-level / M-level | CR registration (simplified) + self-checklist + regression testing |
+| 🔧 Refactoring | M-level | CR registration + impact analysis + full regression testing |
+| 📐 Design Adjustment | M-level / L-level | CR registration + core file rules |
+| 📝 Documentation Update | S-level | CR registration (simplified) |
+| 🔀 Requirement Change | Delta process | CR registration + maximum inheritance principle |
 
-### 10.2 变更范围判断速查
+### 10.2 Change Scope Assessment Quick Reference
 
-| 条件（三者全部满足走该级） | 复杂度 |
-|---------------------------|--------|
-| 文件=1 且 非核心文件 且 无跨模块 | S 级 |
-| 文件≤5 且 无核心文件 且 模块≤2 | M 级 |
-| 文件>5 或 涉及核心文件 或 模块≥3 | L 级 |
+| Conditions (all three must be met for this level) | Complexity |
+|---------------------------------------------------|-----------|
+| Files = 1 AND not core file AND no cross-module | S-level |
+| Files ≤ 5 AND no core file AND modules ≤ 2 | M-level |
+| Files > 5 OR involves core file OR modules ≥ 3 | L-level |
 
-**规则：** 以最高维度为准。不确定时默认取高一级。
+**Rule:** Use the highest dimension. Default to one level higher when uncertain.
 
-### 10.3 变更在标准流程中的 Agent 职责矩阵
+### 10.3 Agent Responsibility Matrix for Changes in Standard Process
 
-| 标准阶段 | 变更管理职责 | 负责角色 |
-|---------|-------------|---------|
-| 阶段0 (复杂度评估) | 评估变更复杂性，声明流程 | main |
-| 阶段1 (spec) | 登记 CR，填写详细描述 | main |
-| 阶段2 (前置审计) | 审计 CR 的完整性、歧义 | auditor |
-| 阶段3 (gate check) | 审核影响分析自查清单 | main |
-| 阶段4 (design) | 填写自查清单；涉及跨模块数据变换的写示例 | coder |
-| 阶段4b (设计审查) | 审查数据变换示例，验证影响分析 | reviewer |
-| 阶段5 (analyze) | 检查 CR 与现有系统的一致性 | main |
-| 阶段6 (实现) | 最小化、精准修改，git commit 注明 CR 编号 | coder |
-| 阶段6b (代码审查) | 审查变更与已有代码的边界 | reviewer |
-| 阶段7 (测试) | delta 回归测试，非阻塞问题记入 todo.md | tester |
-| 阶段8 (终审) | 对照 CR 逐项验证，回归破坏检查 | auditor |
-| 阶段9 (merge) | 更新 VERSION、CHANGELOG（注明 CR 编号）、CR 闭合 | main |
+| Standard Stage | Change Management Responsibility | Responsible Role |
+|---------------|-------------------------------|-----------------|
+| Stage 0 (Complexity Assessment) | Assess change complexity, declare process | main |
+| Stage 1 (Spec) | Register CR, fill in detailed description | main |
+| Stage 2 (Pre-Audit) | Audit CR completeness and ambiguity | auditor |
+| Stage 3 (Gate Check) | Review impact analysis self-checklist | main |
+| Stage 4 (Design) | Fill in self-checklist; provide examples for cross-module data transformation | coder |
+| Stage 4b (Design Review) | Review data transformation examples, verify impact analysis | reviewer |
+| Stage 5 (Analyze) | Check CR consistency with existing system | main |
+| Stage 6 (Implementation) | Minimal, precise changes; git commit references CR number | coder |
+| Stage 6b (Code Review) | Review boundaries between change and existing code | reviewer |
+| Stage 7 (Testing) | Delta regression testing, record non-blocking issues in todo.md | tester |
+| Stage 8 (Final Audit) | Verify against CR item by item, regression damage check | auditor |
+| Stage 9 (Merge) | Update VERSION, CHANGELOG (reference CR number), CR closure | main |
 
-### 10.4 变更质量门禁（逐项确认，缺一不可）
+### 10.4 Change Quality Gates (confirm each item; no omissions allowed)
 
 ```json
 {
   "qualityGates": [
-    {"id": 1, "check": "CR 已登记（docs/CR.md）", "approvedBy": "auditor(阶段8)", "when": "终审"},
-    {"id": 2, "check": "影响分析自查清单已填写", "approvedBy": "auditor(阶段8)", "when": "终审"},
-    {"id": 3, "check": "（如涉及核心文件）走 coder 实现，main 未直接编辑", "approvedBy": "auditor(阶段8)", "when": "终审"},
-    {"id": 4, "check": "（如涉及跨模块数据变换）design.md 已给出示例", "approvedBy": "auditor(阶段8)", "when": "终审（前提：reviewer 已审）"},
-    {"id": 5, "check": "reviewer 已审查设计", "approvedBy": "auditor(阶段8)", "when": "流程合规检查"},
-    {"id": 6, "check": "reviewer 已审查代码", "approvedBy": "auditor(阶段8)", "when": "流程合规检查"},
-    {"id": 7, "check": "非阻塞问题已记入 todo.md", "approvedBy": "auditor(阶段8)", "when": "终审"},
-    {"id": 8, "check": "delta 回归测试通过", "approvedBy": "auditor(阶段8)", "when": "终审"},
-    {"id": 9, "check": "auditor 终审通过", "approvedBy": "main(阶段9)", "when": "闭合前"},
-    {"id": 10, "check": "CHANGELOG 已更新（注明 CR 编号）", "approvedBy": "main(阶段9)", "when": "闭合"},
-    {"id": 11, "check": "CR 已闭合", "approvedBy": "main(阶段9)", "when": "闭合"}
+    {"id": 1, "check": "CR registered (docs/CR.md)", "approvedBy": "auditor (Stage 8)", "when": "Final Audit"},
+    {"id": 2, "check": "Impact analysis self-checklist completed", "approvedBy": "auditor (Stage 8)", "when": "Final Audit"},
+    {"id": 3, "check": "(If core file involved) Implemented via coder, main did not directly edit", "approvedBy": "auditor (Stage 8)", "when": "Final Audit"},
+    {"id": 4, "check": "(If cross-module data transformation involved) Examples provided in design.md", "approvedBy": "auditor (Stage 8)", "when": "Final Audit (prerequisite: reviewer reviewed)"},
+    {"id": 5, "check": "reviewer reviewed design", "approvedBy": "auditor (Stage 8)", "when": "Process compliance check"},
+    {"id": 6, "check": "reviewer reviewed code", "approvedBy": "auditor (Stage 8)", "when": "Process compliance check"},
+    {"id": 7, "check": "Non-blocking issues recorded in todo.md", "approvedBy": "auditor (Stage 8)", "when": "Final Audit"},
+    {"id": 8, "check": "Delta regression testing passed", "approvedBy": "auditor (Stage 8)", "when": "Final Audit"},
+    {"id": 9, "check": "auditor final audit passed", "approvedBy": "main (Stage 9)", "when": "Before Closure"},
+    {"id": 10, "check": "CHANGELOG updated (references CR number)", "approvedBy": "main (Stage 9)", "when": "Closure"},
+    {"id": 11, "check": "CR closed", "approvedBy": "main (Stage 9)", "when": "Closure"}
   ]
 }
 ```
 
 ---
 
-## 11. 自我改进机制
+## 11. Self-Improvement Mechanism
 
-> 借鉴《原则》（Ray Dalio）的核心方法论：**疼痛+反思=进步**（Pain + Reflection = Progress）
-> 将每一次问题、违规、失败转化为系统改进的燃料，不容忍两次同样的错误。
+> Borrowing from *Principles* (Ray Dalio)'s core methodology: **Pain + Reflection = Progress**
+> Transform every problem, violation, and failure into fuel for system improvement. Do not tolerate the same mistake twice.
 
-### 11.1 基本信念
+### 11.1 Foundational Beliefs
 
-MA 框架从《原则》中吸收了以下理念：
+The MA framework absorbs the following concepts from *Principles*:
 
 ```json
 {
   "principles": [
-    {"name": "激进的事实性", "essence": "直面问题，不回避", "maMapping": "CR/红线违反/bug逃逸公开记录到 journey.md"},
-    {"name": "不容忍同错", "essence": "允许犯错，不容忍罔顾教训、一错再错", "maMapping": "第一次=学习机会，第二次=系统漏洞，第三次=流程缺陷"},
-    {"name": "机器化管理", "essence": "设计系统，不是靠人治", "maMapping": "问题→问流程而不是问责个人"},
-    {"name": "五步流程法", "essence": "目标→问题→诊断→方案→执行", "maMapping": "复盘按五步结构输出"},
-    {"name": "可信度决策", "essence": "可信度加权", "maMapping": "reviewer/auditor 审查结论权重更高"}
+    {"name": "Radical Truthfulness", "essence": "Face problems head-on, do not evade", "maMapping": "CR/redline violations/bug escapes publicly recorded in journey.md"},
+    {"name": "Don't Tolerate the Same Mistake", "essence": "Allow mistakes, do not tolerate ignoring lessons and repeating mistakes", "maMapping": "First time = learning opportunity, second time = system vulnerability, third time = process flaw"},
+    {"name": "Machine-Like Management", "essence": "Design systems, not rely on personal rule", "maMapping": "Problems → ask about process, not blame individuals"},
+    {"name": "5-Step Process", "essence": "Goals → Problems → Diagnosis → Design → Execution", "maMapping": "Retrospectives output in 5-step structure"},
+    {"name": "Believability-Weighted Decision Making", "essence": "Credibility weighting", "maMapping": "reviewer/auditor review conclusions carry higher weight"}
   ]
 }
 ```
 
-### 11.2 疼痛→反思→进步闭环
+### 11.2 Pain → Reflection → Progress Loop
 
-**核心公式：**
+**Core Formula:**
 
-| 步骤 | 行动 | 位置/工具 |
-|------|------|---------|
-| 1. 疼痛 | 问题发生、违规触发、bug 逃逸 | 任意 |
-| 2. 记录 | 记录到 journey.md（不涂改、不掩盖） | journey.md |
-| 3. 诊断 | 追问根因：为什么发生？系统中哪个环节允许了？ | 诊断三问（见下文） |
-| 4. 修复 | 改流程 / 改规范 / 改工具（不只是改代码） | change-management.md / 规范文件 |
-| 5. 验证 | 确认修复闭环：该问题不再出现 | 下一次相关场景 |
-| 6. 沉淀 | 更新 change-management.md 或流程文档 | change-management.md / 规范文件 |
+| Step | Action | Location/Tool |
+|------|--------|---------------|
+| 1. Pain | Problem occurs, violation triggered, bug escapes | Anywhere |
+| 2. Record | Record in journey.md (no whitewashing, no covering up) | journey.md |
+| 3. Diagnose | Trace root cause: Why did it happen? Which part of the system allowed it? | Three Diagnostic Questions (see below) |
+| 4. Fix | Fix the process / spec / tool (not just the code) | change-management.md / spec files |
+| 5. Verify | Confirm fix loop closed: the problem no longer recurs | Next related scenario |
+| 6. Codify | Update change-management.md or process docs | change-management.md / spec files |
 
-**触发条件：**
+**Trigger Conditions:**
 
-| 触发事件 | 最低回应级别 |
-|---------|------------|
-| 红线违反 | 触发后再发生 → 升级为流程缺陷 → 修改 change-management.md |
-| 同一类型 bug 逃逸到用户 ≥ 2 次 | 根因分析 → 修改流程或测试规范 |
-| reviewer 重复发现同一类问题 ≥ 3 次 | coder 技能缺陷 → 补充训练或加自动检查 |
-| tester 模型连续失败 ≥ 2 次 | 不够冗余 → 补充备用模型或通知策略 |
-| auditor 终审发现流程跳过 | 触发后再发生 → 流程缺陷 → 强制门禁 |
+| Trigger Event | Minimum Response Level |
+|--------------|----------------------|
+| Redline violation | After triggered → escalate to process flaw → modify change-management.md |
+| Same type bug escapes to user ≥ 2 times | Root cause analysis → modify process or testing spec |
+| reviewer repeatedly finds same type of issue ≥ 3 times | coder skill deficiency → supplement training or add automated checks |
+| tester model consecutive failures ≥ 2 times | Insufficient redundancy → add fallback model or notification strategy |
+| auditor final audit discovers process skip | After triggered → process flaw → mandatory gate |
 
-#### 诊断三问（任何问题必问）
+#### Three Diagnostic Questions (must ask for any problem)
 
-遇到问题（红线违反、bug 逃逸、流程跳过、模型故障），不急着改代码。先问三个问题：
+When encountering a problem (redline violation, bug escape, process skip, model failure), don't rush to fix the code. First ask three questions:
 
-1. **这个问题暴露了流程中的什么漏洞？** 
-   → 例如：reviewer 跳过了设计审查 → 暴露了"设计审查非门禁"的漏洞
-2. **这个根因是在哪一层？**（个人层 / 流程层 / 规范层 / 工具层）
-   → 个人层：技能不足 → 需要训练
-   → 流程层：流程允许了违规 → 需要加门禁
-   → 规范层：规范没说清楚 → 需要明确约定
-   → 工具层：工具没有提供支撑 → 需要改进工具
-3. **我们怎么确认修复了？**
-   → 下次同样场景下，这个错误不会发生 → 定义验证标准
+1. **What process vulnerability does this problem expose?**
+   → Example: reviewer skipped design review → exposes vulnerability that "design review is not a gate"
+2. **What layer is the root cause at?** (Individual / Process / Specification / Tool layer)
+   → Individual layer: skill deficiency → needs training
+   → Process layer: process allowed the violation → needs a gate
+   → Specification layer: spec wasn't clear → needs explicit convention
+   → Tool layer: tool didn't provide support → needs tool improvement
+3. **How do we confirm it's fixed?**
+   → Under the same scenario next time, this error won't occur → define verification criteria
 
-**禁止的行为：**
-- ❌ 只修症状不改根因 — "这个 bug 修好了"然后下次同类型再来
-- ❌ 归因于个人 — "某 agent 没做好"不是根因，"流程允许他跳过"才是
-- ❌ 修了一次就不管了 — 同类问题出现 2 次必须升级为流程级改进
+**Prohibited Behaviors:**
+- ❌ Only fix symptoms, not root causes — "this bug is fixed" then same type comes again next time
+- ❌ Blame individuals — "agent X didn't do well" is not a root cause; "the process allowed them to skip" is
+- ❌ Fix once and ignore — same type of problem occurring 2 times must escalate to process-level improvement
 
-### 11.3 不容忍两次同样的错误
+### 11.3 Don't Tolerate the Same Mistake Twice
 
-**追踪机制：**
+**Tracking Mechanism:**
 
-- 重复性问题通过 journey.md 记录追溯
-- 第二次出现：在 journey.md 标记为"重复"
-- 第三次出现：必须做流程级修复，写入 change-management.md 或相关规范
+- Recurring problems traced through journey.md records
+- Second occurrence: mark as "repeated" in journey.md
+- Third occurrence: must perform process-level fix, written into change-management.md or related specification
 
-### 11.4 五步复盘法（基于《原则》5-Step Process）
+### 11.4 5-Step Retrospective Method (based on *Principles* 5-Step Process)
 
-每次复盘（项目结束 / 重大变更 / 红线违反），按五步输出：
+Every retrospective (project completion / major change / redline violation), output in five steps:
 
 ```
-Step 1: 目标 — 本次要达成什么？（回顾原始目标）
-Step 2: 问题 — 实际发生了什么？什么阻碍了目标达成？（只列事实，不含判断）
-Step 3: 诊断 — 根因是什么？系统允许了什么？（追问至少 3 层 why）
-Step 4: 方案 — 怎么改流程/规范/工具？（不只改代码；方案必须有验证标准）
-Step 5: 执行 — 谁改？改什么？什么时候完成？（可追踪的行动项）
+Step 1: Goals — What were we trying to achieve? (Review original goals)
+Step 2: Problems — What actually happened? What blocked the goals? (Facts only, no judgment)
+Step 3: Diagnosis — What is the root cause? What did the system allow? (Trace at least 3 layers of why)
+Step 4: Design — How to fix the process/spec/tool? (Not just code; design must include verification criteria)
+Step 5: Execution — Who fixes? What to fix? When to complete? (Trackable action items)
 ```
 
-模板：
+Template:
 
 ```markdown
-## 复盘记录 — [项目/事件名称]
+## Retrospective Record — [Project/Event Name]
 
-| 步骤 | 内容 |
-|------|------|
-| 1. 目标 | 原始目标描述 |
-| 2. 问题 | 现象 + 影响 + 发生频率 |
-| 3. 诊断 | 根因追问链路（Why × 3）：
-|        | 1. 为什么出问题？→ ...
-|        | 2. 为什么系统中允许了它？→ ...
-|        | 3. 为什么没有在更早的阶段拦截？→ ... |
-| 4. 方案 | 修复方案 + 验证标准 |
-| 5. 执行 | 行动项（负责人 + 截止时间） |
+| Step | Content |
+|------|---------|
+| 1. Goals | Original goal description |
+| 2. Problems | Symptoms + Impact + Frequency |
+| 3. Diagnosis | Root cause trace chain (Why × 3):
+|        | 1. Why did the problem occur? → ...
+|        | 2. Why did the system allow it? → ...
+|        | 3. Why wasn't it intercepted at an earlier stage? → ... |
+| 4. Design | Fix plan + Verification criteria |
+| 5. Execution | Action items (Owner + Deadline) |
 ```
 
-### 11.5 流程健康度巡检
+### 11.5 Process Health Inspection
 
-**每季度一次**（或每次大版本更新前），main 执行流程健康度巡检：
+**Once per quarter** (or before each major version update), main performs a process health inspection:
 
-| 指标 | 含义 | 健康阈值 |
-|------|------|---------|
-| 红线违反率 | 每个 Sprint 内红线违反次数 | ≤ 1 次/Sprint |
-| 重复问题率 | 同一模式问题出现 ≥ 2 次的数量 | = 0（出现即修复流程）|
-| CR 登记率 | 变更中登记 CR 的比例 | = 100% |
-| 自查清单完成率 | 变更前填写影响分析的比例 | ≥ 90% |
-| bug 逃逸率 | 经完整流程后仍有 bug 到达用户 | ≤ 5% |
-| 复盘完成率 | 每次变更后复盘的完成比例 | ≥ 80% |
+| Metric | Meaning | Healthy Threshold |
+|--------|---------|-------------------|
+| Redline Violation Rate | Number of redline violations per Sprint | ≤ 1 / Sprint |
+| Repeat Problem Rate | Number of same-pattern problems appearing ≥ 2 times | = 0 (fix process on occurrence) |
+| CR Registration Rate | Proportion of changes with CR registered | = 100% |
+| Self-Checklist Completion Rate | Proportion of changes with impact analysis completed before change | ≥ 90% |
+| Bug Escape Rate | Bugs reaching user after full process | ≤ 5% |
+| Retrospective Completion Rate | Proportion of retrospectives completed after each change | ≥ 80% |
 
-**巡检输出：** 写入 `docs/process-health.md`
+**Inspection Output:** Written to `docs/process-health.md`
 
-健康度不达标 → 根因分析 → 修改 change-management.md 或相关流程
+Health metrics not meeting thresholds → root cause analysis → modify change-management.md or related process
 
-### 11.6 自我改进 vs 问责
+### 11.6 Self-Improvement vs. Blame
 
-| ❌ 问责思维 | ✅ 改进思维 |
-|-----------|-----------|
-| 这谁搞的？ | 流程中哪个环节允许了这个问题？ |
-| 下次注意点 | 下次怎么系统性地防止？ |
-| 扣分 / 惩罚 | 补充规范 / 加门禁 |
-| 修完就完了 | 修完还要确认同类问题不会再来 |
+| ❌ Blame Mindset | ✅ Improvement Mindset |
+|-----------------|----------------------|
+| Who did this? | Which part of the process allowed this problem? |
+| Be more careful next time | How to systematically prevent it next time? |
+| Deduct points / punish | Supplement specifications / add gates |
+| Fix and done | After fixing, confirm same type of problem won't come again |
 
 ---
 
-## 附录A：变更历史
+## Appendix A: Change History
 
-| 版本 | 日期 | 变更 |
-|------|------|------|
-| v1.0 | 2026-06-08 | 初版 |
+| Version | Date | Changes |
+|---------|------|---------|
+| v1.0 | 2026-06-08 | Initial version |

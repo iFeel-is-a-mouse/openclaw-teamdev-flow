@@ -1,91 +1,91 @@
-# tester/test-report-template.md — 测试模板集
+# tester/test-report-template.md — Test Template Suite
 
-> tester 使用此模板进行缺陷管理和测试报告。使用时复制对应部分到 `docs/bugs.md` 和 `docs/test-report.md`。
+> Tester uses this template for defect management and test reporting. Copy the corresponding sections to `docs/bugs.md` and `docs/test-report.md` when using.
 
 ---
 
-# 第一部分：缺陷报告与验证闭环
+# Part 1: Defect Report & Verification Closure
 
-> 复制到 `docs/bugs.md`，测试过程中逐条登记。
+> Copy to `docs/bugs.md` and register defects one by one during testing.
 
-## 测试会话信息
+## Test Session Info
 
-| 字段 | 值 |
-|------|-----|
-| 项目名称 | `<项目名>` |
-| 测试分支 | `feature/xxx` |
-| 测试日期 | `YYYY-MM-DD` |
-| 测试人 | tester |
+| Field | Value |
+|-------|-------|
+| Project Name | `<ProjectName>` |
+| Test Branch | `feature/xxx` |
+| Test Date | `YYYY-MM-DD` |
+| Tester | tester |
 
-## 缺陷汇总
+## Defect Summary
 
-| 编号 | 级别 | 现象简述 | 根因 | 修复人 | 验证结果 | 迭代轮次 |
-|------|------|---------|------|--------|---------|---------|
+| ID | Severity | Symptom Summary | Root Cause | Fixed By | Verification Result | Iteration Round |
+|----|----------|-----------------|------------|----------|---------------------|-----------------|
 | BUG-001 | | | | | ⬜ | 1 |
 
-## 缺陷详情
+## Defect Details
 
 ### BUG-001
 
-**级别：** P0 / P1 / P2 / P3 | **模块：** `<模块名>` | **用例：** `TC-XXX`
+**Severity:** P0 / P1 / P2 / P3 | **Module:** `<ModuleName>` | **Case:** `TC-XXX`
 
-**现象：** [描述] | **期望：** [应该怎样] | **实际：** [实际怎样]
+**Symptom:** [Description] | **Expected:** [What should happen] | **Actual:** [What actually happened]
 
-**复现步骤：** 1. [步骤1] 2. [步骤2] 3. [步骤3]
+**Reproduction Steps:** 1. [Step 1] 2. [Step 2] 3. [Step 3]
 
-**修复（coder 填）：** 根因：[分析] | 方案：[描述] | 文件：[列表] | commit：[hash]
+**Fix (coder fills in):** Root Cause: [Analysis] | Approach: [Description] | Files: [List] | Commit: [hash]
 
-**验证（tester 填）：** 原用例 ✅/❌ | 回归[N项] ✅/⚠️ | 结论：关闭/重开
+**Verification (tester fills in):** Original Case ✅/❌ | Regression [N items] ✅/⚠️ | Conclusion: Close / Reopen
 
-## 严重级别
+## Severity Levels
 
-| P0 阻断 | P1 严重 | P2 一般 | P3 建议 |
-|---------|---------|---------|---------|
+| P0 Blocker | P1 Critical | P2 Normal | P3 Suggestion |
+|------------|-------------|-----------|---------------|
 
-## 迭代规则
+## Iteration Rules
 
-- 与 coder 直接交互，上限 3 轮，每轮更新 todo.md/journey.md
-- 首次 bug 和最终通过时告知 main
-- 超限 main 介入裁决
+- Interact directly with coder, capped at 3 rounds; update todo.md/journey.md each round
+- Notify main at the first bug and upon final pass
+- If cap exceeded, main intervenes to adjudicate
 
 ---
 
-# 第二部分：测试报告
+# Part 2: Test Report
 
-> 复制到 `docs/test-report.md`，测试完成后填写。
+> Copy to `docs/test-report.md` and fill in after testing is complete.
 
-## 测试摘要
+## Test Summary
 
-| 指标 | 值 |
-|------|-----|
-| 可测试项总数 / 黑盒用例 / 白盒用例 | `<N> / <N> / <N>` |
-| 通过 / 失败 / 跳过 | `<N> / <N> / <N>` |
-| 通过率 | `<N>%` |
+| Metric | Value |
+|--------|-------|
+| Total Testable Items / Black-box Cases / White-box Cases | `<N> / <N> / <N>` |
+| Passed / Failed / Skipped | `<N> / <N> / <N>` |
+| Pass Rate | `<N>%` |
 
-## 缺陷统计
+## Defect Statistics
 
-| 级别 | 数量 | 已修复 | 未修复 |
-|------|------|--------|--------|
+| Severity | Count | Fixed | Unfixed |
+|----------|-------|-------|---------|
 | P0 | | | |
 | P1 | | | |
 | P2 | | | |
 | P3 | | | |
 
-## 可测试项完成情况
+## Testable Items Completion
 
-| # | 可测试项 | 方法 | 结果 |
-|---|---------|------|------|
-| 1 | | 黑盒/白盒 | ✅/❌ |
+| # | Testable Item | Method | Result |
+|---|---------------|--------|--------|
+| 1 | | Black-box / White-box | ✅/❌ |
 
-## 环境
+## Environment
 
-| OS | 语言/运行时 | 测试工具 | commit |
-|----|-----------|---------|--------|
+| OS | Language/Runtime | Test Tool | Commit |
+|----|------------------|-----------|--------|
 | | | | |
 
-## 结论
+## Conclusion
 
-- [ ] P0/P1 缺陷全部关闭
-- [ ] 回归通过，无新增缺陷
-- [ ] 可测试项 100% 覆盖
-- [ ] 可提交 auditor 终审
+- [ ] All P0/P1 defects closed
+- [ ] Regression passed, no new defects introduced
+- [ ] 100% testable items coverage
+- [ ] Ready for auditor final review

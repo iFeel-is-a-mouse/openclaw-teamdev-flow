@@ -1,227 +1,227 @@
-# todo-template.md — 项目任务看板模板
+# todo-template.md — Project Task Board Template
 
-> 复制此模板到 `projects/<项目名>/docs/todo.md`。
-> **阶段结束标志：该阶段所有 todo 项全部 ✅。**
-> 修改/删除/削弱任何条目需用户最高层同意。5 个 agent 均可编辑。
+> Copy this template to `projects/<ProjectName>/docs/todo.md`.
+> **Phase completion marker: All todo items in a phase must be checked ✅.**
+> Modifying/deleting/weakening any item requires top-level user approval. All 5 agents may edit.
 
 ---
 
-## 项目信息
+## Project Info
 
-| 字段 | 值 |
+| Field | Value |
 |------|-----|
-| 项目名称 | `<项目名>` |
-| 复杂度 | S / M / L |
-| 流程阶段数 | `<N>` |
-| 启动时间 | `YYYY-MM-DD HH:mm` |
+| Project Name | `<ProjectName>` |
+| Complexity | S / M / L |
+| Process Phase Count | `<N>` |
+| Start Time | `YYYY-MM-DD HH:mm` |
 
 ---
 
-## WBS 逐步求精
+## WBS Progressive Elaboration
 
-todo.md 从粗到细逐层展开，不要求一开始就填满：
+todo.md expands from coarse to fine incrementally — no need to fill everything in from the start:
 
 ```
-阶段级（初始，main 创建）：
-  #4 coder: 架构设计 → 🔄
-  #6 coder: 编码实现 → ⬜
+Phase-level (initial, created by main):
+  #4 coder: Architecture Design → 🔄
+  #6 coder: Coding Implementation → ⬜
 
-子任务级（agent 自行细化）：
-  #4 coder: 架构设计 → 🔄
-    #4.1 数据模型设计 → ⬜
-    #4.2 API 接口设计 → ⬜
-    #4.3 可测试项清单 → ⬜
-  #6 coder: 编码实现 → ⬜
+Subtask-level (agents elaborate on their own):
+  #4 coder: Architecture Design → 🔄
+    #4.1 Data Model Design → ⬜
+    #4.2 API Interface Design → ⬜
+    #4.3 Testable Items Checklist → ⬜
+  #6 coder: Coding Implementation → ⬜
 ```
 
 ---
 
-## 谁可以建任务
+## Who Can Create Tasks
 
-| 场景 | 建任务者 | 承接者 | 示例 |
+| Scenario | Creator | Assignee | Example |
 |------|---------|--------|------|
-| main 派活 | main | 任意 agent | `#4 coder: 架构设计` |
-| agent 细化 | agent 自己 | 自己 | `#4.1 coder: 数据模型设计` |
-| agent 请求 | agent | 其他 agent | `#6.1 tester: 性能压测` |
+| main dispatches work | main | any agent | `#4 coder: Architecture Design` |
+| agent elaborates | agent themselves | self | `#4.1 coder: Data Model Design` |
+| agent requests | agent | another agent | `#6.1 tester: Performance Stress Test` |
 
 ---
 
-## 闭环子任务模板
+## Closed-Loop Subtask Templates
 
-> agent 进入以下阶段时，将对应模板展开为子任务，追踪闭环全过程。
+> When agents enter the following phases, expand the corresponding template into subtasks to track the complete closed loop.
 
-### 🔧 coder 自测闭环（阶段6）
+### 🔧 Coder Self-Test Closed Loop (Phase 6)
 
 ```
-#6 coder: 编码实现 → 🔄
-  #6.1 编码 → ⬜
-  #6.2 自测计划（对照 #4 可测试项清单） → ⬜
-  #6.3 自测执行 → ⬜
-  #6.4 问题修复迭代（无问题则直接 ✅） → ⬜
-    #6.4.1 [问题简述] → ⬜
-      ├ 根因: [分析] → ⬜
-      ├ 修复: [方案] → ⬜
-      ├ 自测回归 → ⬜
-  #6.5 自测全通过门禁 → ⬜
-  #6.6 写入 docs/journey.md → ⬜
+#6 coder: Coding Implementation → 🔄
+  #6.1 Coding → ⬜
+  #6.2 Self-Test Plan (cross-reference #4 Testable Items Checklist) → ⬜
+  #6.3 Self-Test Execution → ⬜
+  #6.4 Bug Fix Iteration (direct ✅ if no issues) → ⬜
+    #6.4.1 [Issue Summary] → ⬜
+      ├ Root Cause: [analysis] → ⬜
+      ├ Fix: [solution] → ⬜
+      ├ Self-Test Regression → ⬜
+  #6.5 Self-Test All-Pass Gate → ⬜
+  #6.6 Write to docs/journey.md → ⬜
   #6.7 git commit + git push origin feature/xxx → ⬜
-  #6.8 sessions_send → tester（附分支名+改动摘要）+ main（附交付摘要） → ⬜
+  #6.8 sessions_send → tester (attach branch name + change summary) + main (attach delivery summary) → ⬜
 ```
 
-**规则：**
-1. 自测计划必对照 #4 产出的可测试项清单，逐项验证
-2. 无问题走快速路径：#6.3 零发现 → #6.4 直接 ✅
-3. 有问题追加子任务，每个问题展开 根因→修复→回归 三步。多问题追加 #6.4.2、#6.4.3…
-4. #6.5 是硬门禁：所有条目 ✅ 后放行，未过禁止进入后续步骤
-5. 必须 git push（tester 需拉取代码）
-6. 同时通知 tester + main，不遗漏
+**Rules:**
+1. Self-test plan must cross-reference the testable items checklist produced in #4 — verify each item
+2. Fast path for no issues: #6.3 zero findings → #6.4 directly ✅
+3. Append subtasks for each issue found, each expanded into 3 steps: Root Cause → Fix → Regression. Multiple issues append #6.4.2, #6.4.3…
+4. #6.5 is a hard gate: proceed only after all items are ✅; do not advance to subsequent steps otherwise
+5. Must git push (tester needs to pull the code)
+6. Notify both tester + main simultaneously — no omission
 
-### 🧪 tester 缺陷闭环（阶段7）
-
-```
-#7 tester: 测试 → 🔄
-  #7.1 接收交付与需求确认 → ⬜
-    #7.1.1 切换分支，确认代码最新 → ⬜
-    #7.1.2 读取 constitution + spec + design + 可测试项清单 → ⬜
-  #7.2 冒烟测试 → ⬜
-  #7.3 黑盒用例设计 → ⬜
-  #7.4 白盒用例设计 → ⬜
-  #7.5 测试执行 → ⬜
-    #7.5.1 功能路径覆盖 → ⬜
-    #7.5.2 边界/异常路径覆盖 → ⬜
-    #7.5.3 对照 spec 逐项核验 → ⬜
-  #7.6 缺陷管理 (迭代第1轮) → ⬜
-    #7.6.1 [BUG-001] 登记 → ⬜
-    #7.6.2 [BUG-001] 报告 coder + 同步 main → ⬜
-    #7.6.3 [BUG-001] coder 修复 → ⬜
-    #7.6.4 [BUG-001] 回归测试（全量） → ⬜
-    #7.6.5 [BUG-001] 验证 → ⬜
-    #7.6.6 [BUG-001] 关闭 / 重开 → ⬜
-  #7.7 缺陷管理 (迭代第2轮, 如有) → ⬜
-  #7.8 缺陷管理 (迭代第3轮, 如有) → ⬜
-  #7.9 最终回归测试 → ⬜
-  #7.10 测试报告与交付 → ⬜
-    #7.10.1 写入 docs/test-report.md → ⬜
-    #7.10.2 写入 docs/journey.md → ⬜
-    #7.10.3 对齐 auditor checklist → ⬜
-    #7.10.4 sessions_send → main（附分支/用例数/覆盖率/通过率） → ⬜
-```
-
-**规则：**
-1. 冒烟失败 → 立即退回 coder，同步 main
-2. 每个 bug 同时报告 coder 并同步 main，不攒堆
-3. 每轮修复后执行全量回归，非仅验证该 bug
-4. 迭代上限 3 轮，超限 main 介入裁决
-5. 最终交付须附 test-report.md + journey.md
-6. 如有 auditor checklist，测试覆盖须对齐
-
-### 🔒 auditor 问题闭环（阶段2：前置审计）
+### 🧪 Tester Defect Closed Loop (Phase 7)
 
 ```
-#2 auditor: 前置审计 → 🔄
-  #2.1 clarify 歧义识别 → ⬜
-    #2.1.1 主观词量化检查 → ⬜
-    #2.1.2 边界/异常/极限值定义 → ⬜
-    #2.1.3 未定义行为检查 → ⬜
-    #2.1.4 需求矛盾检查 → ⬜
-    #2.1.5 缺失场景检查 → ⬜
-    #2.1.6 验收标准可测性 → ⬜
-  #2.2 完整性检查 → ⬜
-  #2.3 宪章一致性检查（对照 constitution.md） → ⬜
-  #2.4 安全性检查 → ⬜
-  #2.5 可测性+可实现性检查 → ⬜
-  #2.6 问题管理 → ⬜
-    #2.6.1 [AUDIT-001] 登记 → ⬜
-    #2.6.2 [AUDIT-001] 报告 main → ⬜
-    #2.6.3 [AUDIT-001] main 决策 → ⬜
-    #2.6.4 [AUDIT-001] main 修正/补充 → ⬜
-    #2.6.5 [AUDIT-001] auditor 复核 → ⬜
-    #2.6.6 [AUDIT-001] main 裁决闭环 → ⬜
-  #2.7 审计报告 → ⬜
-    #2.7.1 写入 docs/audit-report.md → ⬜
-    #2.7.2 写入 docs/journey.md → ⬜
-    #2.7.3 sessions_send → main（附审计摘要+发现数） → ⬜
+#7 tester: Testing → 🔄
+  #7.1 Accept Delivery & Confirm Requirements → ⬜
+    #7.1.1 Switch branch, confirm code is up to date → ⬜
+    #7.1.2 Read constitution + spec + design + testable items checklist → ⬜
+  #7.2 Smoke Test → ⬜
+  #7.3 Black-Box Test Case Design → ⬜
+  #7.4 White-Box Test Case Design → ⬜
+  #7.5 Test Execution → ⬜
+    #7.5.1 Functional Path Coverage → ⬜
+    #7.5.2 Boundary/Exception Path Coverage → ⬜
+    #7.5.3 Verify Against Spec Item by Item → ⬜
+  #7.6 Defect Management (Iteration Round 1) → ⬜
+    #7.6.1 [BUG-001] Register → ⬜
+    #7.6.2 [BUG-001] Report to coder + sync to main → ⬜
+    #7.6.3 [BUG-001] coder fix → ⬜
+    #7.6.4 [BUG-001] Regression Test (full scope) → ⬜
+    #7.6.5 [BUG-001] Verify → ⬜
+    #7.6.6 [BUG-001] Close / Reopen → ⬜
+  #7.7 Defect Management (Iteration Round 2, if any) → ⬜
+  #7.8 Defect Management (Iteration Round 3, if any) → ⬜
+  #7.9 Final Regression Test → ⬜
+  #7.10 Test Report & Delivery → ⬜
+    #7.10.1 Write to docs/test-report.md → ⬜
+    #7.10.2 Write to docs/journey.md → ⬜
+    #7.10.3 Align with auditor checklist → ⬜
+    #7.10.4 sessions_send → main (attach branch / case count / coverage / pass rate) → ⬜
 ```
 
-**前置审计规则：**
-1. clarify 6 项必须逐项完成，有未决项不得通过
-2. 问题管理无 coder/tester 介入（阶段2由 main 修正需求）
-3. 通过后 main 方可下发 coder
+**Rules:**
+1. Smoke test failure → immediately return to coder, sync main
+2. Each bug reported to coder and synced to main — no batching
+3. Full regression after each round of fixes, not just verifying that bug
+4. Iteration cap: 3 rounds; main intervenes if exceeded
+5. Final delivery must include test-report.md + journey.md
+6. If auditor checklist exists, test coverage must align
 
-### 🔒 auditor 问题闭环（阶段8：交付终审）
+### 🔒 Auditor Issue Closed Loop (Phase 2: Pre-Audit)
 
 ```
-#8 auditor: 交付终审 → 🔄
-  #8.1 checklist 生成 → ⬜
-    #8.1.1 基于 spec+design+constitution 生成 docs/checklist.md → ⬜
-  #8.2 需求追溯（对照阶段2前置基线逐项核对） → ⬜
-  #8.3 代码变更审查（git diff main...feature/xxx） → ⬜
-  #8.4 流程合规审查（journey.md + todo.md） → ⬜
-  #8.5 README 完整性检查 → ⬜
-  #8.6 安全审计（OWASP Top 10） → ⬜
-  #8.7 checklist 逐项打勾 → ⬜
-  #8.8 问题管理 → ⬜
-    #8.8.1 [AUDIT-001] 登记 → ⬜
-    #8.8.2 [AUDIT-001] 报告 main → ⬜
-    #8.8.3 [AUDIT-001] main 决策（修复/忽略/技术债务） → ⬜
-    #8.8.4 [AUDIT-001] coder 修复 → ⬜
-    #8.8.5 [AUDIT-001] tester 验证 → ⬜
-    #8.8.6 [AUDIT-001] auditor 复核 → ⬜
-    #8.8.7 [AUDIT-001] main 裁决闭环 → ⬜
-  #8.9 审计报告 → ⬜
-    #8.9.1 写入 docs/audit-report.md → ⬜
-    #8.9.2 写入 docs/journey.md → ⬜
-    #8.9.3 sessions_send → main（附审计摘要+checklist 状态） → ⬜
+#2 auditor: Pre-Audit → 🔄
+  #2.1 Clarify — Ambiguity Identification → ⬜
+    #2.1.1 Subjective Term Quantification Check → ⬜
+    #2.1.2 Boundary/Exception/Edge Value Definition → ⬜
+    #2.1.3 Undefined Behavior Check → ⬜
+    #2.1.4 Requirement Contradiction Check → ⬜
+    #2.1.5 Missing Scenario Check → ⬜
+    #2.1.6 Acceptance Criteria Testability → ⬜
+  #2.2 Completeness Check → ⬜
+  #2.3 Constitution Consistency Check (cross-reference constitution.md) → ⬜
+  #2.4 Security Check → ⬜
+  #2.5 Testability + Feasibility Check → ⬜
+  #2.6 Issue Management → ⬜
+    #2.6.1 [AUDIT-001] Register → ⬜
+    #2.6.2 [AUDIT-001] Report to main → ⬜
+    #2.6.3 [AUDIT-001] main decides → ⬜
+    #2.6.4 [AUDIT-001] main corrects/supplements → ⬜
+    #2.6.5 [AUDIT-001] auditor rechecks → ⬜
+    #2.6.6 [AUDIT-001] main adjudicates closure → ⬜
+  #2.7 Audit Report → ⬜
+    #2.7.1 Write to docs/audit-report.md → ⬜
+    #2.7.2 Write to docs/journey.md → ⬜
+    #2.7.3 sessions_send → main (attach audit summary + findings count) → ⬜
 ```
 
-**终审规则：**
-1. checklist 必须先于打勾生成，未生成不得开始终审
-2. checklist 未 100% 通过不得放行
-3. 需求追溯必须对照阶段2前置基线
-4. 问题走完 登记→决策→修复→验证→复核→闭环 七步
-5. 闭环裁决权在 main（auditor 只发现，不裁决）
+**Pre-Audit Rules:**
+1. All 6 clarify items must be completed; do not pass with any unresolved items
+2. Issue management does not involve coder/tester (Phase 2: main corrects requirements)
+3. main may dispatch to coder only after passing
+
+### 🔒 Auditor Issue Closed Loop (Phase 8: Final Audit)
+
+```
+#8 auditor: Final Audit → 🔄
+  #8.1 Checklist Generation → ⬜
+    #8.1.1 Generate docs/checklist.md based on spec+design+constitution → ⬜
+  #8.2 Requirement Traceability (cross-check against Phase 2 pre-audit baseline item by item) → ⬜
+  #8.3 Code Change Review (git diff main...feature/xxx) → ⬜
+  #8.4 Process Compliance Review (journey.md + todo.md) → ⬜
+  #8.5 README Completeness Check → ⬜
+  #8.6 Security Audit (OWASP Top 10) → ⬜
+  #8.7 Checklist Item-by-Item Verification → ⬜
+  #8.8 Issue Management → ⬜
+    #8.8.1 [AUDIT-001] Register → ⬜
+    #8.8.2 [AUDIT-001] Report to main → ⬜
+    #8.8.3 [AUDIT-001] main decides (fix/ignore/technical debt) → ⬜
+    #8.8.4 [AUDIT-001] coder fix → ⬜
+    #8.8.5 [AUDIT-001] tester verify → ⬜
+    #8.8.6 [AUDIT-001] auditor recheck → ⬜
+    #8.8.7 [AUDIT-001] main adjudicates closure → ⬜
+  #8.9 Audit Report → ⬜
+    #8.9.1 Write to docs/audit-report.md → ⬜
+    #8.9.2 Write to docs/journey.md → ⬜
+    #8.9.3 sessions_send → main (attach audit summary + checklist status) → ⬜
+```
+
+**Final Audit Rules:**
+1. Checklist must be generated before verification; do not begin final audit without it
+2. Do not pass without 100% checklist completion
+3. Requirement traceability must cross-reference Phase 2 pre-audit baseline
+4. Issues follow 7-step process: Register → Decide → Fix → Verify → Recheck → Close
+5. Closure authority rests with main (auditor only discovers, does not adjudicate)
 
 ---
 
-## 任务列表
+## Task List
 
-| # | 登记时间 | 任务内容 | 承接Agent | 状态 | 完成时间 | 备注 |
+| # | Log Time | Task Description | Assignee Agent | Status | Completion Time | Notes |
 |---|---------|---------|-----------|------|---------|------|
-| 0 | | 复杂度评估 + 流程声明 | main | ⬜ | | |
-| 0b | | 制定项目宪章 | main | ⬜ | | L 级必做 |
-| 1 | | 编写 spec.md + style-guide.md | main | ⬜ | | |
-| 2 | | 前置审计 + clarify 歧义识别 | auditor | ⬜ | | |
-| 3 | | 审计质量把关，委派 coder | main | ⬜ | | |
-| 4 | | 架构设计 + 可测试项清单 | coder | ⬜ | | |
-| 5 | | analyze 跨文档一致性检查 | main | ⬜ | | |
-| 6 | | 编码实现 | coder | ⬜ | | |
-| 7 | | 测试 | tester | ⬜ | | |
-| 8 | | 终审 + checklist | auditor | ⬜ | | |
-| 9 | | merge + README 初稿 | main | ⬜ | | |
-| 10 | | 文档总结完善 | publicist | ⬜ | | L 级 |
-| 11 | | 事后复盘 | auditor+main | ⬜ | | 按需 |
+| 0 | | Complexity Assessment + Process Declaration | main | ⬜ | | |
+| 0b | | Draft Project Constitution | main | ⬜ | | Required for L-level |
+| 1 | | Write spec.md + style-guide.md | main | ⬜ | | |
+| 2 | | Pre-Audit + Clarify Ambiguity Identification | auditor | ⬜ | | |
+| 3 | | Audit Quality Gate, Dispatch to coder | main | ⬜ | | |
+| 4 | | Architecture Design + Testable Items Checklist | coder | ⬜ | | |
+| 5 | | Analyze — Cross-Document Consistency Check | main | ⬜ | | |
+| 6 | | Coding Implementation | coder | ⬜ | | |
+| 7 | | Testing | tester | ⬜ | | |
+| 8 | | Final Audit + Checklist | auditor | ⬜ | | |
+| 9 | | Merge + README Initial Draft | main | ⬜ | | |
+| 10 | | Documentation Summary & Refinement | publicist | ⬜ | | L-level |
+| 11 | | Post-Mortem Review | auditor+main | ⬜ | | On demand |
 
 ---
 
-## 状态说明
+## Status Legend
 
-| 状态 | 含义 |
+| Status | Meaning |
 |------|------|
-| ⬜ | 未开始 |
-| 🔄 | 进行中 |
-| ✅ | 已完成 |
-| ❌ | 已取消 |
-| ⚠️ | 阻塞/有风险 |
-| 🔁 | 退回重做 |
+| ⬜ | Not Started |
+| 🔄 | In Progress |
+| ✅ | Completed |
+| ❌ | Canceled |
+| ⚠️ | Blocked / At Risk |
+| 🔁 | Returned for Rework |
 
 ---
 
-## 断点再续
+## Breakpoint Resume
 
-项目中断后，todo.md 是唯一恢复依据：
+When a project is interrupted, todo.md is the sole recovery reference:
 
 ```
-最后一个完成的 todo: #5 analyze ✅
-下一个待开始的 todo: #6 编码实现 ⬜ (承接: coder)
-→ main 直接会话 coder: "继续项目X，阶段6编码，分支 feature/xxx"
+Last completed todo: #5 analyze ✅
+Next pending todo: #6 Coding Implementation ⬜ (assignee: coder)
+→ main directly messages coder: "Continue Project X, Phase 6 coding, branch feature/xxx"
 ```
