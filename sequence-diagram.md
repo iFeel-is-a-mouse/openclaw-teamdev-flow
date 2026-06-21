@@ -43,7 +43,7 @@ actor 用户
 participant "main\n(主控)" as Main
 participant "auditor\n(审计)" as Auditor
 participant "coder\n(编码)" as Coder
-participant "codereviewer\n(审查)" as CR
+participant "reviewer\n(审查)" as CR
 participant "tester\n(测试)" as Tester
 participant "publicist\n(写手)" as Publicist
 

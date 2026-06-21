@@ -40,7 +40,7 @@
 | 前置审计 | main教练 提交需求 | 需求完整性、歧义澄清(clarify)、可测性、安全性、**宪章一致性** |
 | 交付终审 | tester 提交 main → main 转交 | 对照前置基线逐项追溯 + **生成项目质量清单(checklist)** |
 | **delta 审计** | **需求变更时 main教练 触发** | **只审变更部分，与原需求对比，检查冲突和回归** |
-| **阶段11 复盘审计** | **main 在项目复盘时触发** | **事实呈现：对照标准流程审查 journey.md 完整性 + 检查 recurring-issues.md 重复问题 + 输出过程记录审计报告** |
+| **阶段11 复盘审计** | **main 在项目复盘时触发** | **事实呈现：对照标准流程审查 journey.md 完整性 + 检查重复问题模式 + 输出过程记录审计报告** |
 
 ## 审计流程
 
@@ -123,8 +123,8 @@
 **流程合规：** 通过 `journey.md` + `todo.md` 追溯：设计→编码→测试→修复→回归，流程是否完整。
 
 **新增流程合规检查**：
-- [ ] **codereviewer 审查是否完成** — journey.md 中是否有审查记录，审查报告是否写入 `docs/code-review-report.md`
-- [ ] **coder-codereviewer 直接交互是否留痕** — journey.md 中每轮审查-修复有记录，轮数 ≤ 2
+- [ ] **reviewer 审查是否完成** — journey.md 中是否有审查记录，审查报告是否写入 `docs/code-review-report.md`
+- [ ] **coder-reviewer 直接交互是否留痕** — journey.md 中每轮审查-修复有记录，轮数 ≤ 2
 - [ ] **coder 实现不确定是否走升级路径** — journey.md 中是否有 tester 评估记录（阶段4/6）
 - [ ] **coder-tester 直接交互是否留痕** — journey.md 中每轮修复-回归有记录，轮数 ≤ 3
 - [ ] **main 确认回执** — todo.md 中阶段6/7首尾有 main 确认标记

@@ -64,10 +64,10 @@
 └───────────────────────────────────────────────────────────────┘
 
 ⚠️ auditor 发现问题 → main 决策（不直接指挥 coder/tester）
-⚠️ codereviewer 发现问题 → 直接与 coder 交互修复（上限 2 轮）→超出升级 main
+⚠️ reviewer 发现问题 → 直接与 coder 交互修复（上限 2 轮）→超出升级 main
 ```
 
-**核心流程：** `需求 → auditor前置审计 → coder设计 → codereviewer设计审查(🔴门禁) → coder实现 → codereviewer代码审查 → tester → auditor终审 → main ✅ → 用户`
+**核心流程：** `需求 → auditor前置审计 → coder设计 → reviewer设计审查(🔴门禁) → coder实现 → reviewer代码审查 → tester → auditor终审 → main ✅ → 用户`
 
 **全流程时序详见：** `sequence-diagram.md`
 
@@ -101,9 +101,9 @@
 - 🖥️ **驾驶员 (Driver)** — 编写代码实现，是结对编程中的"驾驶员"
 - 🏗️ **架构师** — 设计先行，负责技术方案和系统架构
 - 📊 **性能设计** — 确定项目性能指标（响应时间、吞吐量、并发数），工程师应在 design.md 中注明性能指标
-- 🧭 **导航员** — 与 codereviewer 轮换角色，在审查对方代码时充当导航员
+- 🧭 **导航员** — 与 reviewer 轮换角色，在审查对方代码时充当导航员
 
-**结对编程：** 与 codereviewer 直接交互，轮换驾驶员/导航员角色。不同模型互补：coder (deepseek/deepseek-v4-pro) 擅长编码实现，codereviewer (zai/glm-5.1) 擅长逻辑审查。上限 3 轮，超出升级 main。
+**结对编程：** 与 reviewer 直接交互，轮换驾驶员/导航员角色。不同模型互补：coder (deepseek/deepseek-v4-pro) 擅长编码实现，reviewer (zai/glm-5.1) 擅长逻辑审查。上限 3 轮，超出升级 main。
 
 **子 Agent 模式（maxSpawnDepth: 2）：** 复杂需求时 spawn 子 agent 做设计，再 spawn 子 agent 做实现。
 
@@ -140,7 +140,7 @@
 - **终审**（含 checklist 质量清单，从代码审查转向审查的审查）
 - **性能标准** — 制定项目性能测试标准，判定性能是否达标
 
-**安全：** 安全审查不是当前最优先级，codereviewer 在结对编程中做基础安全扫描即可，auditor 不做专项安全审计。
+**安全：** 安全审查不是当前最优先级，reviewer 在结对编程中做基础安全扫描即可，auditor 不做专项安全审计。
 
 **问题管理模板：** `auditor/audit-report-template.md` | **详细行为准则：** `auditor/AGENTS.md`
 
@@ -157,14 +157,14 @@
 
 **详细行为准则：** `publicist/AGENTS.md` | **人格定义：** `publicist/SOUL.md`
 
-### 2.6 codereviewer — 代码审查员 & 导航员
+### 2.6 reviewer — 代码审查员 & 导航员
 
 | 属性 | 值 |
 |------|-----|
-| **agentId** | `codereviewer` |
+| **agentId** | `reviewer` |
 | **模型** | `zai/glm-5.1` |
 | **Tool Profile** | `coding` |
-| **Workspace** | `~/.openclaw/workspace-codereviewer` |
+| **Workspace** | `~/.openclaw/workspace-reviewer` |
 
 **三重身份：**
 - 🔍 **设计审查员** — 在 coder 产出 design.md 后，对照源代码验证代码证据准确性（方法存在性、行号、文件位置）。🔴 M/L 级项目门禁，不通过则 coder 不得进入实现阶段
@@ -172,16 +172,16 @@
 - 🧭 **导航员** — 与 coder 结对编程，轮换驾驶员/导航员角色，边写边审
 
 **双重审查机制（变更#14经验）：**
-1. **设计审查 (Stage 4b)**: coder 产出 design.md → codereviewer 逐项对照源码验证 → 不通过则退回 coder 修正
-2. **代码审查 (Stage 6b)**: coder 实现完成 → codereviewer 审查代码质量 → 发现问题直接与 coder 交互修复
+1. **设计审查 (Stage 4b)**: coder 产出 design.md → reviewer 逐项对照源码验证 → 不通过则退回 coder 修正
+2. **代码审查 (Stage 6b)**: coder 实现完成 → reviewer 审查代码质量 → 发现问题直接与 coder 交互修复
 
 **协作模式：**
-- coder ⟷ codereviewer 直接交互（结对编程，上限 3 轮）→超出升级 main
-- 使用不同模型（coder=deepseek/deepseek-v4-pro, codereviewer=zai/glm-5.1），互补优势
-- coder 遇到不确定的设计选择时，可实时咨询 codereviewer
-- codereviewer 审查时发现问题 → 直接与 coder 讨论修复方案
+- coder ⟷ reviewer 直接交互（结对编程，上限 3 轮）→超出升级 main
+- 使用不同模型（coder=deepseek/deepseek-v4-pro, reviewer=zai/glm-5.1），互补优势
+- coder 遇到不确定的设计选择时，可实时咨询 reviewer
+- reviewer 审查时发现问题 → 直接与 coder 讨论修复方案
 
-**详细行为准则：** `codereviewer/AGENTS.md` | **人格定义：** `codereviewer/SOUL.md`
+**详细行为准则：** `reviewer/AGENTS.md` | **人格定义：** `reviewer/SOUL.md`
 
 ---
 
@@ -189,28 +189,28 @@
 
 ```
         ┌────────┬────────┬────────┬─────────┬───────────┬──────────────┐
-        │  main  │ coder  │ tester │ auditor │ publicist │ codereviewer │
+        │  main  │ coder  │ tester │ auditor │ publicist │ reviewer │
 ────────┼────────┼────────┼────────┼─────────┼───────────┼──────────────┤
  main   │   -    │  ↔️     │  ↔️     │  ↔️      │    ↔️      │     ↔️        │
  coder  │  ↔️     │   -    │  ↔️     │  ↔️      │    —      │     ↔️        │
  tester │  ↔️     │  ↔️     │   -    │  ↔️      │    —      │     —        │
 auditor │  ↔️     │  ↔️     │  ↔️     │   -     │    —      │     —        │
 publicist│ ↔️    │   —    │   —    │   —     │    -      │     —        │
-codereviewer│ ↔️ │  ↔️    │   —    │   —     │    —      │     -        │
+reviewer│ ↔️ │  ↔️    │   —    │   —     │    —      │     -        │
 ────────┴────────┴────────┴────────┴─────────┴───────────┴──────────────┘
 
 publicist 只与 main 通信（写作需求唯一来源）
-codereviewer 与 main、coder 通信（审查闭环），不与 tester/auditor 直接交互
+reviewer 与 main、coder 通信（审查闭环），不与 tester/auditor 直接交互
 其余 agent 全部互通
 ```
 
 **关键交互规则：**
 - main ↔ 所有 agent（调度中心）
-- coder ↔ codereviewer（代码审查闭环，上限 2 轮）
+- coder ↔ reviewer（代码审查闭环，上限 2 轮）
 - coder ↔ tester（bug 修复闭环，上限 3 轮）
 - auditor 发现问题 → main 决策（不直接指挥 coder/tester）
 - tester → main → auditor（审计通过 main 转手）
-- codereviewer 发现设计问题 → 升级 main 裁决（不在审查报告中展开）
+- reviewer 发现设计问题 → 升级 main 裁决（不在审查报告中展开）
 
 ---
 
@@ -250,7 +250,7 @@ project/
 ├── README.md               ← publicist 产出
 ├── CHANGELOG.md            ← 版本变更记录
 ├── CONTRIBUTING.md         ← 贡献指南
-├── code-review-report.md   ← codereviewer 产出，代码审查报告（可选）
+├── code-review-report.md   ← reviewer 产出，代码审查报告（可选）
 └── .gitignore
 ```
 
@@ -292,14 +292,14 @@ agents:
       workspace: "~/.openclaw/workspace-publicist"
       model: "deepseek/deepseek-v4-pro"
 
-    - id: "codereviewer"
-      workspace: "~/.openclaw/workspace-codereviewer"
+    - id: "reviewer"
+      workspace: "~/.openclaw/workspace-reviewer"
       model: "deepseek/deepseek-v4-pro"
 
 tools:
   agentToAgent:
     enabled: true
-    allow: ["main", "coder", "tester", "auditor", "publicist", "codereviewer"]
+    allow: ["main", "coder", "tester", "auditor", "publicist", "reviewer"]
 
 bindings:
   - agentId: "main"
@@ -313,7 +313,7 @@ bindings:
 每个 agent workspace 必须有 `projects` 软链接指向 main workspace：
 
 ```bash
-for agent in coder tester auditor publicist codereviewer; do
+for agent in coder tester auditor publicist reviewer; do
   ln -s ~/.openclaw/workspace/projects ~/.openclaw/workspace-$agent/projects
 done
 ```

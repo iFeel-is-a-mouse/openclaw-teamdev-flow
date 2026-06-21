@@ -9,8 +9,8 @@
 | Agent | 角色 | 一句话职责 |
 |-------|------|-----------|
 | **main** 🎓🏅📋👥✍️ | 顾问·教练·PM·HR·总编辑 | 用户的唯一接口，需求入口，结果出口，团队调度 |
-| **coder** 🏗️🖥️ | 架构师·驾驶员 | 设计编码，与 codereviewer 结对编程 |
-| **codereviewer** 🔍🧭 | 审查员·导航员 | 代码审查+结对编程，与 coder 互补 |
+| **coder** 🏗️🖥️ | 架构师·驾驶员 | 设计编码，与 reviewer 结对编程 |
+| **reviewer** 🔍🧭 | 审查员·导航员 | 代码审查+结对编程，与 coder 互补 |
 | **tester** 🧪 | 测试 | 黑盒+白盒+性能测试，保证代码质量 |
 | **auditor** 🔒 | 审计·守门员 | 前置审计+终审+性能标准 |
 | **publicist** ✍️ | 写手 | 技术文档、润色修改 |
@@ -35,7 +35,7 @@
                                                     ▼
                                         ┌─────────┴─────────┐
                                         │   结对编程阶段       │
-                                        │  coder ⟷ codereviewer│
+                                        │  coder ⟷ reviewer│
                                         │  驾驶员/导航员轮换    │
                                         │  实时审查+正式审查    │
                                         └─────────┬─────────┘
@@ -62,7 +62,7 @@
                                               11 复盘（按需）
 ```
 
-> 核心链路：`需求 → 前置审计 → 设计 → [coder ⟷ codereviewer 结对编程] → 测试 → 终审 → merge → 文档`
+> 核心链路：`需求 → 前置审计 → 设计 → [coder ⟷ reviewer 结对编程] → 测试 → 终审 → merge → 文档`
 
 ## 快速开始
 
@@ -78,7 +78,7 @@ git clone https://github.com/iFeel-is-a-mouse/team-dev.git
 
 ```bash
 openclaw agents create coder    --workspace ~/.openclaw/workspace-coder
-openclaw agents create codereviewer --workspace ~/.openclaw/workspace-codereviewer
+openclaw agents create reviewer --workspace ~/.openclaw/workspace-reviewer
 openclaw agents create tester   --workspace ~/.openclaw/workspace-tester
 openclaw agents create auditor  --workspace ~/.openclaw/workspace-auditor
 openclaw agents create publicist --workspace ~/.openclaw/workspace-publicist
@@ -136,7 +136,6 @@ team-dev/
 ├── VERSION                    ← 当前版本号
 ├── multi-agent-design.md      ← 架构设计：Agent设计、通信矩阵、三文档体系、配置参考
 ├── sequence-diagram.md        ← 时序图：全流程交互序列，todo.md和journey.md贯穿全程
-├── RETROSPECTIVE.md           ← 复盘报告
 ├── docs/
 │   ├── change-management.md   ← 变更管理全流程规范（CR登记/影响分析/核心文件规则/数据变换规范）
 │   └── testing-redline.md     ← 测试红线规则

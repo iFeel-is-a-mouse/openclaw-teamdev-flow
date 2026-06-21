@@ -1,7 +1,7 @@
 # MA 团队测试红线规则
 
 > 版本: v1.0 | 生效日期: 2026-06-03
-> 适用范围: 所有 agent (main, coder, tester, auditor, publicist, codereviewer)
+> 适用范围: 所有 agent (main, coder, tester, auditor, publicist, reviewer)
 
 ---
 

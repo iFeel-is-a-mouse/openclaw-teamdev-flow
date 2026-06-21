@@ -2,7 +2,7 @@
 
 > 版本: v1.0 | 生效日期: 2026-06-08
 >
-> 适用对象：main、coder、codereviewer、tester、auditor、publicist
+> 适用对象：main、coder、reviewer、tester、auditor、publicist
 >
 > 核心理念借用《原则》（Ray Dalio）：**疼痛+反思=进步**，**不容忍两次同样的错误**。
 > 每个变更不是只改代码，也是改进流程的机会。
@@ -72,7 +72,7 @@ sequenceDiagram
     actor U as 用户
     participant M as main
     participant D as coder
-    participant R as codereviewer
+    participant R as reviewer
     participant T as tester
     participant A as auditor
 
@@ -124,7 +124,7 @@ sequenceDiagram
       "gate": "main 审核通过"
     },
     {
-      "id": 3, "name": "设计审查", "owner": "coder→codereviewer",
+      "id": 3, "name": "设计审查", "owner": "coder→reviewer",
       "trigger": "design.md 完成",
       "actions": ["审查变更兼容性", "验证数据变换示例", "检查边界覆盖"],
       "branches": [
@@ -133,15 +133,15 @@ sequenceDiagram
         "设计争议→升级 main"
       ],
       "output": "docs/design.md（追加变更说明）",
-      "gate": "codereviewer 🔴"
+      "gate": "reviewer 🔴"
     },
     {
-      "id": 4, "name": "实现+审查", "owner": "coder→codereviewer",
+      "id": 4, "name": "实现+审查", "owner": "coder→reviewer",
       "trigger": "设计审查通过",
-      "actions": ["feature 分支实现（commit 注明 CR 编号）", "codereviewer 代码审查"],
+      "actions": ["feature 分支实现（commit 注明 CR 编号）", "reviewer 代码审查"],
       "branches": ["通过→测试", "退回→修复→重审(上限 2轮)", "超限→升级 main"],
       "output": "代码 commit + docs/code-review-report.md",
-      "gate": "codereviewer 🔴"
+      "gate": "reviewer 🔴"
     },
     {
       "id": 5, "name": "测试", "owner": "tester+coder(直连)",
@@ -172,7 +172,7 @@ sequenceDiagram
 ```
 - 变更必须走 feature 分支，不与 main 分支直接混合
 - git commit 注明 CR 编号（如 `feat: 用户认证 #CR-003`）
-- codereviewer 重点关注：变更与已有代码的边界处理、数据泄露、竞态条件
+- reviewer 重点关注：变更与已有代码的边界处理、数据泄露、竞态条件
 
 **交付物：** 代码 commit + `docs/code-review-report.md`
 
@@ -196,7 +196,7 @@ sequenceDiagram
 - auditor 生成项目特定的 checklist
 - checklist 必须包含回归破坏检查项
 - 对照变更基线（git diff）追溯，确认变更覆盖了 CR 中所有需求
-- 非阻塞问题（codereviewer/tester 发现但不立即需要修复的）→ 记入 todo.md"待修复"清单
+- 非阻塞问题（reviewer/tester 发现但不立即需要修复的）→ 记入 todo.md"待修复"清单
 
 **交付物：** `docs/checklist.md` + `docs/audit-report.md`
 
@@ -254,7 +254,7 @@ CR 记录在 `docs/CR.md` 文件中，按顺序追加。
 
 | 审查人 | 结论 | 时间 |
 |--------|------|------|
-| codereviewer | ✅ 通过 / 🔴 退回 / ⏸ 有条件（问题见下） | YYYY-MM-DD HH:MM |
+| reviewer | ✅ 通过 / 🔴 退回 / ⏸ 有条件（问题见下） | YYYY-MM-DD HH:MM |
 
 ### 测试摘要
 
@@ -309,7 +309,7 @@ CR 记录在 `docs/CR.md` 文件中，按顺序追加。
   "impactChecklist": [
     {"id": 1, "question": "是否修改了核心文件（>500行）？", "actionIfYes": "核心文件仅允许 coder 编辑，main 不直接修改", "risk": "core"},
     {"id": 2, "question": "是否涉及跨模块的数据格式/路径变换？", "actionIfYes": "design.md 给出输入→输出示例（≥2组）", "risk": "data"},
-    {"id": 3, "question": "是否跨模块？（修改了 2+ 模块间的接口/调用关系）", "actionIfYes": "codereviewer 设计审查重点检查数据流", "risk": "cross"},
+    {"id": 3, "question": "是否跨模块？（修改了 2+ 模块间的接口/调用关系）", "actionIfYes": "reviewer 设计审查重点检查数据流", "risk": "cross"},
     {"id": 4, "question": "是否有跨技术栈的数据交互？", "actionIfYes": "序列化/反序列化边界最容易出错", "risk": "serialize"},
     {"id": 5, "question": "是否有竞态条件风险？", "actionIfYes": "写清楚锁策略或不可变设计", "risk": "concurrency"},
     {"id": 6, "question": "是否涉及文件 IO 或网络 IO？", "actionIfYes": "超时控制、错误重试、资源释放", "risk": "io"},
@@ -367,9 +367,9 @@ CR 记录在 `docs/CR.md` 文件中，按顺序追加。
 |------|------|-------|---------|
 | 1. main 识别 | 发现变更涉及核心文件 → `sessions_send coder:"CR-xxx 涉及核心文件，请设计方案并实现"` | — | — |
 | 2. coder 设计 | 设计方案 → 写入 design.md | design.md（变更部分） | 变更的精准性、最小影响范围 |
-| 3. codereviewer 设计审查 | 审查 design.md 中的变更方案 | 审查结论 | 是否破坏了原有逻辑、是否插入了不应修改的方法体中间 |
+| 3. reviewer 设计审查 | 审查 design.md 中的变更方案 | 审查结论 | 是否破坏了原有逻辑、是否插入了不应修改的方法体中间 |
 | 4. coder 实现 | 在核心文件中做最小精准变更，不改变文件结构 | 代码（feature 分支） | 只改必须改的部分 |
-| 5. codereviewer 代码审查 | 审查实现代码 | code-review-report.md | 变更边界清晰、不破坏原有结构 |
+| 5. reviewer 代码审查 | 审查实现代码 | code-review-report.md | 变更边界清晰、不破坏原有结构 |
 | 6. tester 测试 | 回归测试（重点：确认原有功能无损） | test-report.md | 全量测试通过，核心文件原有功能无退化 |
 | 7. auditor 终审 | 对照 git diff 逐行审查变更部分 | audit-report.md | 变更范围精确，无意外内容 |
 
@@ -378,7 +378,7 @@ CR 记录在 `docs/CR.md` 文件中，按顺序追加。
 - ❌ main 用 edit 工具修改大型核心文件的方法体（Edit 工具不适合精细修改长文件内部结构）
 - ❌ 在不理解核心文件全貌的情况下做局部修改
 - ❌ 没做回归测试就合入核心文件变更
-- ❌ coder 自审自改（核心文件变更必须由 codereviewer 审查）
+- ❌ coder 自审自改（核心文件变更必须由 reviewer 审查）
 
 ---
 
@@ -408,7 +408,7 @@ CR 记录在 `docs/CR.md` 文件中，按顺序追加。
 3. **关键字段的映射关系**（从源到目标的每个字段是怎么来的）
 4. **异常情况的处理约定**（输入不符合预期时，返回错误还是降级）
 
-**豁免条件：** 当数据变换仅包含直接赋值（字段名 1:1 映射且无任何转换逻辑）时，可仅提供 1 组示例，并在 design.md 中注明"直接映射，无变换逻辑"。codereviewer 在审查时确认豁免是否合理。
+**豁免条件：** 当数据变换仅包含直接赋值（字段名 1:1 映射且无任何转换逻辑）时，可仅提供 1 组示例，并在 design.md 中注明"直接映射，无变换逻辑"。reviewer 在审查时确认豁免是否合理。
 
 ### 6.4 design.md 数据变换章节模板
 
@@ -460,7 +460,7 @@ CR 记录在 `docs/CR.md` 文件中，按顺序追加。
 
 ### 6.5 审查守则
 
-- codereviewer 设计审查（阶段4b）必须**逐组验证**数据变换示例
+- reviewer 设计审查（阶段4b）必须**逐组验证**数据变换示例
   - 手算一遍：输入 → 预期输出，检查变换逻辑是否一致
   - 检查示例是否覆盖了边界情况
   - 发现遗漏 → 退回 coder 补充
@@ -473,7 +473,7 @@ CR 记录在 `docs/CR.md` 文件中，按顺序追加。
 
 ### 7.1 什么是非阻塞问题
 
-非阻塞问题指 codereviewer 或 tester 在审查/测试中发现，但**不影响当前合入**的问题：
+非阻塞问题指 reviewer 或 tester 在审查/测试中发现，但**不影响当前合入**的问题：
 - 当前版本不会触发（边界条件）
 - 性能损耗可接受（少量额外调用）
 - 属于代码异味但不涉及安全或正确性
@@ -491,7 +491,7 @@ todo.md 待修复条目格式：
 
 | # | 登记时间 | 来源 | 问题描述 | CR关联 | 优先级 |
 |---|---------|------|---------|-------|--------|
-| TD-1 | YYYY-MM-DD | codereviewer | 匿名回调影响可读性，建议命名 | CR-002 | P3 |
+| TD-1 | YYYY-MM-DD | reviewer | 匿名回调影响可读性，建议命名 | CR-002 | P3 |
 | TD-2 | YYYY-MM-DD | tester | 大数据量加载超过 3 秒 | CR-002 | P3 |
 
 ### 7.3 非阻塞问题的处理
@@ -520,9 +520,9 @@ todo.md 待修复条目格式：
 
 | 互换 | 效果 |
 |------|------|
-| coder ↔ codereviewer | coder 审查，codereviewer 编码 | 发现 coder 视角看不清的问题；codereviewer 编码更注意审查要点 |
+| coder ↔ reviewer | coder 审查，reviewer 编码 | 发现 coder 视角看不清的问题；reviewer 编码更注意审查要点 |
 | coder → tester | coder 执行一次完整测试 | 理解测试视角，编写更可测试的代码 |
-| coder → navigator | coder 作为导航员指导 codereviewer | 锻炼设计表达能力 |
+| coder → navigator | coder 作为导航员指导 reviewer | 锻炼设计表达能力 |
 
 ### 8.3 互换触发
 
@@ -530,13 +530,13 @@ todo.md 待修复条目格式：
 ### YYYY-MM-DD [main] 角色互换安排
 
 - Sprint N+1 安排角色互换
-- CR-010 ~ CR-012 由 codereviewer 编码，coder 审查
+- CR-010 ~ CR-012 由 reviewer 编码，coder 审查
 - 互换结束后的复盘：双方写下收获
 ```
 
 ### 8.4 互换期间的审查要求
 
-- 互换不降低审查标准。codereviewer 作为代码作者同样要通过对方的审查
+- 互换不降低审查标准。reviewer 作为代码作者同样要通过对方的审查
 - 互换周期内发现的问题同等追踪
 
 ---
@@ -605,10 +605,10 @@ todo.md 待修复条目格式：
 | 阶段2 (前置审计) | 审计 CR 的完整性、歧义 | auditor |
 | 阶段3 (gate check) | 审核影响分析自查清单 | main |
 | 阶段4 (design) | 填写自查清单；涉及跨模块数据变换的写示例 | coder |
-| 阶段4b (设计审查) | 审查数据变换示例，验证影响分析 | codereviewer |
+| 阶段4b (设计审查) | 审查数据变换示例，验证影响分析 | reviewer |
 | 阶段5 (analyze) | 检查 CR 与现有系统的一致性 | main |
 | 阶段6 (实现) | 最小化、精准修改，git commit 注明 CR 编号 | coder |
-| 阶段6b (代码审查) | 审查变更与已有代码的边界 | codereviewer |
+| 阶段6b (代码审查) | 审查变更与已有代码的边界 | reviewer |
 | 阶段7 (测试) | delta 回归测试，非阻塞问题记入 todo.md | tester |
 | 阶段8 (终审) | 对照 CR 逐项验证，回归破坏检查 | auditor |
 | 阶段9 (merge) | 更新 VERSION、CHANGELOG（注明 CR 编号）、CR 闭合 | main |
@@ -621,9 +621,9 @@ todo.md 待修复条目格式：
     {"id": 1, "check": "CR 已登记（docs/CR.md）", "approvedBy": "auditor(阶段8)", "when": "终审"},
     {"id": 2, "check": "影响分析自查清单已填写", "approvedBy": "auditor(阶段8)", "when": "终审"},
     {"id": 3, "check": "（如涉及核心文件）走 coder 实现，main 未直接编辑", "approvedBy": "auditor(阶段8)", "when": "终审"},
-    {"id": 4, "check": "（如涉及跨模块数据变换）design.md 已给出示例", "approvedBy": "auditor(阶段8)", "when": "终审（前提：codereviewer 已审）"},
-    {"id": 5, "check": "codereviewer 已审查设计", "approvedBy": "auditor(阶段8)", "when": "流程合规检查"},
-    {"id": 6, "check": "codereviewer 已审查代码", "approvedBy": "auditor(阶段8)", "when": "流程合规检查"},
+    {"id": 4, "check": "（如涉及跨模块数据变换）design.md 已给出示例", "approvedBy": "auditor(阶段8)", "when": "终审（前提：reviewer 已审）"},
+    {"id": 5, "check": "reviewer 已审查设计", "approvedBy": "auditor(阶段8)", "when": "流程合规检查"},
+    {"id": 6, "check": "reviewer 已审查代码", "approvedBy": "auditor(阶段8)", "when": "流程合规检查"},
     {"id": 7, "check": "非阻塞问题已记入 todo.md", "approvedBy": "auditor(阶段8)", "when": "终审"},
     {"id": 8, "check": "delta 回归测试通过", "approvedBy": "auditor(阶段8)", "when": "终审"},
     {"id": 9, "check": "auditor 终审通过", "approvedBy": "main(阶段9)", "when": "闭合前"},
@@ -651,7 +651,7 @@ MA 框架从《原则》中吸收了以下理念：
     {"name": "不容忍同错", "essence": "允许犯错，不容忍罔顾教训、一错再错", "maMapping": "第一次=学习机会，第二次=系统漏洞，第三次=流程缺陷"},
     {"name": "机器化管理", "essence": "设计系统，不是靠人治", "maMapping": "问题→问流程而不是问责个人"},
     {"name": "五步流程法", "essence": "目标→问题→诊断→方案→执行", "maMapping": "复盘按五步结构输出"},
-    {"name": "可信度决策", "essence": "可信度加权", "maMapping": "codereviewer/auditor 审查结论权重更高"}
+    {"name": "可信度决策", "essence": "可信度加权", "maMapping": "reviewer/auditor 审查结论权重更高"}
   ]
 }
 ```
@@ -675,7 +675,7 @@ MA 框架从《原则》中吸收了以下理念：
 |---------|------------|
 | 红线违反 | 触发后再发生 → 升级为流程缺陷 → 修改 change-management.md |
 | 同一类型 bug 逃逸到用户 ≥ 2 次 | 根因分析 → 修改流程或测试规范 |
-| codereviewer 重复发现同一类问题 ≥ 3 次 | coder 技能缺陷 → 补充训练或加自动检查 |
+| reviewer 重复发现同一类问题 ≥ 3 次 | coder 技能缺陷 → 补充训练或加自动检查 |
 | tester 模型连续失败 ≥ 2 次 | 不够冗余 → 补充备用模型或通知策略 |
 | auditor 终审发现流程跳过 | 触发后再发生 → 流程缺陷 → 强制门禁 |
 
@@ -684,7 +684,7 @@ MA 框架从《原则》中吸收了以下理念：
 遇到问题（红线违反、bug 逃逸、流程跳过、模型故障），不急着改代码。先问三个问题：
 
 1. **这个问题暴露了流程中的什么漏洞？** 
-   → 例如：codereviewer 跳过了设计审查 → 暴露了"设计审查非门禁"的漏洞
+   → 例如：reviewer 跳过了设计审查 → 暴露了"设计审查非门禁"的漏洞
 2. **这个根因是在哪一层？**（个人层 / 流程层 / 规范层 / 工具层）
    → 个人层：技能不足 → 需要训练
    → 流程层：流程允许了违规 → 需要加门禁
@@ -702,28 +702,8 @@ MA 框架从《原则》中吸收了以下理念：
 
 **追踪机制：**
 
-```
-docs/
-├── CR.md             ← 变更请求（一次性的）
-├── recurring-issues.md  ← 重复性问题追踪（新增）
-```
-
-`recurring-issues.md` 格式：
-
-```markdown
-# 重复性问题追踪
-
-> 记录已出现 ≥ 2 次的问题。每次出现都加深一次根因分析，直到找到流程级修复方案。
-
-| # | 问题模式 | 首次出现 | 最近出现 | 出现次数 | 当前根因假设 | 修复状态 |
-|---|---------|---------|---------|---------|------------|---------|
-| R1 | 核心文件被 main 直接 edit 导致结构损坏 | 2026-06-01 | 2026-06-06 | 2 | 流程没有显式禁止 main edit 核心文件 | 已加固：change-management.md §5 |
-| R2 | 跨模块数据变换未给出示例导致编码偏误 | 2026-06-05 | 2026-06-06 | 2 | design.md 模板缺少数据变换章节 | 已加固：change-management.md §6 |
-```
-
-**规则：**
-- 第一次出现：journey.md 记录
-- 第二次出现：写入 recurring-issues.md，标记为"重复"
+- 重复性问题通过 journey.md 记录追溯
+- 第二次出现：在 journey.md 标记为"重复"
 - 第三次出现：必须做流程级修复，写入 change-management.md 或相关规范
 
 ### 11.4 五步复盘法（基于《原则》5-Step Process）

@@ -1,4 +1,4 @@
-# codereviewer/SOUL.md — 代码审查员人格
+# reviewer/SOUL.md — 代码审查员人格
 
 _"好代码不是写出来的，是改出来的。"_
 

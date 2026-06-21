@@ -80,8 +80,8 @@
 | D5: 迭代决策 | auditor 终审发现问题 | 评估严重程度：P0-P1→必修 / P2→评估 / P3→记录为技术债务 |
 | D6: 交付判定 | auditor 终审通过 | 确认一切就绪 → 汇报 用户。🔴 **编译产物门禁**：bin/apk/jar等必须等tester+coder迭代完成、测试全通过、auditor终审通过后才能交付用户 |
 | D6.5: coder-tester 直接交互 | 阶段7测试发现bug | coder和tester可直接交互修复（不经过main），每轮更新todo.md/journey.md，首尾告知main。迭代上限3轮，超限后main介入裁决：停下分析根因/降低要求/变更需求 |
-| D6.3: codereviewer 审查争议 | codereviewer 与 coder 无法达成一致 | main 裁决：接受审查意见/接受 coder 方案/折中方案。如涉及设计层面问题，main 需重新审视 design.md |
-| D6.2: codereviewer 超限升级 | codereviewer-coder 交互超 2 轮 | main 介入：审查争议点，裁决或扩大评审范围 |
+| D6.3: reviewer 审查争议 | reviewer 与 coder 无法达成一致 | main 裁决：接受审查意见/接受 coder 方案/折中方案。如涉及设计层面问题，main 需重新审视 design.md |
+| D6.2: reviewer 超限升级 | reviewer-coder 交互超 2 轮 | main 介入：审查争议点，裁决或扩大评审范围 |
 | D7: 进度干预 | agent 超过 30min 无响应 | 主动询问，判断卡住还是在工作 |
 | D8: coder 实现不确定 | coder 报告 examples 无参考、实现方案不确定 | 咨询 tester（从可测试性/预期行为角度评估候选方案），汇总反馈给 coder，决策记录到 design.md（阶段4）或 journey.md（阶段6） |
 

@@ -6,7 +6,7 @@ description: >
   多Agent团队协作开发技能。
   当用户说"团队研发"或"多agent开发"时触发。
   main agent 收到开发需求后，按复杂度（S/M/L）编排
-  coder/codereviewer/tester/auditor/publicist 六个专业 agent
+  coder/reviewer/tester/auditor/publicist 六个专业 agent
   完成端到端交付。
   适用于：新功能开发、Bug修复、重构、设计变更、文档编写。
   不适用于：纯咨询问答、简单脚本（S级以下的可由main自行完成）、
@@ -24,14 +24,14 @@ metadata:
   agents:
     orchestrator: main          # 主控，负责调度和路由
     designer: coder              # 架构设计与编码实现
-    reviewer: codereviewer       # 代码审查与设计审查
+    reviewer: reviewer       # 代码审查与设计审查
     tester: tester               # 测试
     auditor: auditor             # 审计
     writer: publicist            # 文档编写
   routing:
     - trigger: "团队研发"
       target: main
-      action: "main 评估复杂度后编排 coder/codereviewer/tester/auditor/publicist"
+      action: "main 评估复杂度后编排 coder/reviewer/tester/auditor/publicist"
       note: "其他 agent 收到此关键词时必须转发给 main"
     - trigger: "多agent开发"
       target: main
@@ -44,7 +44,7 @@ metadata:
     - if_agent: tester
       trigger: "团队研发"
       action: "redirect to main: '用户想启动团队研发，我已转交 main 处理'"
-    - if_agent: codereviewer
+    - if_agent: reviewer
       trigger: "团队研发"
       action: "redirect to main: '用户想启动团队研发，我已转交 main 处理'"
     - if_agent: auditor
@@ -59,7 +59,7 @@ metadata:
 
 ## 概述
 
-编排 6 个专业 AI Agent（main/coder/codereviewer/tester/auditor/publicist）组成虚拟开发团队，
+编排 6 个专业 AI Agent（main/coder/reviewer/tester/auditor/publicist）组成虚拟开发团队，
 按工业化流程完成软件开发项目。每个 Agent 各司其职，质量层层把关，交付可靠代码。
 
 ### 做什么
@@ -80,9 +80,9 @@ metadata:
 | 设计变更 → "团队研发：订单状态机需要调整" | 紧急修复 → main 直接处理和交付，事后补流程 |
 
 ### 核心优势
-- **质量门禁层层把关**：codereviewer 审查 → tester 测试 → auditor 终审，三层防线
+- **质量门禁层层把关**：reviewer 审查 → tester 测试 → auditor 终审，三层防线
 - **复杂度自适应**：S(简单)/M(中等)/L(大型) 三级流程，小项目快跑大项目稳扎
-- **知识持续沉淀**：journey.md 记录过程，RETROSPECTIVE.md 沉淀教训
+- **知识持续沉淀**：journey.md 记录过程，复盘沉淀教训
 
 ---
 
@@ -140,10 +140,10 @@ main 评估复杂度
 | 2 auditor: 前置审计 | main 自查替代 | ✅ | ✅ | 含 clarify 歧义识别 |
 | 3 main: gate check | 跳过 | ✅ | ✅ | 审核自查清单，委派 coder |
 | 4 coder: design.md | 口头描述 | ✅ | ✅ | M+级有数据变换的必须给示例 |
-| 4b codereviewer: 设计审查 | 跳过 | 🔴 门禁 | 🔴 门禁 | 验证设计 + 数据变换示例 |
+| 4b reviewer: 设计审查 | 跳过 | 🔴 门禁 | 🔴 门禁 | 验证设计 + 数据变换示例 |
 | 5 main: analyze | 跳过 | ✅ | ✅ | spec↔design↔constitution 一致性 |
 | 6 coder: 实现 | ✅ | ✅ | ✅ | 含自测 |
-| 6b codereviewer: 代码审查 | 跳过 | 🔴 门禁 | 🔴 门禁 | 结对编程审查 |
+| 6b reviewer: 代码审查 | 跳过 | 🔴 门禁 | 🔴 门禁 | 结对编程审查 |
 | 7 tester: 测试 | 轻量测试 | ✅ | ✅ | 基于可测试项清单 |
 | 8 auditor: 终审 | 简化 checklist | ✅ | ✅ | 完整 checklist |
 | 9 main: merge | ✅ | ✅ | ✅ | + README 初稿 |
@@ -169,9 +169,9 @@ main 评估复杂度
 | 1 (spec) | spec.md 写的需求用户确认了 | 用户确认无歧义 |
 | 2 (审计) | auditor 前置审计通过，无未解决的 CLARIFY | 审计报告无 P0/P1 |
 | 3 (gate) | 自查清单审核通过 | main 确认所有"是"项已在 design 中展开 |
-| 4 (design) | codereviewer 设计审查通过 | 审查结论为 ✅ |
+| 4 (design) | reviewer 设计审查通过 | 审查结论为 ✅ |
 | 5 (analyze) | spec↔design↔constitution 无矛盾 | main 确认一致 |
-| 6b (审查) | codereviewer 代码审查通过 | 审查结论为 ✅ 或有条件通过 |
+| 6b (审查) | reviewer 代码审查通过 | 审查结论为 ✅ 或有条件通过 |
 | 7 (测试) | 全部测试通过，无 P0/P1 bug | tester 测试报告通过率=100% |
 | 8 (终审) | auditor checklist 全部 ✅ | checklist 无未通过项 |
 | 9 (merge) | CHANGELOG 更新，CR 闭合 | git merge 成功 |
@@ -181,14 +181,14 @@ main 评估复杂度
 
 | 不通过阶段 | 问题类型 | 处理方式 | 涉及角色 |
 |----------|---------|---------|---------|
-| 阶段4b (设计审查) | 设计问题 | coder 修改 design.md → codereviewer 重新审查 | coder, codereviewer |
-| 阶段6b (代码审查) | 编码问题 | coder 修复 → codereviewer 复审（直接交互） | coder, codereviewer |
+| 阶段4b (设计审查) | 设计问题 | coder 修改 design.md → reviewer 重新审查 | coder, reviewer |
+| 阶段6b (代码审查) | 编码问题 | coder 修复 → reviewer 复审（直接交互） | coder, reviewer |
 | 阶段7 (测试) | 编码问题 | coder 修复 → tester 回归验证（直接交互） | coder, tester |
 | 阶段2 (前置审计) | 需求问题 | main 与用户确认歧义 → main 修改 spec | main |
 | 阶段8 (终审) | 审计问题 | coder 逐项修复 → auditor 重新终审 | coder, auditor |
 | **连续 2 轮同一阶段不通过** | 越级 | main 升级给用户决策 | main + 用户 |
 
-**直接交互规则：** 阶段6b/7 中 coder 直接与 codereviewer/tester 交互，不经过 main 中转。每轮更新 todo.md/journey.md，迭代上限 2轮(审查)或3轮(测试)。超限由 main 介入。
+**直接交互规则：** 阶段6b/7 中 coder 直接与 reviewer/tester 交互，不经过 main 中转。每轮更新 todo.md/journey.md，迭代上限 2轮(审查)或3轮(测试)。超限由 main 介入。
 
 ---
 
@@ -200,7 +200,7 @@ main 评估复杂度
 |-------|------|---------|
 | `problem-solving-methodology` | 结构化问题诊断：消解层→定义→诊断→方案→验证→复盘 | main, coder, tester |
 | `team-dev` (本 skill) | 多 agent 协作编排 | 全部 |
-| `code-review-expert` | 多维度代码审查方法论 | codereviewer |
+| `code-review-expert` | 多维度代码审查方法论 | reviewer |
 
 **对外反馈规则**：agent 在任务中使用 skill 后，在 `journey.md` 或交付摘要中注明使用了哪个 skill 的哪部分方法论。如 "根因确认通过 problem-solving 三问法"。
 
@@ -268,10 +268,10 @@ main 评估复杂度
 2 auditor: 前置审计+clarify
 3 main: gate check
 4 coder: design.md（标准模式，允许 N/A 章节省略）+ 可测试项清单
-4b codereviewer: 设计审查 — 对照源代码验证设计证据准确性 🔴 门禁
+4b reviewer: 设计审查 — 对照源代码验证设计证据准确性 🔴 门禁
 5 main: analyze 一致性检查
 6 coder: 实现
-6b codereviewer: 代码审查 — 结对编程审查实现代码
+6b reviewer: 代码审查 — 结对编程审查实现代码
 7 tester: 测试
 8 auditor: 终审+checklist（动态生成 → ~15-20 项）
 9 main: merge + README（publicist 在阶段1后润色 spec/design，阶段9统一统稿）
@@ -294,10 +294,10 @@ main 评估复杂度
 2 auditor: 前置审计+clarify
 3 main: gate check
 4 coder: design.md（完整模式）+ 可测试项清单
-4b codereviewer: 设计审查 — 对照源代码验证设计证据准确性 🔴 门禁
+4b reviewer: 设计审查 — 对照源代码验证设计证据准确性 🔴 门禁
 5 main: analyze 一致性检查
 6 coder: 实现
-6b codereviewer: 代码审查 — 结对编程审查实现代码
+6b reviewer: 代码审查 — 结对编程审查实现代码
 7 tester: 测试
 8 auditor: 终审+checklist（完整 ~30-38 项）
 9 main: merge + README 初稿
@@ -394,11 +394,11 @@ main 复杂度评估 → 流程声明 → 用户 确认 ✅
 4 coder 设计架构 → docs/design.md + 可测试项清单
     │  (S 级口头描述, 不写独立 design.md)
     ▼
-4b codereviewer 设计审查 🔴 门禁 [NEW: 变更#14经验]
+4b reviewer 设计审查 🔴 门禁 [NEW: 变更#14经验]
     │     逐项对照源代码验证设计文档的代码证据准确性
     │     检查 API 存在性、方法签名、文件位置、行号
     │     不通过 → 退回 coder 修正 → 重审
-    │     🔴 coder 不得进入阶段6实现，直到 codereviewer 审查通过
+    │     🔴 coder 不得进入阶段6实现，直到 reviewer 审查通过
     │  (S 级跳过, M/L 级强制执行)
     ▼
 5 analyze 跨文档一致性检查 [NEW: spec-kit]
@@ -408,8 +408,8 @@ main 复杂度评估 → 流程声明 → 用户 确认 ✅
 6 coder 编码实现 → 自测
     │
     ▼
-6b codereviewer 代码审查 → 结对编程审查实现代码
-    │     coder ↔ codereviewer 直接交互（上限 2 轮）→ 超出升级 main
+6b reviewer 代码审查 → 结对编程审查实现代码
+    │     coder ↔ reviewer 直接交互（上限 2 轮）→ 超出升级 main
     │     🔴 设计审查已过，此阶段聚焦代码正确性、安全性、可读性
     │  (S 级跳过, M/L 级强制执行)
     ▼
@@ -1152,7 +1152,7 @@ main 在阶段1 后即可向 publicist 发送上下文：
 **Step 2: 呈现事实（auditor 先审）**
 - 回看已完成项目的 journey.md，对照标准流程，找出缺失和偏离
 - 检查 audit-report.md 的完整性（前置审计 + 终审是否都记录）
-- 检查 recurring-issues.md 是否有重复性问题未修复
+- 检查 journey.md 中是否有重复性问题模式未修复
 - 输出"过程记录审计报告"给 main
 
 **Step 3: 诊断根因（auditor 报告下发各 agent + main 汇总）**
@@ -1179,20 +1179,19 @@ main 汇总诊断：
 
 **Step 4: 设计方案**
 - **如果是流程缺陷**（如缺少必做步骤、检查项不完整）→ 修改 change-management.md 或 skills/SKILL.md 或 projects/ma/<agent>/AGENTS.md
-- **如果是执行失误**（agent 跳步、遗漏）→ 记录到 RETROSPECTIVE.md，评估是否需要强化红线或加门禁
+- **如果是执行失误**（agent 跳步、遗漏）→ 记录到 journey.md，评估是否需要强化红线或加门禁
 - 如果问题已出现 ≥ 2 次 → 必须走流程级修复，写入 change-management.md
 
 **Step 5: 执行与验证**
 - 修改完成后同步 agent workspace
-- 写入 `projects/ma/RETROSPECTIVE.md`
-- 更新 `docs/recurring-issues.md`（如适用）
+- 写入 `projects/ma/docs/journey.md`（如适用）
 - 定义验证标准：下次同样场景下，这个问题不会再次发生
 
 #### 复盘产出
 
 | 产出 | 内容 | 操作 |
 |------|------|------|
-| RETROSPECTIVE.md 更新 | 问题、根因、修复、教训 | main 写入 |
+| journey.md 复盘记录 | 问题、根因、修复、教训 | main 写入 |
 | SKILL.md / AGENTS.md 修改 | 流程文档补强 | main 执行 |
 | agent workspace 同步 | 模板 → 实际 workspace | main 复制 |
 | *(不改已完成项目)* | *(示例项目A 的 journey.md 保持原样)* | — |
@@ -1201,7 +1200,7 @@ main 汇总诊断：
 
 - ❌ 事后修改已完成项目的文档/代码来"美化"审计结果
 - ❌ 用"改项目文件"替代"改流程文档"——治标不治本
-- ❌ 复盘发现问题不写入 RETROSPECTIVE.md
+- ❌ 复盘发现问题不记录到文档
 - ❌ 混淆主客体——复盘是修组织流程，不是重修已完成的项目
 
 #### 新增一轮开发 ≠ 复盘
@@ -1384,10 +1383,10 @@ MA 框架吸收了以下变更管理规则，所有角色必须遵守：
 | R1 | **每个变更都必须登记 CR。** 没有 CR 不得进入开发 | change-management.md §2/§3 |
 | R2 | **变更前填写影响分析自查清单。** 任一高风险项命中，必须在 design.md 中展开 | change-management.md §4 |
 | R3 | **核心文件（>500行）变更走 coder，main 不直接 edit。** 违者红线 | change-management.md §5 |
-| R4 | **跨模块数据变换必须在 design.md 给出输入→输出示例（≥2组）。** codereviewer 逐组验证 | change-management.md §6 |
+| R4 | **跨模块数据变换必须在 design.md 给出输入→输出示例（≥2组）。** reviewer 逐组验证 | change-management.md §6 |
 | R5 | **非阻塞问题必须记入 todo.md 待修复清单。** 不口头约定"下次改" | change-management.md §7 |
 | R6 | **Agent 必须有降级模型，主模型不可用时自动切换。** 不可用时不静默继续 | change-management.md §9 |
-| R7 | **每 3 个 Sprint 至少安排一次 coder↔codereviewer 角色互换。** 打破思维定势 | change-management.md §8 |
+| R7 | **每 3 个 Sprint 至少安排一次 coder↔reviewer 角色互换。** 打破思维定势 | change-management.md §8 |
 | R8 | **疼痛+反思=进步。** 每次问题/违规触发根因诊断，不容忍两次同样的错误 | change-management.md §11 |
 
 ### 11.2 变更流程整合
@@ -1605,7 +1604,7 @@ agent 无响应
 - spec.md 写得不明确（歧义未在阶段2 clarify 中解决）
 - constitution.md 没被 coder 读取（默认在阶段4设计中已固化，但新加入的 coder 可能遗漏）
 
-**处理：** main 在阶段5 analyze 时发现不一致 → 退回 coder 修改 design → codereviewer 重审。
+**处理：** main 在阶段5 analyze 时发现不一致 → 退回 coder 修改 design → reviewer 重审。
 
 ### Q4: tester 发现严重 bug，影响范围大
 
@@ -1613,7 +1612,7 @@ agent 无响应
 1. tester 直接告知 coder（走阶段7直接交互）
 2. coder 评估修复范围，更新 journey.md
 3. 修复后 tester 做全量回归（不只是验证该 bug）
-4. 如果修复涉及核心文件，codereviewer 重审
+4. 如果修复涉及核心文件，reviewer 重审
 5. 如果迭代超 3 轮，main 介入裁决
 
 ### Q5: CR 流程被跳过，直接改代码了
@@ -1626,7 +1625,7 @@ agent 无响应
 
 **原因：** 复盘产出没变成可追踪的行动项。
 
-**修复：** 复盘后必须产出明确的行动项（谁 + 做什么 + 截止时间），写入 RETROSPECTIVE.md、todo.md 和 change-management.md（如适用）。下轮启动时 main 先检查复盘行动项是否已完成。
+**修复：** 复盘后必须产出明确的行动项（谁 + 做什么 + 截止时间），写入 journey.md、todo.md 和 change-management.md（如适用）。下轮启动时 main 先检查复盘行动项是否已完成。
 
 ---
 
@@ -1657,6 +1656,6 @@ agent 无响应
 - 🔴 **每个变更必须登记 CR** — 没有 CR 不得进入开发。即使 1 行 bugfix 也要做 CR 登记（简化版）。见 change-management.md §3。
 - 🔴 **变更前必须做影响分析** — coder 填写自查清单，main 审核。S 级可口头过一遍，M/L 级必须写入文档。见 change-management.md §4。
 - 🔴 **核心文件（>500行）main 不得直接 edit** — 核心文件修改必须走 coder。main 只做决策和审查。Edit 工具适用范围：配置文件、测试文件、文档、小型工具脚本（<500行）。见 change-management.md §5。
-- 🔴 **跨模块数据变换必须在 design.md 给出输入→输出示例（≥2组）** — 编码实现前提供给 codereviewer 审查，审查通过后方可编码。见 change-management.md §6。
-- 🔴 **非阻塞问题不得口头约定"下次改"** — codereviewer/tester 发现的不阻塞问题，必须记入 todo.md 待修复清单，由 main 安排修复计划。见 change-management.md §7。
+- 🔴 **跨模块数据变换必须在 design.md 给出输入→输出示例（≥2组）** — 编码实现前提供给 reviewer 审查，审查通过后方可编码。见 change-management.md §6。
+- 🔴 **非阻塞问题不得口头约定"下次改"** — reviewer/tester 发现的不阻塞问题，必须记入 todo.md 待修复清单，由 main 安排修复计划。见 change-management.md §7。
 - 🔴 **tester 主模型不可用时必须降级或上报** — primary model 失败时自动使用 fallback，fallback 也失败时告知用户。不允许静默继续。见 change-management.md §9。
