@@ -185,7 +185,7 @@ Main reads the following files to gain a comprehensive understanding of the MA f
 
 **Step 2: Main merges AGENTS.md**
 
-For each agent (coder, tester, auditor, publicist), main performs:
+For each agent (coder, reviewer, tester, auditor, publicist), main performs:
 
 1. Read `projects/ma/<agent>/AGENTS.md` — this is the role template
 2. Send it to the corresponding agent via `sessions_send`, with a message like:

@@ -104,7 +104,7 @@ for ws in workspace-coder workspace-tester workspace-auditor workspace-publicist
 done
 
 # 2. Agent availability check
-for agent in coder tester auditor publicist; do
+for agent in coder reviewer tester auditor publicist; do
   echo "→ Checking if $agent is reachable..."
   # main quickly confirms agent responsiveness via sessions_spawn
 done
@@ -593,7 +593,7 @@ If symlinks are not established, agents will report "project directory does not 
 
 ```bash
 # Check if symlinks exist
-for ws in workspace-auditor workspace-coder workspace-tester workspace-publicist; do
+for ws in workspace-auditor workspace-coder workspace-reviewer workspace-tester workspace-publicist; do
   target="$HOME/.openclaw/$ws/projects"
   if [ ! -e "$target" ]; then
     ln -s "$HOME/.openclaw/workspace/projects" "$target"
@@ -1286,7 +1286,7 @@ Decision Needed: [If user needs to make a call, write it clearly]
 
 ### 8.2 Agent Work Completion Notification
 
-**After each agent (coder / tester / auditor / publicist) completes their work:**
+**After each agent (coder / reviewer / tester / auditor / publicist) completes their work:**
 
 1. agent sessions_send → main (with delivery summary)
 2. **After main receives it, immediately send notification to the user**, including:
