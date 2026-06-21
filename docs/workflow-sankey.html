@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MA Framework — Workflow</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a2e; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+  #chart { width: 1200px; height: 700px; }
+</style>
+</head>
+<body>
+<div id="chart"></div>
+<script>
+var chart = echarts.init(document.getElementById('chart'), 'dark');
+
+var nodes = [
+  { name: 'User' },
+  { name: 'main\n(Assessment)' },
+  { name: 'Auditor\n(Pre-Audit)' },
+  { name: 'Coder ⟷ Reviewer\n(Pair Programming)' },
+  { name: 'main\n(Analyze)' },
+  { name: 'Tester\n(Testing)' },
+  { name: 'Auditor\n(Final Audit)' },
+  { name: 'main\n(Merge + Draft)' },
+  { name: 'Publicist\n(Documentation)' },
+  { name: 'Delivery' }
+];
+
+var links = [
+  { source: 'User', target: 'main\n(Assessment)', value: 10 },
+  { source: 'main\n(Assessment)', target: 'Auditor\n(Pre-Audit)', value: 9 },
+  { source: 'Auditor\n(Pre-Audit)', target: 'Coder ⟷ Reviewer\n(Pair Programming)', value: 8 },
+  { source: 'Coder ⟷ Reviewer\n(Pair Programming)', target: 'main\n(Analyze)', value: 7 },
+  { source: 'main\n(Analyze)', target: 'Tester\n(Testing)', value: 6 },
+  { source: 'Tester\n(Testing)', target: 'Auditor\n(Final Audit)', value: 5 },
+  { source: 'Auditor\n(Final Audit)', target: 'main\n(Merge + Draft)', value: 4 },
+  { source: 'main\n(Merge + Draft)', target: 'Publicist\n(Documentation)', value: 3 },
+  { source: 'Publicist\n(Documentation)', target: 'Delivery', value: 2 }
+];
+
+var option = {
+  title: {
+    text: 'MA Framework — Team Development Workflow',
+    subtext: 'Requirement → Pre-Audit → Design & Pair Programming → Testing → Final Audit → Merge → Documentation → Delivery',
+    left: 'center',
+    top: 15,
+    textStyle: { fontSize: 20, color: '#e0e0e0' },
+    subtextStyle: { fontSize: 13, color: '#999' }
+  },
+  tooltip: { trigger: 'item', triggerOn: 'mousemove' },
+  series: [{
+    type: 'sankey',
+    layout: 'none',
+    emphasis: { focus: 'adjacency' },
+    nodeAlign: 'left',
+    layoutIterations: 0,
+    data: nodes,
+    links: links,
+    label: {
+      fontSize: 13,
+      color: '#ddd',
+      formatter: function(p) { return p.name.replace('\n', ' '); }
+    },
+    lineStyle: { color: 'gradient', curveness: 0.5, opacity: 0.3 },
+    itemStyle: { borderWidth: 1, borderColor: '#444' },
+    levels: [
+      { depth: 0, itemStyle: { color: '#ff6b6b' }, label: { color: '#ff6b6b', fontWeight: 'bold' } },
+      { depth: 1, itemStyle: { color: '#4ecdc4' } },
+      { depth: 2, itemStyle: { color: '#ffe66d' } },
+      { depth: 3, itemStyle: { color: '#a29bfe' } },
+      { depth: 4, itemStyle: { color: '#fd79a8' } },
+      { depth: 5, itemStyle: { color: '#00cec9' } },
+      { depth: 6, itemStyle: { color: '#e17055' } },
+      { depth: 7, itemStyle: { color: '#6c5ce7' } },
+      { depth: 8, itemStyle: { color: '#55efc4' } },
+      { depth: 9, itemStyle: { color: '#74b9ff' } }
+    ]
+  }]
+};
+
+chart.setOption(option);
+window.addEventListener('resize', function() { chart.resize(); });
+</script>
+</body>
+</html>

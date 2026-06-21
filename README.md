@@ -17,52 +17,9 @@
 
 ## Workflow
 
-```
-User submits requirement
-    │
-    ▼
-0 main: complexity assessment + process declaration
-    │
-    ▼
-1 main: requirement analysis → auditor: pre-audit + clarify ──→ main: gate check
-                                                                    │
-                                                                    ▼
-                                                              4 coder: design + technical proposal
-                                                                    │
-                                                                    ▼
-                                                              5 analyze: consistency check
-                                                                    │
-                                                                    ▼
-                                                        ┌─────────┴─────────┐
-                                                        │  Pair Programming   │
-                                                        │  coder ⟷ reviewer │
-                                                        │  Driver/navigator   │
-                                                        │  rotation           │
-                                                        │  Real-time + formal │
-                                                        │  review             │
-                                                        └─────────┬─────────┘
-                                                                    │
-                                                                    ▼
-                                                              7 tester: testing
-                                                                    │
-                                                                    ▼
-                                                              8 auditor: final audit + checklist
-                                                               │         │
-                                                          issues found  ✅ passed
-                                                               │         │
-                                                               ▼         ▼
-                                                          main: decide  main: ✅
-                                                          iterate/fix  → merge
-                                                                          │
-                                                                          ▼
-                                                                    9 main: README draft
-                                                                          │
-                                                                          ▼
-                                                                    10 publicist: finalize docs
-                                                                          │
-                                                                          ▼
-                                                                    11 retrospective (on demand)
-```
+→ **[View Interactive Workflow Diagram](docs/workflow-sankey.html)** ←
+
+> Open `docs/workflow-sankey.html` in a browser to explore the full MA development workflow as an interactive ECharts Sankey diagram.
 
 > Core chain: `Requirement → Pre-audit → Design → [coder ⟷ reviewer pair programming] → Testing → Final Audit → Merge → Documentation`
 
