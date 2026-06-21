@@ -20,7 +20,7 @@
 │  ┌───────────────────────────────────────────────────────┐    │
 │  │                  main (主控/总调)                       │    │
 │  │   🎓 顾问 · 🏅 教练 · 📋 项目经理          │    │
-│  │   模型: deepseek/deepseek-v4-pro                               │    │
+│  │   模型: 优选模型                               │    │
 │  └───┬───────┬──────────┬───────────────┬────────────┘    │
 │      │       │          │               │                  │
 │      │  前置审计       │               │                  │
@@ -28,7 +28,7 @@
 │  ┌───┴──────────────┐   │               │                  │
 │  │   auditor 🔒     │   │               │                  │
 │  │  前置审计+终审    │   │               │                  │
-│  │  模型: deepseek/deepseek-v4-pro  │   │               │                  │
+│  │  模型: 优选模型  │   │               │                  │
 │  └───────┬──────────┘   │               │                  │
 │          │ 通过          │               │                  │
 │          ▼              │               │                  │
@@ -45,7 +45,7 @@
 │  ┌──────────┐                      │                  │
 │  │  tester  │                      │                  │
 │  │ 测试     │                      │                  │
-│  │ 模型: deepseek/deepseek-v4-pro       │                  │
+│  │ 模型: 互补模型       │                  │
 │        │ 测试通过        │               │                  │
 │        ▼                │               │                  │
 │  ┌──────────────┐       │               │                  │
@@ -59,7 +59,7 @@
 │                ┌─────────┴──┐            │                  │
 │                │ publicist  │            │                  │
 │                │ 写手 ✍️     │            │                  │
-│                │ 模型: deepseek/deepseek-v4-pro   │            │                  │
+│                │ 模型: 互补模型   │            │                  │
 │                └────────────┘            │                  │
 └───────────────────────────────────────────────────────────────┘
 
@@ -80,7 +80,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `main`（默认 agent） |
-| **模型** | `deepseek/deepseek-v4-pro` |
+| **模型** | `优选模型` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace` |
 
@@ -93,7 +93,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `coder` |
-| **模型** | `deepseek/deepseek-v4-pro` |
+| **模型** | `优选模型` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-coder` |
 
@@ -103,7 +103,7 @@
 - 📊 **性能设计** — 确定项目性能指标（响应时间、吞吐量、并发数），工程师应在 design.md 中注明性能指标
 - 🧭 **导航员** — 与 reviewer 轮换角色，在审查对方代码时充当导航员
 
-**结对编程：** 与 reviewer 直接交互，轮换驾驶员/导航员角色。不同模型互补：coder (deepseek/deepseek-v4-pro) 擅长编码实现，reviewer (zai/glm-5.1) 擅长逻辑审查。上限 3 轮，超出升级 main。
+**结对编程：** 与 reviewer 直接交互，轮换驾驶员/导航员角色。不同模型互补：coder (优选模型) 擅长编码实现，reviewer (互补模型) 擅长逻辑审查。上限 3 轮，超出升级 main。
 
 **子 Agent 模式（maxSpawnDepth: 2）：** 复杂需求时 spawn 子 agent 做设计，再 spawn 子 agent 做实现。
 
@@ -114,7 +114,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `tester` |
-| **模型** | `moonshot/kimi-k2.6` |
+| **模型** | `互补模型` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-tester` |
 
@@ -131,7 +131,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `auditor` |
-| **模型** | `deepseek/deepseek-v4-pro` |
+| **模型** | `优选模型` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-auditor` |
 
@@ -149,7 +149,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `publicist` |
-| **模型** | `deepseek/deepseek-v4-pro` |
+| **模型** | `互补模型` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-publicist` |
 
@@ -162,7 +162,7 @@
 | 属性 | 值 |
 |------|-----|
 | **agentId** | `reviewer` |
-| **模型** | `zai/glm-5.1` |
+| **模型** | `互补模型` |
 | **Tool Profile** | `coding` |
 | **Workspace** | `~/.openclaw/workspace-reviewer` |
 
@@ -177,7 +177,7 @@
 
 **协作模式：**
 - coder ⟷ reviewer 直接交互（结对编程，上限 3 轮）→超出升级 main
-- 使用不同模型（coder=deepseek/deepseek-v4-pro, reviewer=zai/glm-5.1），互补优势
+- 使用不同模型（coder=优选模型, reviewer=互补模型），互补优势
 - coder 遇到不确定的设计选择时，可实时咨询 reviewer
 - reviewer 审查时发现问题 → 直接与 coder 讨论修复方案
 
@@ -274,27 +274,27 @@ agents:
     - id: "main"
       default: true
       workspace: "~/.openclaw/workspace"
-      model: "deepseek/deepseek-v4-pro"
+      model: "<优选模型>"
 
     - id: "coder"
       workspace: "~/.openclaw/workspace-coder"
-      model: "deepseek/deepseek-v4-pro"
+      model: "<优选模型>"
 
     - id: "tester"
       workspace: "~/.openclaw/workspace-tester"
-      model: "deepseek/deepseek-v4-pro"
+      model: "<互补模型>"
 
     - id: "auditor"
       workspace: "~/.openclaw/workspace-auditor"
-      model: "deepseek/deepseek-v4-pro"
+      model: "<优选模型>"
 
     - id: "publicist"
       workspace: "~/.openclaw/workspace-publicist"
-      model: "deepseek/deepseek-v4-pro"
+      model: "<互补模型>"
 
     - id: "reviewer"
       workspace: "~/.openclaw/workspace-reviewer"
-      model: "deepseek/deepseek-v4-pro"
+      model: "<互补模型>"
 
 tools:
   agentToAgent:

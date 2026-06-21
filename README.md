@@ -123,7 +123,7 @@ main 会自动评估复杂度、分配合适的流程（S/M/L 三级），调度
 1. **Auditor 覆盖完整生命周期** — 前置审计确保需求质量，终审确保交付质量
 2. **文件系统是通信总线** — 所有 agent 共享 `projects/` 目录，零配置，零延迟
 3. **宪法先行** — 项目启动先定 constitution.md，所有后续决策以此为最高依据
-4. **深度任务用 Pro，常规任务用 Flash** — main/coder/publicist 用深度模型，tester/auditor 用快速模型
+4. **模型按角色分配** — main/coder/auditor 使用优选模型，reviewer/tester/publicist 使用互补模型
 5. **信任但验证** — main 相信 agent 的能力，但每次关键产出都要审查
 
 ## 文档导航
