@@ -85,7 +85,7 @@ The main agent is your default agent and does not need to be created separately.
 Create projects symlinks (all agents share the same directory):
 
 ```bash
-for agent in coder tester auditor publicist; do
+for agent in coder reviewer tester auditor publicist; do
   ln -s ~/.openclaw/workspace/projects ~/.openclaw/workspace-$agent/projects
 done
 ```
@@ -94,7 +94,7 @@ done
 
 Tell main:
 
-> Study `SETUP.md`, synchronize and merge the respective AGENTS.md and SOUL.md for coder, tester, auditor, and publicist, and get them ready for team development.
+> Study `SETUP.md`, synchronize and merge the respective AGENTS.md and SOUL.md for coder, reviewer, tester, auditor, and publicist, and get them ready for team development.
 
 main will read each role template, send them to the corresponding agent via `sessions_send`, and **merge (not overwrite)** into each agent's workspace. See `SETUP.md` for details.
 
@@ -146,6 +146,9 @@ team-dev/
 ├── coder/
 │   ├── AGENTS.md              ← Coding standards, design tiers
 │   └── SOUL.md                ← Craftsmanship spirit
+├── reviewer/
+│   ├── AGENTS.md              ← Code review standards, dual-stage review
+│   └── SOUL.md                ← Sharp-eyed inspector
 ├── tester/
 │   ├── AGENTS.md              ← Testing methodology
 │   ├── SOUL.md                ← Professional skeptic
