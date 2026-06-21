@@ -20,12 +20,12 @@
 ```mermaid
 sequenceDiagram
     actor User
-    participant Main as main (Controller)
-    participant Auditor as auditor (Audit)
-    participant Coder as coder (Code)
-    participant Reviewer as reviewer (Review)
-    participant Tester as tester (Test)
-    participant Publicist as publicist (Docs)
+    participant Main as main [Controller]
+    participant Auditor as auditor [Audit]
+    participant Coder as coder [Code]
+    participant Reviewer as reviewer [Review]
+    participant Tester as tester [Test]
+    participant Publicist as publicist [Docs]
 
     User->>Main: Submit requirement
     Main->>Main: 0. Complexity assessment + process declaration
