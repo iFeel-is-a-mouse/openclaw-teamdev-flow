@@ -19,7 +19,7 @@
 
 ```mermaid
 sequenceDiagram
-    actor User
+    participant User as User
     participant Main as main [Controller]
     participant Auditor as auditor [Audit]
     participant Coder as coder [Code]
