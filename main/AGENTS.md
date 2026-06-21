@@ -70,7 +70,7 @@ Main 必须遵守以下不可逾越的红线：
 3 coder: 实现（design 口头描述，不写独立 design.md）
 4 tester: 轻量测试
 5 auditor: 终审（简化 checklist，自动过滤 N/A 项 ~8-12 项）
-6 main: merge + README（main 直接写，不委派 publicist）
+6 main: merge（README 委派 publicist）
 ```
 
 **跳过项：** constitution.md、独立 design.md、analyze 阶段、publicist 独立阶段、复盘
@@ -92,7 +92,7 @@ Main 必须遵守以下不可逾越的红线：
 6 coder: 实现 + reviewer 审查
 7 tester: 测试
 8 auditor: 终审+checklist（动态生成 ~15-20 项）
-9 main: merge + README（publicist 在阶段1后即参与润色 spec/design，阶段9做最终统稿）
+9 main: merge（README 由 publicist 撰写，main 审阅定稿）
 ```
 
 **跳过项：** constitution.md（按需）、复盘（按需）
@@ -111,7 +111,7 @@ Main 必须遵守以下不可逾越的红线：
 6 coder: 实现 + reviewer 审查
 7 tester: 测试
 8 auditor: 终审+checklist（完整 ~30-38 项）
-9 main: merge + README 初稿
+9 main: merge（README 由 publicist 撰写初稿，main 审阅）
 10 publicist: 总结完善 + main 审阅定稿
 11 复盘（按需）
 ```
@@ -156,7 +156,7 @@ main 在项目启动时向 用户 声明：
     │
 8 auditor: final audit + checklist
     │
-9 main: merge + README初稿
+9 main: merge → publicist 撰写 README → main 审阅定稿
     │
 10 publicist: 总结完善 + main 审阅定稿
     │
@@ -233,7 +233,7 @@ coder 产出 `docs/design.md` + **可测试项清单**，然后 main 执行 **an
 
 ### 6-9 实现到交付
 
-coder 实现 → reviewer 审查 → tester 测试（基于可测试项清单验证+补充）→ auditor 终审（含 checklist）→ main merge + README初稿
+coder 实现 → reviewer 审查 → tester 测试（基于可测试项清单验证+补充）→ auditor 终审（含 checklist）→ main merge（README 委派 publicist）
 
 **coder-reviewer 直接交互：** 阶段6后半段中 coder 和 reviewer 可直接沟通代码审查问题，无需每轮经 main 中转。迭代上限 2 轮，超限由 main 介入。每轮必须记录到 todo.md 和 journey.md。首次发现问题和最终通过时告知 main。reviewer 发现设计层面问题 → 不在审查报告中展开 → 直接升级 main 裁决。
 
@@ -260,11 +260,11 @@ publicist 总结完善 → main 审阅定稿。
 **publicist 贯穿参与**：
 - **L 级：** publicist 在阶段1后即参与——审阅 spec/design 文档的可读性，阶段6后开始草拟 summary
 - **M 级：** publicist 在阶段9统一润色（不独立成阶段）
-- **S 级：** 不委派 publicist，main 直接写 README
+- **S 级：** publicist 撰写 README，main 审阅
 
 **README 生成流程**：
-1. main 在 merge 后（阶段9）生成 README 初稿
-2. publicist 在此基础上总结完善（阶段10）
+1. publicist 基于项目全貌撰写 README 初稿
+2. main 审阅定稿
 3. main 审阅定稿
 
 **必查项（逐条过，不能跳过）：**
@@ -315,7 +315,7 @@ publicist 总结完善 → main 审阅定稿。
 | 4 | `docs/design.md` + 可测试项清单 | coder | M/L (S 口头描述) | `/speckit.plan` |
 | 5 | 分析结论 (记录到 journey.md) | main | M/L (S 跳过) | `/speckit.analyze` |
 | 8 | `docs/checklist.md` + `docs/audit-report.md` (终审) | auditor | S/M/L (项数分级) | `/speckit.checklist` |
-| 9 | `README.md` (初稿) | main | S/M/L | — |
+| 9 | `README.md` (初稿) | publicist | S/M/L | — |
 | 10 | `README.md` (定稿) + `docs/summary.md` | publicist+main | L (M 并入9，S 跳过) | — |
 
 ## 7. 异常处理

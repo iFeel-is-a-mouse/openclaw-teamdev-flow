@@ -146,7 +146,7 @@ main 评估复杂度
 | 6b reviewer: 代码审查 | 跳过 | 🔴 门禁 | 🔴 门禁 | 结对编程审查 |
 | 7 tester: 测试 | 轻量测试 | ✅ | ✅ | 基于可测试项清单 |
 | 8 auditor: 终审 | 简化 checklist | ✅ | ✅ | 完整 checklist |
-| 9 main: merge | ✅ | ✅ | ✅ | + README 初稿 |
+| 9 main: merge | ✅ | ✅ | ✅ | → publicist README → main 审阅 |
 | 10 publicist: 定稿 | 跳过 | 并入9 | ✅ | 文档总结完善 |
 | 11 复盘 | 跳过 | 按需 | ✅ | 五步复盘法 |
 
@@ -246,7 +246,7 @@ main 评估复杂度
 3 coder: 实现（design 口头描述或 1-2 段文字，不写独立 design.md）
 4 tester: 轻量测试
 5 auditor: 终审（简化 checklist，自动过滤 N/A 项 → ~8-12 项）
-6 main: merge + README（main 直接撰写，不委派 publicist）
+6 main: merge（README 委派 publicist 撰写）
 ```
 
 **跳过项及理由：**
@@ -255,7 +255,7 @@ main 评估复杂度
 | constitution.md | 简单项目无宪章治理必要 |
 | 独立 design.md | 口头/1-2段文字足够 |
 | analyze 阶段 | 无独立 design 则无 analyze 对象 |
-| publicist 独立阶段 | main 直接写 README |
+| publicist 独立阶段 | publicist 撰写 README |
 | 复盘 | 简单项目无需复盘 |
 
 ### 2.5.4 M 级流程（约 9 阶段）
@@ -274,7 +274,7 @@ main 评估复杂度
 6b reviewer: 代码审查 — 结对编程审查实现代码
 7 tester: 测试
 8 auditor: 终审+checklist（动态生成 → ~15-20 项）
-9 main: merge + README（publicist 在阶段1后润色 spec/design，阶段9统一统稿）
+9 main: merge（README 由 publicist 撰写，main 审阅定稿）
 ```
 
 **跳过项及理由：**
@@ -300,7 +300,7 @@ main 评估复杂度
 6b reviewer: 代码审查 — 结对编程审查实现代码
 7 tester: 测试
 8 auditor: 终审+checklist（完整 ~30-38 项）
-9 main: merge + README 初稿
+9 main: merge（README 委派 publicist）
 10 publicist: 总结完善 + main 审阅定稿（贯穿参与）
 11 复盘（按需）
 ```
@@ -363,7 +363,7 @@ main 在项目启动时（阶段0前置），必须向 用户 做出明确的流
 - **每个 agent 完成工作后，main 必须立即通知 用户**，附该 agent 的交付摘要
 - 写作任务时 @publicist 委派
 
-**✍️ 总编辑 (Editor-in-Chief)** — publicist 交付后你做最终审阅。
+**🔍 审阅 (Reviewer)** — publicist 交付后你做最终审阅。
 - 确认文档准确反映了技术内容
 - 确认文案风格符合项目需求
 - 格式化排版、脱敏检查
@@ -420,8 +420,8 @@ main 复杂度评估 → 流程声明 → 用户 确认 ✅
     │     生成 docs/checklist.md → 逐项验证 → 对照基线追溯
     │  (动态生成, 按项目特性过滤 N/A 项)
     ▼
-9 main 最终确认 → git merge → README初稿
-    │  (S 级: main 直接写, 不委派 publicist)
+9 main 最终确认 → git merge（README 委派 publicist 撰写）
+    │  (S 级: publicist 撰写 README)
     ▼
 10 publicist 总结完善 + main 审阅定稿
     │  (S 级跳过, M 级并入9, L 级贯穿参与)
@@ -730,7 +730,7 @@ hotfix:
 - constitution.md 跳过（除非涉及安全）
 - 独立 design.md 跳过，用口头/1-2段文字替代
 - analyze 阶段跳过，由 main 直接检查一致性
-- publicist 不参与，main 直接写 README
+- publicist 撰写 README，main 审阅
 - auditor 前置审计可由 main 自查替代
 
 **M 级特殊处理：**
@@ -1062,12 +1062,9 @@ Git 规范：从 main 切 feature 分支，完成后 commit
 1. 最终确认 `git diff main...feature/xxx`
 2. **版本号**：根据变更规模评估（MAJOR/MINOR/PATCH），告知 coder/tester/auditor 后指定。更新 VERSION → 追加 CHANGELOG.md → `git tag -a v版本号`（详细规则见 §4.5）
 3. `git merge --no-ff` 到 main，删除 feature 分支
-5. **生成 README.md 初稿** [NEW: 用户决策] — main 基于项目全貌撰写初稿，提供结构框架和核心内容
-   - [S级] main 直接完成 README，不委派 publicist
-   - [M级] 委派 publicist 统一润色（阶段9内完成）
-   - [L级] 委派 publicist 独立阶段完善（阶段10）
+5. **生成 README.md** — publicist 基于项目全貌撰写，main 审阅定稿
 4. 更新 `docs/todo.md`
-5. [M/L级] **委派 publicist**：sessions_send → publicist，附项目上下文 + README 初稿
+5. [M/L级] **委派 publicist**：sessions_send → publicist，附项目上下文 → publicist README → main 审阅
 6. **写入 `docs/journey.md`**：记录阶段9完成时间、merge 操作
 
 🔴 **编译产物交付门禁**：
@@ -1089,7 +1086,7 @@ Git 规范：从 main 切 feature 分支，完成后 commit
 | 阶段1 spec 完成 | 审阅 spec 可读性、结构清晰度 | 审阅 spec 可读性 | 跳过 |
 | 阶段4 design 完成 | 审阅 design 文档可读性、风格一致性 | 审阅 design 可读性 | 跳过 |
 | 阶段6 编码开始 | 开始草拟 summary 初稿 | — | 跳过 |
-| 阶段9 README 初稿 | 基于初稿完善 README + 写 summary | 统一润色 README + 写 summary | main 直接完成 |
+| 阶段9 README | publicist 撰写 README + 写 summary | publicist 撰写 README + 写 summary | publicist 撰写 README |
 | 阶段10 终审 | 完善所有文档 + main 审阅定稿 | 阶段9已包含 | 跳过 |
 
 **L 级执行流程：**
@@ -1098,7 +1095,7 @@ main 在阶段1 后即可向 publicist 发送上下文：
 1. 阶段1: `sessions_send → publicist`，附 spec.md 和 style-guide.md，委托审阅可读性
 2. 阶段4: `sessions_send → publicist`，附 design.md，委托审阅结构清晰度
 3. 阶段6后: publicist 基于已有信息开始草拟 `docs/summary.md` 初稿
-4. 阶段9: main 发送 README 初稿给 publicist，附带项目完整上下文
+4. 阶段9: main 发送项目上下文给 publicist，publicist 撰写 README
 5. publicist stages 4-5 的反馈应在 2 轮内收敛，不阻塞主流程
 
 **阶段10 执行（L 级/M 级共用）：**
