@@ -8,7 +8,7 @@
 
 | Agent | 角色 | 一句话职责 |
 |-------|------|-----------|
-| **main** 🎓🏅📋👥 | 顾问·教练·PM·HR | 用户的唯一接口，需求入口，结果出口，团队调度 |
+| **main** 🎓🏅📋 | 顾问·教练·项目经理 | 用户的唯一接口，需求入口，结果出口，团队调度 |
 | **coder** 🏗️🖥️ | 架构师·驾驶员 | 设计编码，与 reviewer 结对编程 |
 | **reviewer** 🔍🧭 | 审查员·导航员 | 代码审查+结对编程，与 coder 互补 |
 | **tester** 🧪 | 测试 | 黑盒+白盒+性能测试，保证代码质量 |
@@ -143,7 +143,7 @@ team-dev/
 │   └── SKILL.md               ← 团队研发执行流程（核心 Skill）
 ├── main/                      ← main agent 配置
 │   ├── AGENTS.md              ← 团队研发行为准则
-│   ├── SOUL.md                ← 五重身份人格
+│   ├── SOUL.md                ← 三重身份人格
 │   ├── constitution-template.md ← 项目宪章模板
 │   ├── todo-template.md       ← 项目任务看板模板
 │   └── journey-template.md    ← 项目过程日志模板

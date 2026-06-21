@@ -282,7 +282,7 @@ main 会读取以下文件来理解自己的角色和流程：
 | 团队概览 | `projects/ma/README.md` | 快速开始 |
 | 本文档 | `projects/ma/SETUP.md` | 理解、部署与配置指南 |
 | main 行为准则 | `projects/ma/main/AGENTS.md` | 团队研发规范 |
-| main 人格 | `projects/ma/main/SOUL.md` | 五重身份定义 |
+| main 人格 | `projects/ma/main/SOUL.md` | 三重身份定义 |
 | 任务看板模板 | `projects/ma/main/todo-template.md` | WBS+断点再续 |
 | 过程日志模板 | `projects/ma/main/journey-template.md` | todo镜像+闭环子模式 |
 | 宪章模板 | `projects/ma/main/constitution-template.md` | 项目宪章 |
