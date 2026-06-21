@@ -1,5 +1,18 @@
 # MA 团队研发框架 — 变更日志
 
+## [4.4.0] — 2026-06-21
+
+### 角色重构
+- codereviewer 更名为 reviewer
+- main 五重身份精简为三重：顾问·教练·项目经理
+- 总编辑职责移交 publicist，README 写作全权委派 publicist
+- PM 改为项目经理，HR 角色删除，职责并入项目经理
+
+### 文档清理
+- 移除过程产物（RETROSPECTIVE.md、recurring-issues.md）
+- CHANGELOG 精简，仅保留最新版
+- 移除具体模型名称，改为优选/互补模型定性描述
+
 ## [4.3.0] — 2026-06-08
 
 ### 全量一致性审查 + 路由规则 + JSON 结构化
