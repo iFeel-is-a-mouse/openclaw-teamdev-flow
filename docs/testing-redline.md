@@ -82,26 +82,26 @@ python -m pytest tests/ \
 
 ---
 
-## 6. LLM 驱动覆盖测试原则（实战验证）
+## 6. LLM-Driven Coverage Testing Principles (Verified in Real-World Iteration)
 
-> 以下原则经 LLM 驱动覆盖率测试实战（0% → 100% 分支覆盖，45 轮迭代）验证。
+> The following principles were verified through LLM-driven coverage testing (0% → 100% branch coverage, 45 rounds of iteration).
 
-### 覆盖策略
+### Coverage Strategy
 
-1. **不改源码** — 使用原生覆盖率工具（Coverage.py / Istanbul / JaCoCo / gcov / go cover），不自研插桩。所有成熟工具的"不改源码"设计选择不是巧合，是行业反复验证的最优路径。
-2. **无条件断言** — LLM 只需调用函数触发分支执行，不猜测返回值。覆盖率工具自动统计分支覆盖情况。调用成功即有效。
-3. **测试累积制** — 通过测试永久保留，失败测试删除。每轮清覆盖率重跑全部，LLM 只补新缺口。覆盖率自然爬升，只涨不跌。
-4. **优先纯函数** — 输入→输出明确的纯函数最容易覆盖，投资回报率最高。返回文件路径的函数需配合 `open(path).read()` 模式。
-5. **完整条件上下文** — 给 LLM 整个 `if/elif/else` 块，不只单行。LLM 需要完整上下文才能生成触发分支的正确调参。
+1. **Do not modify source code** — Use native coverage tools (Coverage.py / Istanbul / JaCoCo / gcov / go cover); do not build custom instrumentation. The "don't modify source" design choice of all mature tools is not a coincidence — it is the industry's repeatedly validated optimal path.
+2. **Unconditional assertions** — LLM only needs to invoke functions to trigger branch execution; no need to guess return values. Coverage tools automatically track branch coverage. Invocation success = coverage achieved.
+3. **Test accumulation** — Passing tests are permanently retained; failing tests are deleted. Clear coverage and rerun all each round; LLM only fills new gaps. Coverage naturally climbs, only rising, never falling.
+4. **Prioritize pure functions** — Functions with clear input→output mappings are easiest to cover and yield the highest ROI. Functions that return file paths require the `open(path).read()` pattern.
+5. **Complete condition context** — Give the LLM the entire `if/elif/else` block, not just a single line. LLMs need full context to generate correct parameters that trigger specific branches.
 
-### 分工红线
+### Role Separation Redlines
 
-- **测试是 tester 职责，不是 coder 的。** Coder 自测不能替代 tester 独立验证。覆盖率跳升超过 5% 的关键版本必须触发 tester 独立回归。
-- **Auditor 只负责发现问题和可测性分析，tester 负责写测试解决。** 审计报告中识别的可测试项清单必须由 tester 逐项核验。
-- **Reviewer 必须独立参与代码审查，不与 auditor 合并。** 设计审查和代码审查是两道独立防线。同一人从不同角度审查自己的工作会形成盲区。
+- **Testing is the tester's responsibility, not the coder's.** Coder self-testing cannot replace tester independent verification. Key versions with coverage jumps exceeding 5% must trigger independent tester regression.
+- **Auditor is responsible only for discovering issues and testability analysis; tester is responsible for writing tests to resolve them.** The testable items checklist identified in the audit report must be verified item by item by the tester.
+- **Reviewer must independently participate in code review, not be merged with auditor.** Design review and code review are two independent lines of defense. The same person reviewing their own work from a different angle creates blind spots.
 
-### 禁止
+### Prohibited
 
-- 🚫 **用覆盖率数字代替测试质量判断。** 100% 分支覆盖 ≠ 测试有效。恒真断言（`assert x or not x`）和断言猜测错误可伴随 100% 覆盖率同时存在。覆盖率达标后需补充 Mutation Testing 验证断言质量。
-- 🚫 **不读 spec/design 就测试。** 不知道需求是什么，测试就是随机探索而非系统性验证。
-- 🚫 **只跑全量不设计用例。** 随机探索无法保证覆盖所有测试维度，也无法在回归时精确复现。每个关键版本必须产出结构化测试用例。
+- 🚫 **Substituting coverage numbers for test quality judgment.** 100% branch coverage ≠ effective testing. Tautological assertions (`assert x or not x`) and incorrectly guessed assertions can coexist with 100% coverage. After coverage targets are met, supplement with Mutation Testing to verify assertion quality.
+- 🚫 **Testing without reading spec/design.** Without knowing the requirements, testing is random exploration, not systematic verification.
+- 🚫 **Running full test suites without designing test cases.** Random exploration cannot guarantee coverage across all test dimensions, nor can it enable precise regression reproduction. Every critical version must produce structured test cases.

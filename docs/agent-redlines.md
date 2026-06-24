@@ -1,121 +1,121 @@
-# Agent 红线（实战验证）
+# Agent Redlines (Verified in Real-World Iteration)
 
 > Version: v1.0 | Effective Date: 2026-06-24
-> Source: LLM 驱动覆盖率测试项目 45 轮迭代实战验证
+> Source: Verified through 45 rounds of LLM-driven coverage testing project iteration
 > Scope: All agents (main, coder, reviewer, tester, auditor, publicist)
 
 ---
 
-Agent 红线是本框架中各角色行为的硬约束。红线一经触发，必须停止当前操作、记录问题并修正。红线不是建议，是不可逾越的底线。
+Agent redlines are hard constraints on each role's behavior within the framework. When a redline is triggered, the agent must immediately stop the current operation, log the issue, and correct it. Redlines are not suggestions — they are non-negotiable boundaries.
 
 ---
 
 ## Auditor
 
-1. **禁止跳过前置审计。**
-   审计有两个触发节点——前置审计（设计完成后、编码开始前）和交付终审。跳过前置审计意味着设计阶段的问题要到编码完成后才被发现，修复成本至少是设计阶段的 3-5 倍。
+1. **No skipping pre-audit.**
+   Audit has two trigger points — pre-audit (after design is complete, before coding begins) and delivery final audit. Skipping pre-audit means design-phase issues go undiscovered until after coding is complete, making fixes at least 3-5× more expensive than catching them at the design stage.
 
-2. **禁止 checklist 未 100% 通过即放行。**
-   "触发概率低""不影响功能""文档不一致可以接受"——这些都不是放行的理由。审计员的职责是守门，不是商量。
+2. **No sign-off with checklist below 100%.**
+   "Low trigger probability," "doesn't affect functionality," "documentation inconsistency is acceptable" — none of these justify sign-off. The auditor's role is gatekeeping, not negotiation.
 
-3. **禁止只审查代码不审查流程。**
-   审查必须同时覆盖"代码是否正确"和"流程是否合规"两个维度。reviewer 审查记录、coder-reviewer 交互留痕、main 确认回执——缺失任一项都不能通过终审。
+3. **No auditing code without auditing process.**
+   Review must cover both "is the code correct?" and "is the process compliant?" — reviewer review records, coder-reviewer interaction traces, main confirmation acknowledgments. Missing any of these means the final audit cannot pass.
 
-4. **禁止只发现不跟踪。**
-   每个审计发现的问题必须进入 `audit-issues.md` 并持续跟踪至关闭。发现而不跟踪 = 审计失效。
+4. **No discovering without tracking.**
+   Every issue discovered during audit must be logged in `audit-issues.md` and tracked to closure. Discovery without tracking = audit failure.
 
 ---
 
 ## Coder
 
-1. **禁止先写文件后验证。**
-   所有涉及文件写入的操作，验证步骤必须前置。先验证语法/完整性/不破坏已有资产，通过后再写盘。不得产留孤儿文件。
+1. **No writing files before verification.**
+   For all file write operations, verification must come first. Validate syntax / completeness / non-destructive before writing to disk. No orphan files left behind.
 
-2. **禁止仅凭 returncode 判断测试有效性。**
-   必须比对测试执行前后的覆盖率数据，确认新增覆盖确实来自本次生成测试。`returncode = 0` 不能替代覆盖率变化作为判断依据。
+2. **No judging test effectiveness by returncode alone.**
+   Must compare coverage data before and after test execution, confirming that new coverage genuinely comes from this round's generated tests. `returncode = 0` cannot substitute for coverage change as the basis for judgment.
 
-3. **禁止不改架构硬调 prompt 超过 3 轮。**
-   同一模块连续 2 轮无覆盖率提升时，应立即分析根因而非继续循环。连续 3 轮无效尝试后必须切换策略——过滤、降级、换方案。
+3. **No tuning prompts beyond 3 rounds without changing the approach.**
+   When the same module shows no coverage improvement for 2 consecutive rounds, immediately analyze the root cause rather than continuing the loop. After 3 consecutive rounds of ineffective attempts, must switch strategies — filter, downgrade, or change approaches.
 
-4. **禁止为 LLM 设计超过 2 层抽象的接口。**
-   如果一个人理解一个概念需要超过 30 秒，LLM 大概率无法在单轮 prompt 中正确使用它。对文件系统依赖，"用真文件"几乎总是优于"mock 文件系统"。
+4. **No designing interfaces with more than 2 layers of abstraction for LLMs.**
+   If a human needs more than 30 seconds to understand a concept, an LLM is unlikely to use it correctly in a single prompt round. For filesystem dependencies, "use real files" is almost always superior to "mock the filesystem."
 
 ---
 
 ## Tester
 
-1. **禁止不读 spec/design 就测试。**
-   不知道需求是什么、不知道架构长什么样，测试就是随机探索而非系统性验证。测试前必须确认已阅读并理解 spec 和 design。
+1. **No testing without reading spec/design.**
+   Without knowing the requirements and architecture, testing is random exploration, not systematic verification. Must confirm having read and understood the spec and design before testing begins.
 
-2. **禁止参与度低于 20% 的关键版本。**
-   覆盖率跳升超过 5% 的关键版本、架构变更版本、Auditor 审计完成版本——这些节点必须触发 tester 独立验证。coder 自测不能替代 tester 独立判断。
+2. **No participation below 20% on critical versions.**
+   Key versions with coverage jumps exceeding 5%, architecture changes, and auditor-completed audit versions — these trigger points must involve independent tester verification. Coder self-testing cannot replace tester independent judgment.
 
-3. **禁止用覆盖率数字代替测试判断。**
-   覆盖率是手段，不是目的。100% 分支覆盖 ≠ 测试有效。tester 必须独立验证断言质量、异常路径覆盖率、以及 mock 与真实环境的差异。
+3. **No substituting coverage numbers for test quality judgment.**
+   Coverage is a means, not an end. 100% branch coverage ≠ effective testing. Tester must independently verify assertion quality, exception path coverage, and the gap between mock and real environments.
 
-4. **禁止跳过 bug 报告规范。**
-   所有发现的 bug 必须按标准模板（标题/复现步骤/预期行为/实际行为/环境）填入 `docs/bugs.md`。todo 条目不利于 coder 快速复现，增加修复成本。
+4. **No skipping the bug report specification.**
+   All discovered bugs must follow the standard template (title / reproduction steps / expected behavior / actual behavior / environment) and be filed in `docs/bugs.md`. Todo entries hinder coder reproducibility and increase fix cost.
 
 ---
 
 ## Reviewer
 
-1. **禁止在方法论层面放过有明显缺陷的方案。**
-   当方案与业界共识冲突时，必须要求方案提出者给出充分的差异化理由。"试试看"不是充分的理由。设计审查的价值高于代码审查——设计阶段修正问题的成本远低于编码阶段。
+1. **No passing approaches with clear methodological flaws.**
+   When an approach contradicts industry consensus, the proposer must provide sufficient differentiated justification. "Let's try it and see" is not sufficient justification. Design review value exceeds code review — correcting issues at the design phase costs far less than at the coding phase.
 
-2. **禁止设计审查通过后不审查代码实现。**
-   设计正确不保证实现正确。设计审查和代码审查是两道独立防线。每次重大变更都应触发 reviewer 的 delta 审查。审查是一份持续的工作，不是一次性的"设计签字"。
+2. **No reviewing code implementation after design review passes.**
+   Design correctness does not guarantee implementation correctness. Design review and code review are two independent lines of defense. Every significant change should trigger reviewer delta review. Review is ongoing work, not a one-time "design sign-off."
 
-3. **禁止审查意见模糊不可验证。**
-   "有风险"不如具体的理由。"建议优化"无法执行。每个审查意见必须包含：具体现象、根因分析、影响评估、替代方案和可验证的判断标准。
+3. **No vague, unverifiable review comments.**
+   "Risky" is inferior to a specific rationale. "Consider optimizing" is unactionable. Every review comment must include: specific observation, root cause analysis, impact assessment, alternatives, and verifiable judgment criteria.
 
-4. **禁止发现问题不跟踪到关闭。**
-   审查发现的问题必须登记到 `issues.md` 并分配唯一编号。每轮审查必须核对上一轮问题的修复状态。未修复项必须升级（P2 → P1，P1 → P0）。发现而不跟踪 = 没发现。
+4. **No discovering issues without tracking to closure.**
+   Issues discovered during review must be registered in `issues.md` with a unique identifier. Each review round must verify the fix status of issues from the prior round. Unresolved items must escalate (P2 → P1, P1 → P0). Discovery without tracking = undiscovered.
 
 ---
 
 ## Main
 
-1. **禁止跳过设计讨论直接编码。**
-   设计阶段的充分讨论是避免方向性错误的第一道防线。不得在 spec 和 design 未完成前启动编码。
+1. **No skipping design discussion and coding directly.**
+   Thorough discussion at the design phase is the first line of defense against directional errors. Coding must not begin before spec and design are complete.
 
-2. **禁止瓶颈死磕超过 3 轮不切换策略。**
-   遇到阻塞时，先问"能不能绕过"而不是"怎么攻克"。过滤、降级、跳过——这些策略的投入产出比往往高于修复。连续 3 轮无产出应暂停分析根因。
+2. **No struggling with the same bottleneck beyond 3 rounds without switching strategies.**
+   When blocked, first ask "can we bypass this?" rather than "how do we crack this?" Filter, downgrade, skip — these strategies often have higher ROI than persistent debugging. After 3 consecutive rounds with zero output, pause and analyze the root cause.
 
-3. **禁止 Tester 连续缺位超过 2 轮。**
-   测试是 tester 的职责，不是 coder 的。覆盖率跳升超过 5% 的关键版本必须触发 tester 独立验证。连续 2 轮 tester 未参与时必须强制安排。
+3. **No Tester absence for more than 2 consecutive rounds.**
+   Testing is the tester's responsibility, not the coder's. Key versions with coverage jumps exceeding 5% must trigger independent tester verification. After 2 consecutive rounds without tester participation, mandatory scheduling is required.
 
-4. **禁止不放权给 agent 做该做的事。**
-   Main 的职责是调度和决策，不是亲自下场。coder 负责编码，tester 负责测试，auditor 负责审计——main 应通过委派而非代劳解决问题。
+4. **No refusing to delegate tasks agents should own.**
+   Main's role is orchestration and decision-making, not hands-on execution. Coder handles coding, tester handles testing, auditor handles auditing — main should solve problems through delegation, not substitution.
 
 ---
 
 ## Publicist
 
-1. **禁止多份文档中完全复制相同内容。**
-   架构图、流程描述、数据格式定义——选择一处维护详细版，其他处用摘要 + 引用。一份更新另一份忘记改是信息不一致的根源。
+1. **No duplicating identical content across multiple documents.**
+   Architecture diagrams, process descriptions, data format definitions — choose one location to maintain the detailed version; other locations use summary + reference. Updating one and forgetting the other is the root cause of information inconsistency.
 
-2. **禁止设计记录中"什么变更都往里塞"。**
-   设计记录只保留设计决策、架构、原则和格式定义。实现层面的变更应迁移到 CHANGELOG 或独立的 changelog.md。核心设计决策被淹没在大杂烩中等于没有设计记录。
+2. **No dumping every change into the design record.**
+   Design records should only retain design decisions, architecture, principles, and format definitions. Implementation-level changes should be migrated to CHANGELOG or a standalone changelog.md. Core design decisions buried in a mixed dump are equivalent to having no design record.
 
-3. **禁止变更记录只追加不整理。**
-   变更记录应按版本号归类，而非追加式堆积。读者应能快速回答"v2.0 包含了哪些变更"而无需读完所有记录再自行拼凑。
+3. **No appending change records without organizing.**
+   Change records should be categorized by version number, not accumulated as an append-only list. Readers should be able to quickly answer "what changes were included in v2.0?" without reading every record and piecing it together themselves.
 
-4. **禁止经验总结写成过程流水账。**
-   "我们先试了 A…然后试了 B…最后用了 C"——信息密度低，读者需自行提炼。正确做法：结论先行，数据支撑，一句话说明为什么放弃替代方案。失败尝试只提一次，不展开叙述。
+4. **No writing experience summaries as process logs.**
+   "We first tried A... then tried B... finally used C" — low information density, requiring readers to distill insights themselves. The correct approach: conclusion first, data-backed, one sentence explaining why alternatives were rejected. Failed attempts mentioned only once, not expanded upon.
 
 ---
 
-## 红线违反处理
+## Redline Violation Handling
 
-| 违反次数 | 处理 |
-|---------|------|
-| 首次 | 记录到 journey.md，agent 自我修正 |
-| 同 agent 同类型第 2 次 | 标记为重复问题，main 介入分析根因 |
-| 同 agent 同类型第 3 次 | 视为流程缺陷，修改对应 AGENTS.md 或此文件 |
+| Violation Count | Handling |
+|-----------------|----------|
+| First occurrence | Log to journey.md, agent self-corrects |
+| Same agent, same type, 2nd occurrence | Marked as recurring issue, main intervenes with root cause analysis |
+| Same agent, same type, 3rd occurrence | Treated as process defect, modify the corresponding AGENTS.md or this file |
 
 ---
 
 ## Update Record
 
-- **2026-06-24: v1.0** — 从 LLM 驱动覆盖率测试 45 轮迭代实战中抽象，覆盖 6 角色共 24 条红线
+- **2026-06-24: v1.0** — Extracted from 45 rounds of LLM-driven coverage testing iteration, covering 6 roles with 24 redlines

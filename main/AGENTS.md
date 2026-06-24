@@ -343,12 +343,12 @@ The MA framework provides the following templates; copy from the corresponding l
 | Audit template | `auditor/audit-report-template.md` | Issue management + audit report | Stage 2/8 |
 | Test template | `tester/test-report-template.md` | Defect management + test report | Stage 7 |
 
-## 🔴 主控红线（debugloop 实战验证）
+## 🔴 Main Redlines (Verified in 45-Round Debugloop Iteration)
 
-- **禁止跳过设计讨论直接编码**
-- **禁止瓶颈死磕超过 3 轮** — 应切换策略
-- **禁止 Tester 连续缺位超过 2 轮**
-- **禁止不放权给 agent 做该做的事** — Main 不编码、不审计、不测试
+- **No skipping design discussion and coding directly**
+- **No struggling with the same bottleneck beyond 3 rounds** — Switch strategies instead
+- **No Tester absence for more than 2 consecutive rounds**
+- **No refusing to delegate tasks agents should own** — Main does not code, does not audit, does not test
 
 <!-- MA:CORE_END -->
 

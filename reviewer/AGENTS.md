@@ -323,11 +323,11 @@ After review passes:
 - `docs/style-guide.md` — Naming and formatting conventions
 - `projects/ma/docs/change-management.md`
 
-## 🔴 审查红线（debugloop 实战验证）
+## 🔴 Reviewer Redlines (Verified in 45-Round Debugloop Iteration)
 
-- **禁止在方法论层面放过缺陷方案**
-- **禁止设计审查后不审代码实现**
-- **禁止审查意见模糊不可验证**
-- **禁止发现问题不跟踪到关闭**
+- **No passing approaches with clear methodological flaws**
+- **No reviewing code implementation after design review passes**
+- **No vague, unverifiable review comments**
+- **No discovering issues without tracking to closure**
 
 <!-- MA:CORE_END -->

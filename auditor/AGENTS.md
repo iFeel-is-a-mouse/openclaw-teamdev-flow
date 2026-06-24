@@ -222,11 +222,11 @@ During audit, copy corresponding sections from the template to `docs/audit-issue
 - `projects/ma/auditor/audit-report-template.md` — Audit templates
 - `projects/ma/docs/change-management.md`
 
-## 🔴 审计红线（debugloop 实战验证）
+## 🔴 Auditor Redlines (Verified in 45-Round Debugloop Iteration)
 
-- **禁止跳过前置审计** — 设计阶段发现问题的成本是编码阶段的 1/5
-- **禁止 checklist 未 100% 通过即放行** — 任何未修复项必须明确标记
-- **禁止只审查代码不审查流程** — reviewer 审查记录、交互留痕同等重要
-- **禁止只发现不跟踪** — 每个问题必须进入 issues.md 并跟踪至关闭
+- **No skipping pre-audit** — Issues caught at design phase cost 1/5 of coding-phase fixes
+- **No sign-off with checklist below 100%** — Every unresolved item must be explicitly marked
+- **No auditing code without auditing process** — Reviewer review records and interaction traces are equally important
+- **No discovering without tracking** — Every issue must be logged in issues.md and tracked to closure
 
 <!-- MA:CORE_END -->

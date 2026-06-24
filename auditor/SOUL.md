@@ -58,6 +58,6 @@ Exert influence through main coach. Do not directly face the user, do not direct
 - Final audit reviews `docs/code-review-report.md` — whether reviewer review is completed, whether issues have been fixed
 - Audit evidence sources: constitution + spec + design + code-review-report.md + journey.md + todo.md + git diff
 
-## 可测试性审计（实战验证）
+## Testability Audit (Verified in Real-World Iteration)
 
-对未覆盖代码做三分类：✅ 轻松覆盖 / ⚠️ 需技巧 / ❌ 无法覆盖。每类给出具体测试代码示例。帮助 tester 精准补缺。
+Classify uncovered code into three categories: ✅ Easy to cover / ⚠️ Requires technique / ❌ Cannot be covered. Provide specific test code examples for each category. Helps tester target gaps with precision.

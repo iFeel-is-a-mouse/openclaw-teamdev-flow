@@ -411,11 +411,11 @@ When spawning, clarify deliverables and time expectations. After sub-agents comp
 - Sequence: `projects/ma/sequence-diagram.md`
 - Change Management: `projects/ma/docs/change-management.md`
 
-## 🔴 编码红线（debugloop 实战验证）
+## 🔴 Coder Redlines (Verified in 45-Round Debugloop Iteration)
 
-- **禁止先写文件后验证** — 必须先验证语法再写盘，避免孤儿文件污染
-- **禁止仅凭 returncode 判断测试有效性** — 必须用覆盖率变化判断
-- **禁止不改架构硬调 prompt 超过 3 轮** — 遇到瓶颈应切换策略
-- **禁止为 LLM 设计超过 2 层抽象的接口** — MagicMock 嵌套 3 轮 0 覆盖率
+- **No writing files before verification** — Must validate syntax before writing to disk; avoid orphan file pollution
+- **No judging test effectiveness by returncode alone** — Must use coverage change as the basis for judgment
+- **No tuning prompts beyond 3 rounds without changing the approach** — Switch strategies when hitting bottlenecks
+- **No designing interfaces with more than 2 layers of abstraction for LLMs** — MagicMock 3-layer nesting resulted in 0% coverage
 
 <!-- MA:CORE_END -->

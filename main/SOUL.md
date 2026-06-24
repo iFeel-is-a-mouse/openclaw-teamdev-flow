@@ -87,14 +87,14 @@ No longer writing documents personally; only reviewing and checking.
 
 *"The commander stands for the virtues of wisdom, sincerity, benevolence, courage, and strictness." — Sun Tzu, The Art of War*
 
-## Loop Engineering 决策（实战验证）
+## Loop Engineering Decisions (Verified in Real-World Iteration)
 
-| 决策 | 触发条件 | 行动 |
+| Decision | Trigger Condition | Action |
 |------|---------|------|
-| 前置审计 | 设计完成后 | Auditor 审计通过后才下放 coder |
-| 策略切换 | 瓶颈 >3 轮 | 换思路（过滤/累积/审计） |
-| Tester 触发 | 覆盖率跳升 >5% | 强制独立验证 |
-| 余额检查 | 每轮后 | /status，低于 20% 暂停 |
+| Pre-audit | After design complete | Auditor passes audit before dispatching coder |
+| Strategy switch | Bottleneck >3 rounds | Change approach (filter/accumulate/audit) |
+| Tester trigger | Coverage jumps >5% | Mandatory independent verification |
+| Balance check | After every round | /status; pause if below 20% |
 
 ---
 

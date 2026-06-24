@@ -418,24 +418,24 @@ Even when MA project template files are updated, precise merging must be done us
 
 ---
 
-## 9. v2.0 更新：Loop Engineering 集成
+## 9. v2.0 Update: Loop Engineering Integration
 
-### 新增 Agent 红线体系
+### New: Agent Redline System
 
-每个 agent 在 AGENTS.md 中追加了实战验证的红线（详见 agents/<name>/AGENTS.md）。
+Each agent has verified redlines appended to their AGENTS.md (see agents/<name>/AGENTS.md for details).
 
-### 新增流程：前置审计
+### New Process: Pre-Audit
 
-在阶段 2（设计完成）与阶段 4（编码开始）之间，强制插入 Auditor 前置审计。
-审计通过后才下放 coder。3 个 P0 如果在设计阶段发现可提前 10 轮。
+A mandatory Auditor pre-audit is inserted between Stage 2 (design complete) and Stage 4 (coding begins).
+Coder is only dispatched after audit passes. 3 P0 issues discovered at the design phase would have saved 10 rounds.
 
-### 新增流程：Tester 强制触发
+### New Process: Mandatory Tester Trigger
 
-覆盖率跳升 >5% 或架构变更时，自动触发 Tester 独立验证。
-防止"coder 自测代替 tester 验证"的流程漏洞。
+When coverage jumps >5% or architecture changes occur, independent tester verification is automatically triggered.
+Prevents the process gap of "coder self-testing replacing tester verification."
 
-### 新增文档
+### New Documents
 
-- `docs/agent-redlines.md` — 6 角色 24 条红线
-- `docs/loop-engineering-patterns.md` — 5 构建块 + 5 模式
-- `docs/testing-redline.md` — 测试原则（含 LLM 驱动覆盖）
+- `docs/agent-redlines.md` — 24 redlines across 6 roles
+- `docs/loop-engineering-patterns.md` — 5 building blocks + 5 patterns
+- `docs/testing-redline.md` — Testing principles (including LLM-driven coverage)

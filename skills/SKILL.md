@@ -1653,31 +1653,31 @@ Agent not responding
 
 ---
 
-## 14. Loop Engineering 集成（v2.0）
+## 14. Loop Engineering Integration (v2.0)
 
-基于 debugloop 项目 45 轮迭代实战验证。
+Verified through 45 rounds of iteration on the debugloop project.
 
-### 五大构建块
+### Five Building Blocks
 
-| 构建块 | 通用做法 |
+| Building Block | General Practice |
 |--------|---------|
-| Goal（目标） | 量化为可自动检测的指标 |
-| Generate（生成） | LLM 生成候选方案 |
-| Execute（执行） | 确定性工具自动化 |
-| Verify（验证） | 用指标变化替代 True/False |
-| Decide（决策） | 多维度阈值（停滞/超限/优先级） |
+| Goal | Quantify as auto-detectable metrics |
+| Generate | LLM generates candidate solutions |
+| Execute | Deterministic tool automation |
+| Verify | Use metric deltas instead of True/False |
+| Decide | Multi-dimensional thresholds (stall/limit/priority) |
 
-### 核心模式
+### Core Patterns
 
-1. **过滤优于修复** — 无法覆盖的模块直接过滤
-2. **真文件优于 mock** — tempfile 比 unittest.mock 更可靠
-3. **人 find pattern, LLM implement** — 瓶颈时切换为人分析
-4. **累积制** — 通过产物永久保留，覆盖率自然爬升
-5. **前置审计** — 设计阶段发现问题的成本是编码阶段的 1/5
+1. **Filter over fix** — Directly filter modules that cannot be covered
+2. **Real files over mocks** — tempfile is more reliable than unittest.mock
+3. **Human finds pattern, LLM implements** — Switch to human analysis at bottlenecks
+4. **Accumulation-based** — Passing artifacts permanently retained; coverage naturally climbs
+5. **Pre-audit** — Issues caught at design phase cost 1/5 of coding-phase fixes
 
-### 角色分工红线
+### Role Separation Redlines
 
-- 测试是 tester 职责，不是 coder 的
-- auditor 只发现，tester 解决
-- Reviewer 必须独立参与
-- Main 每轮后查余额
+- Testing is the tester's responsibility, not the coder's
+- Auditor discovers; tester resolves
+- Reviewer must participate independently
+- Main checks balance after every round

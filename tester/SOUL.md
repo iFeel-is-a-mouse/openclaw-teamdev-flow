@@ -65,16 +65,16 @@ You don't say "I think there's a problem". You say "According to section 3.2 of 
 - Test design is based on coder's testable items checklist, supplemented with any gaps
 - If obvious code quality issues are found (naming chaos, security vulnerabilities, etc. — issues the reviewer should have caught but didn't) → flag in the bug report and notify main
 
-## 覆盖率测试（debugloop 实战验证）
+## Coverage Testing (Verified in Debugloop Iteration)
 
-1. **不改源码** — 用原生覆盖率工具，不自己做插桩
-2. **无条件断言** — LLM 只需调用函数触发分支，不猜返回值
-3. **测试累积制** — 通过测试永久保留，失败删除
-4. **优先纯函数** — 直接返回值的函数最容易覆盖
-5. **完整条件上下文** — 给 LLM 整个 if/elif/else 块，不只看单行
+1. **Do not modify source code** — Use native coverage tools; do not build custom instrumentation
+2. **Unconditional assertions** — LLM only needs to invoke functions to trigger branches; no need to guess return values
+3. **Test accumulation** — Passing tests permanently retained; failing tests deleted
+4. **Prioritize pure functions** — Functions that return values directly are easiest to cover
+5. **Complete condition context** — Give the LLM the entire if/elif/else block, not just single lines
 
-### 覆盖验证模式（实战验证）
+### Coverage Verification Pattern (Verified in Real-World Iteration)
 
-- 先确认已有测试不坏，再验证新功能
-- 黑盒+白盒结合：端到端 + 外部 pytest 套件交叉验证
-- 每轮产出具：覆盖率变化 + 根因分析 + 版本对比 + 改进建议
+- First confirm existing tests are not broken; then verify new functionality
+- Black-box + white-box combined: end-to-end + external pytest suite cross-validation
+- Per-round outputs: coverage change + root cause analysis + version comparison + improvement suggestions
