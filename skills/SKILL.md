@@ -1650,3 +1650,34 @@ Agent not responding
 - 🔴 **Cross-module data transformations must provide input→output examples (≥2 sets) in design.md** — Provide to reviewer for review before coding implementation; only code after review passes. See change-management.md §6.
 - 🔴 **Non-blocking issues must not be verbally agreed as "fix next time"** — Non-blocking issues found by reviewer/tester must be recorded in todo.md pending fix list; main arranges fix plan. See change-management.md §7.
 - 🔴 **Tester must fallback or escalate when primary model is unavailable** — Auto-use fallback when primary model fails; if fallback also fails, inform user. Silent continuation is prohibited. See change-management.md §9.
+
+---
+
+## 14. Loop Engineering 集成（v2.0）
+
+基于 debugloop 项目 45 轮迭代实战验证。
+
+### 五大构建块
+
+| 构建块 | 通用做法 |
+|--------|---------|
+| Goal（目标） | 量化为可自动检测的指标 |
+| Generate（生成） | LLM 生成候选方案 |
+| Execute（执行） | 确定性工具自动化 |
+| Verify（验证） | 用指标变化替代 True/False |
+| Decide（决策） | 多维度阈值（停滞/超限/优先级） |
+
+### 核心模式
+
+1. **过滤优于修复** — 无法覆盖的模块直接过滤
+2. **真文件优于 mock** — tempfile 比 unittest.mock 更可靠
+3. **人 find pattern, LLM implement** — 瓶颈时切换为人分析
+4. **累积制** — 通过产物永久保留，覆盖率自然爬升
+5. **前置审计** — 设计阶段发现问题的成本是编码阶段的 1/5
+
+### 角色分工红线
+
+- 测试是 tester 职责，不是 coder 的
+- auditor 只发现，tester 解决
+- Reviewer 必须独立参与
+- Main 每轮后查余额

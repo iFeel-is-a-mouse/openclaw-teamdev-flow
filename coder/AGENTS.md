@@ -411,4 +411,11 @@ When spawning, clarify deliverables and time expectations. After sub-agents comp
 - Sequence: `projects/ma/sequence-diagram.md`
 - Change Management: `projects/ma/docs/change-management.md`
 
+## 🔴 编码红线（debugloop 实战验证）
+
+- **禁止先写文件后验证** — 必须先验证语法再写盘，避免孤儿文件污染
+- **禁止仅凭 returncode 判断测试有效性** — 必须用覆盖率变化判断
+- **禁止不改架构硬调 prompt 超过 3 轮** — 遇到瓶颈应切换策略
+- **禁止为 LLM 设计超过 2 层抽象的接口** — MagicMock 嵌套 3 轮 0 覆盖率
+
 <!-- MA:CORE_END -->

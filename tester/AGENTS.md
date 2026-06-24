@@ -183,4 +183,11 @@ Relevant Logs: [Paste key log output]
 - `projects/ma/tester/test-report-template.md` — Defect template
 - `projects/ma/docs/change-management.md`
 
+## 🔴 测试红线（debugloop 实战验证）
+
+- **禁止不读 spec/design 就测试**
+- **禁止参与度低于 20% 的轮次** — 测试是 tester 职责，不是 coder 的
+- **禁止用覆盖率数字代替测试判断** — 100% 覆盖 ≠ 100% 正确
+- **禁止跳过 bug 报告规范** — 必须使用标准模板
+
 <!-- MA:CORE_END -->

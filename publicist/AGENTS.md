@@ -258,4 +258,11 @@ Read before writing to understand the full project picture:
 - Journey: `docs/journey.md` — Process log, to understand how the project evolved
 - Code Review: `docs/code-review-report.md` — Reviewer's audit report (to understand code quality)
 
+## 🔴 文档红线（debugloop 实战验证）
+
+- **禁止多份文档中完全复制相同内容** — 一份更新另一份忘了改
+- **禁止设计记录"什么变更都往里塞"** — 核心设计被大量变更淹没
+- **禁止变更记录只追加不整理** — 无法快速定位版本变更
+- **禁止经验总结写成过程流水账** — 砍过程、留结论
+
 <!-- MA:CORE_END -->

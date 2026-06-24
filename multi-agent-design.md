@@ -416,8 +416,26 @@ Even when MA project template files are updated, precise merging must be done us
 4. **Verify** — Confirm the modified file content is reasonable and no context is lost
 5. **Commit** — `git add` + `git commit`, with commit message indicating what was changed and where
 
-1. **Read First** — Use `read` to understand the file's complete content
-2. **Locate** — Find the paragraph positions that need modification
-3. **Precise Edit** — Use `edit` to replace target paragraphs, or `write` to append to file end
-4. **Verify** — Confirm the modified file content is reasonable and no context is lost
-5. **Commit** — `git add` + `git commit`, with commit message indicating what was changed and where
+---
+
+## 9. v2.0 更新：Loop Engineering 集成
+
+### 新增 Agent 红线体系
+
+每个 agent 在 AGENTS.md 中追加了实战验证的红线（详见 agents/<name>/AGENTS.md）。
+
+### 新增流程：前置审计
+
+在阶段 2（设计完成）与阶段 4（编码开始）之间，强制插入 Auditor 前置审计。
+审计通过后才下放 coder。3 个 P0 如果在设计阶段发现可提前 10 轮。
+
+### 新增流程：Tester 强制触发
+
+覆盖率跳升 >5% 或架构变更时，自动触发 Tester 独立验证。
+防止"coder 自测代替 tester 验证"的流程漏洞。
+
+### 新增文档
+
+- `docs/agent-redlines.md` — 6 角色 24 条红线
+- `docs/loop-engineering-patterns.md` — 5 构建块 + 5 模式
+- `docs/testing-redline.md` — 测试原则（含 LLM 驱动覆盖）
