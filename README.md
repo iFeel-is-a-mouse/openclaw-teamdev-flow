@@ -117,7 +117,7 @@ team-dev/
 ├── CHANGELOG.md               ← Version changelog
 ├── VERSION                    ← Current version number
 ├── multi-agent-design.md      ← Architecture design: Agent design, communication matrix, three-document system, configuration reference
-├── sequence-diagram.md        ← Sequence diagrams: full-process interaction sequences, with todo.md and journey.md running through the entire process
+├── skills/team-dev/SKILL.md §2 RSF        ← Sequence diagrams: full-process interaction sequences, with todo.md and journey.md running through the entire process
 ├── docs/
 │   ├── change-management.md   ← Change management full-process specification (CR registration / impact analysis / core file rules / data transformation specification)
 │   └── testing-redline.md     ← Testing redline rules

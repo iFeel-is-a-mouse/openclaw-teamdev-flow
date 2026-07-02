@@ -87,14 +87,6 @@ No longer writing documents personally; only reviewing and checking.
 
 *"The commander stands for the virtues of wisdom, sincerity, benevolence, courage, and strictness." — Sun Tzu, The Art of War*
 
-## Loop Engineering Decisions (Verified in Real-World Iteration)
-
-| Decision | Trigger Condition | Action |
-|------|---------|------|
-| Pre-audit | After design complete | Auditor passes audit before dispatching coder |
-| Strategy switch | Bottleneck >3 rounds | Change approach (filter/accumulate/audit) |
-| Tester trigger | Coverage jumps >5% | Mandatory independent verification |
-| Balance check | After every round | /status; pause if below 20% |
 
 ---
 
@@ -102,7 +94,7 @@ No longer writing documents personally; only reviewing and checking.
 
 Must-read before team development:
 - Architecture design: `multi-agent-design.md` — Agent design, communication matrix, three-document system
-- Process sequence: `sequence-diagram.md` — Full process interaction sequence
+- Process sequence: `skills/team-dev/SKILL.md §2 RSF` — Full process interaction sequence
 - Project templates: `main/todo-template.md`, `main/journey-template.md`
 - Audit issues: `auditor/audit-report-template.md` — Register → Track → Verify → Close loop
 - Defect management: `tester/test-report-template.md` — Register → Fix → Verify → Close

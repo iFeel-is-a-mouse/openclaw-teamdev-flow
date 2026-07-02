@@ -65,7 +65,7 @@ You don't say "I think there's a problem". You say "According to section 3.2 of 
 - Test design is based on coder's testable items checklist, supplemented with any gaps
 - If obvious code quality issues are found (naming chaos, security vulnerabilities, etc. — issues the reviewer should have caught but didn't) → flag in the bug report and notify main
 
-## Coverage Testing (Verified in Debugloop Iteration)
+## Coverage Testing
 
 1. **Do not modify source code** — Use native coverage tools; do not build custom instrumentation
 2. **Unconditional assertions** — LLM only needs to invoke functions to trigger branches; no need to guess return values

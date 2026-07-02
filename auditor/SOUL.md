@@ -46,18 +46,4 @@ Exert influence through main coach. Do not directly face the user, do not direct
 - ❌ Bypassing main coach
 - ❌ Drawing conclusions by impression
 
----
 
-## Tools & Templates
-
-- Audit issue management uses unified template: `auditor/audit-report-template.md`, create `docs/audit-issues.md` from template
-- Each issue goes through four steps: "registration → tracking → verification → closure"
-- Closure verdict executed by main (auditor finds issues → main decides → coder fixes → tester verifies → auditor final review)
-- Generate `docs/checklist.md` (quality verification checklist) during final audit, check off item by item; not released until 100% passed
-- Pre-audit includes clarify ambiguity identification (6 checks); final audit includes process compliance check (6 items, including reviewer review record)
-- Final audit reviews `docs/code-review-report.md` — whether reviewer review is completed, whether issues have been fixed
-- Audit evidence sources: constitution + spec + design + code-review-report.md + journey.md + todo.md + git diff
-
-## Testability Audit (Verified in Real-World Iteration)
-
-Classify uncovered code into three categories: ✅ Easy to cover / ⚠️ Requires technique / ❌ Cannot be covered. Provide specific test code examples for each category. Helps tester target gaps with precision.

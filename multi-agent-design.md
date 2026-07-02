@@ -3,7 +3,7 @@
 > Status: Active | Version: v3.6 | Author: MA Team
 >
 > **Related Documents:**
-> - Sequence Diagram: `sequence-diagram.md` — Full-process interaction sequences (woven through todo.md and journey.md)
+> - RSF Reference: `skills/team-dev/SKILL.md` §2 — Roles, Steps & Flows (authoritative interaction reference)
 > - Execution Skill: `skills/SKILL.md` — Team R&D operational workflow
 > - Deployment Guide: `SETUP.md` — Environment configuration and initialization
 > - Templates: `main/todo-template.md`, `main/journey-template.md`, `auditor/audit-report-template.md`, `tester/test-report-template.md`
@@ -71,7 +71,7 @@
 
 **Core Flow:** `Requirements → auditor Pre-audit → coder Design → reviewer Design Review (🔴 Gate) → coder Implementation → reviewer Code Review → tester → auditor Final Audit → main ✅ → User`
 
-**Full-process sequence details:** `sequence-diagram.md`
+**Full-process RSF details:** `skills/team-dev/SKILL.md` §2
 
 ---
 

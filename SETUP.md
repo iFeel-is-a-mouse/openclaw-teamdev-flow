@@ -180,7 +180,7 @@ Main reads the following files to gain a comprehensive understanding of the MA f
 - `projects/ma/SETUP.md` — this document, understanding architecture and configuration
 - `projects/ma/README.md` — team overview, quick start
 - `projects/ma/multi-agent-design.md` — architecture design: agent design, communication matrix, three-document system, configuration reference
-- `projects/ma/sequence-diagram.md` — sequence diagrams: full flow interaction sequences, with todo.md and journey.md running throughout
+- `skills/team-dev/SKILL.md §2 RSF` — sequence diagrams: full flow interaction sequences, with todo.md and journey.md running throughout
 - `skills/SKILL.md` — team R&D execution flow
 
 **Step 2: Main merges AGENTS.md**
@@ -262,7 +262,7 @@ Each phase produces clear documentation (constitution.md → spec.md → audit-r
 | File | Location | Purpose |
 |------|----------|---------|
 | Architecture Design | `projects/ma/multi-agent-design.md` | Agent design, communication matrix, three-document system, configuration reference |
-| Full Flow Sequence Diagram | `projects/ma/sequence-diagram.md` | Interaction sequences, todo.md and journey.md running throughout |
+| Full Flow Sequence Diagram | `skills/team-dev/SKILL.md §2 RSF` | Interaction sequences, todo.md and journey.md running throughout |
 | Team Overview | `projects/ma/README.md` | Quick start |
 | This Document | `projects/ma/SETUP.md` | Understanding, deployment & configuration guide |
 | Main Behavioral Guidelines | `projects/ma/main/AGENTS.md` | Team R&D standards |
